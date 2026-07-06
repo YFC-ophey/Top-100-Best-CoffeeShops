@@ -25,11 +25,18 @@ Whenever the coffee vibes hit, you can open ROAST. and instantly see if one of t
 
 > **[→ Visit ROAST. Live](https://yfc-ophey.github.io/Top-100-Best-CoffeeShops/)**
 
+## Demo Video
+
+[![ROAST demo video preview](docs/roast-demo-preview.gif)](docs/roast-demo.mp4)
+
+Watch or download the full **[ROAST demo video](docs/roast-demo.mp4)**.
+
 The site features:
 - Interactive world map with country-level shop density bubbles
 - Drill-down to individual shop details (address, city, country, rank)
 - Filterable list view by collection, country, and rank band
 - Public Google Maps links — no API key required for visitors
+- Dataset freshness footer backed by `data/metadata.json` provenance
 
 ---
 
@@ -40,8 +47,9 @@ A zero-cost, open-source pipeline that:
 1. **Scrapes** the annual Top 100 + South America rankings from [theworlds100bestcoffeeshops.com](https://theworlds100bestcoffeeshops.com/)
 2. **Enriches** each shop entry with city, address, and geocoordinates
 3. **Generates** `JSON`, `CSV`, and `KML` artifacts
-4. **Builds** a static site and auto-deploys via GitHub Pages
-5. **Runs automatically** on a CI/CD schedule via GitHub Actions
+4. **Guards** against partial scrapes and geocode wipes before committing data
+5. **Builds** a static site and auto-deploys via GitHub Pages
+6. **Runs automatically** on a CI/CD schedule via GitHub Actions
 
 ---
 
@@ -53,7 +61,7 @@ A zero-cost, open-source pipeline that:
 | Preview UI | FastAPI + Jinja2 |
 | Site Builder | Static HTML/CSS generator |
 | Maps | Public Google Maps links (zero API cost) |
-| Testing | pytest (21 tests passing) |
+| Testing | pytest (55 tests passing) |
 | CI/CD | GitHub Actions → GitHub Pages |
 
 ---
@@ -68,8 +76,7 @@ Top-100-Best-CoffeeShops/
 ├── site/                 # Generated static site (index.html + assets)
 ├── templates/            # Jinja2 HTML templates
 ├── tests/                # pytest test suite
-├── claude_prompts/       # AI prompts used during development
-├── docs/                 # Release timeline and notes
+├── docs/                 # Runbook, release timeline, case study
 └── .github/workflows/    # CI/CD automation
 ```
 
@@ -92,10 +99,11 @@ This project runs entirely for free:
 pip install -e .
 
 # Run full pipeline (scrape → enrich → build)
-python main.py
+python src/main.py scrape-only
+python src/main.py build-site
 
 # Preview UI
-uvicorn src.app:app --reload
+PYTHONPATH=src uvicorn src.web_app:app --reload
 
 # Run tests
 pytest
@@ -122,17 +130,26 @@ scripts/dev-framework.sh prepush
 scripts/dev-framework.sh workflow update_map.yml main
 ```
 
+For operations and incident recovery, use **[docs/RUNBOOK.md](docs/RUNBOOK.md)**.
+For the agentic-engineering story behind this repo, use
+**[docs/case-study-agentic-engineering.md](docs/case-study-agentic-engineering.md)**.
+
 ---
 
 ## CI/CD Workflow
 
-On every push to `main`, GitHub Actions will:
+Every Monday (plus daily during the February release window, or manually via
+`workflow_dispatch`), GitHub Actions will:
 
 1. Run the test suite
-2. Execute the scrape + build pipeline
-3. Commit generated artifacts back to the repo
+2. Execute the scrape + build pipeline, guarded against scrape collapse and geocode wipes
+3. Commit generated artifacts (including `data/metadata.json` provenance) back to the repo
 4. Deploy to GitHub Pages
 5. Open a reminder issue if an owner geocode refresh is needed
+
+Operations details and failure playbooks: **[docs/RUNBOOK.md](docs/RUNBOOK.md)**.
+How this repo was built with AI coding agents, isolated branches, and
+verification gates: **[docs/case-study-agentic-engineering.md](docs/case-study-agentic-engineering.md)**.
 
 ---
 

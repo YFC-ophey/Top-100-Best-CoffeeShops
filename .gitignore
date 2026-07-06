@@ -60,3 +60,6 @@ coverage.xml
 .env
 .env.*
 !.env.example
+
+# Local virtualenv
+.venv/
