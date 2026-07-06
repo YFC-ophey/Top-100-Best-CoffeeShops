@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from collections import Counter
+import json
 import os
 from pathlib import Path
 
@@ -56,6 +57,7 @@ def build_static_site(
         overview_filters=overview_filters,
         data_quality=data_quality,
         google_maps_js_api_key=_google_maps_js_key(),
+        data_updated=_data_updated_date(data_file),
     )
 
     (site_dir / "index.html").write_text(html_output, encoding="utf-8")
@@ -70,6 +72,18 @@ def _template_env() -> Environment:
         loader=FileSystemLoader(str(TEMPLATES_DIR)),
         autoescape=select_autoescape(("html", "xml")),
     )
+
+
+def _data_updated_date(data_file: Path) -> str:
+    """Date of the last data refresh, from data/metadata.json ('' when absent)."""
+    metadata_file = data_file.parent / "metadata.json"
+    if not metadata_file.exists():
+        return ""
+    try:
+        metadata = json.loads(metadata_file.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return ""
+    return str(metadata.get("updated_at_utc", ""))[:10]
 
 
 def _google_maps_js_key() -> str:
