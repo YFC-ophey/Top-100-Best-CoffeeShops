@@ -2,9 +2,14 @@ from html.parser import HTMLParser
 import html
 import re
 import time
-from urllib.request import urlopen
+from urllib.request import Request, urlopen
 
 from src.models import CoffeeShop
+
+USER_AGENT = (
+    "Mozilla/5.0 (compatible; RoastMapBot/1.0; "
+    "+https://github.com/YFC-ophey/Top-100-Best-CoffeeShops)"
+)
 
 SOURCE_URLS: dict[str, str] = {
     "Top 100": "https://theworlds100bestcoffeeshops.com/top-100-coffee-shops/",
@@ -66,9 +71,29 @@ class _ListItemParser(HTMLParser):
             self._buffer = []
 
 
-def fetch_html(url: str, timeout_seconds: int = 30) -> str:
-    with urlopen(url, timeout=timeout_seconds) as response:
-        return response.read().decode("utf-8", errors="ignore")
+def fetch_html(
+    url: str,
+    timeout_seconds: int = 30,
+    retries: int = 3,
+    backoff_seconds: float = 2.0,
+    sleeper=time.sleep,
+) -> str:
+    """Fetch a list page with a real User-Agent and linear-backoff retries.
+
+    A transient network error or a UA-based block on the source's hosting must
+    not fail the whole weekly pipeline run.
+    """
+    last_error: OSError | None = None
+    for attempt in range(retries):
+        request = Request(url, headers={"User-Agent": USER_AGENT})
+        try:
+            with urlopen(request, timeout=timeout_seconds) as response:
+                return response.read().decode("utf-8", errors="ignore")
+        except OSError as error:  # URLError, HTTPError, socket timeout
+            last_error = error
+            if attempt < retries - 1:
+                sleeper(backoff_seconds * (attempt + 1))
+    raise last_error if last_error is not None else OSError(f"fetch failed: {url}")
 
 
 def parse_coffee_shops(html: str, category: str) -> list[CoffeeShop]:

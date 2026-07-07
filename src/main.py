@@ -1,5 +1,7 @@
 from argparse import ArgumentParser
+from datetime import datetime, timezone
 import json
+import os
 from pathlib import Path
 import sys
 
@@ -17,9 +19,36 @@ from src.state import has_shop_changes, load_previous_state
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_env_file(BASE_DIR)
 DATA_FILE = BASE_DIR / "data" / "current_list.json"
+METADATA_FILE = BASE_DIR / "data" / "metadata.json"
 KML_FILE = BASE_DIR / "output" / "coffee_shops.kml"
 CSV_FILE = BASE_DIR / "output" / "coffee_shops.csv"
 SITE_DIR = BASE_DIR / "site"
+
+# A healthy scrape yields ~100 shops per list. If a category shrinks past this
+# fraction of the previous run, assume a source redesign or partial fetch and
+# abort before overwriting good committed data. Override: SCRAPE_ALLOW_SHRINK=1.
+SHRINK_FLOOR_RATIO = 0.8
+
+
+def _guard_against_scrape_collapse(
+    previous: list[CoffeeShop], current: list[CoffeeShop]
+) -> None:
+    if os.getenv("SCRAPE_ALLOW_SHRINK", "").strip().lower() in {"1", "true", "yes", "on"}:
+        return
+    prev_counts: dict[str, int] = {}
+    for shop in previous:
+        prev_counts[shop.category] = prev_counts.get(shop.category, 0) + 1
+    cur_counts: dict[str, int] = {}
+    for shop in current:
+        cur_counts[shop.category] = cur_counts.get(shop.category, 0) + 1
+    for category, prev_count in prev_counts.items():
+        cur_count = cur_counts.get(category, 0)
+        if prev_count > 0 and cur_count < int(prev_count * SHRINK_FLOOR_RATIO):
+            raise RuntimeError(
+                f"Scrape collapse for '{category}': {prev_count} -> {cur_count} shops "
+                f"(floor {SHRINK_FLOOR_RATIO:.0%}). The source layout likely changed; "
+                "keeping the previous data. Re-run with SCRAPE_ALLOW_SHRINK=1 to force."
+            )
 
 
 def scrape_only(sleep_seconds: float = 1.0) -> tuple[list[CoffeeShop], bool]:
@@ -29,6 +58,7 @@ def scrape_only(sleep_seconds: float = 1.0) -> tuple[list[CoffeeShop], bool]:
         html = fetch_html(url)
         all_shops.extend(parse_coffee_shops(html, category=category))
 
+    _guard_against_scrape_collapse(previous, all_shops)
     all_shops = enrich_shops_with_details(all_shops, sleep_seconds=sleep_seconds)
     all_shops = _carry_forward_geocode(previous, all_shops)
     changed = has_shop_changes(previous, all_shops)
@@ -60,6 +90,24 @@ def build_site() -> None:
 def _save_state(shops: list[CoffeeShop]) -> None:
     DATA_FILE.parent.mkdir(parents=True, exist_ok=True)
     DATA_FILE.write_text(json.dumps([shop.to_dict() for shop in shops], indent=2, ensure_ascii=False), encoding="utf-8")
+    _save_metadata(shops)
+
+
+def _save_metadata(shops: list[CoffeeShop]) -> None:
+    """Dataset provenance for consumers of the JSON/CSV/KML and the site footer."""
+    counts: dict[str, int] = {}
+    for shop in shops:
+        counts[shop.category] = counts.get(shop.category, 0) + 1
+    metadata = {
+        "updated_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "total_shops": len(shops),
+        "counts_by_category": dict(sorted(counts.items())),
+        "sources": SOURCE_URLS,
+        "geocoded_shops": sum(1 for s in shops if s.lat is not None and s.lng is not None),
+    }
+    METADATA_FILE.write_text(
+        json.dumps(metadata, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+    )
 
 
 def _carry_forward_geocode(previous: list[CoffeeShop], current: list[CoffeeShop]) -> list[CoffeeShop]:
