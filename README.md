@@ -27,10 +27,9 @@ Whenever the coffee vibes hit, you can open ROAST. and instantly see if one of t
 
 ## Demo Video
 
-<video src="docs/roast-demo.mp4" controls width="100%" title="ROAST demo video"></video>
+[![ROAST demo video preview](docs/roast-demo-preview.gif)](demo/roast-brag.mp4)
 
-If the embedded player does not render, watch or download the
-**[ROAST demo video](docs/roast-demo.mp4)**.
+Watch or download the full **[ROAST demo video](demo/roast-brag.mp4)**.
 
 The site features:
 - Interactive world map with country-level shop density bubbles
