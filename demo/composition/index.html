@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "Cabinet Grotesk"; font-weight: 700; font-style: normal; font-display: swap; src: url("assets/fonts/cabinet-grotesk-700.woff2") format("woff2"); }
+      @font-face { font-family: "Cabinet Grotesk"; font-weight: 800; font-style: normal; font-display: swap; src: url("assets/fonts/cabinet-grotesk-800.woff2") format("woff2"); }
+      @font-face { font-family: "General Sans"; font-weight: 400; font-style: normal; font-display: swap; src: url("assets/fonts/general-sans-400.woff2") format("woff2"); }
+      @font-face { font-family: "General Sans"; font-weight: 500; font-style: normal; font-display: swap; src: url("assets/fonts/general-sans-500.woff2") format("woff2"); }
+      @font-face { font-family: "General Sans"; font-weight: 700; font-style: normal; font-display: swap; src: url("assets/fonts/general-sans-700.woff2") format("woff2"); }
+
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 1920px; height: 1080px; overflow: hidden;
+        background: #070303; color: #f8efe6;
+        font-family: "General Sans", system-ui, sans-serif;
+      }
+      .display { font-family: "Cabinet Grotesk", "General Sans", sans-serif; }
+      .orange { color: #df6e2e; }
+
+      /* Scenes are absolutely stacked; the timeline fades the active one in/out. */
+      .scene { position: absolute; inset: 0; opacity: 0; overflow: hidden; background: #070303; }
+
+      /* Real captured site frames (Ken Burns) */
+      .frame { position: absolute; inset: 0; will-change: transform; }
+      .frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+      /* Legibility scrims */
+      .scrim-bottom { position: absolute; inset: 0; background: linear-gradient(to top, rgba(7,3,3,0.92) 0%, rgba(7,3,3,0.55) 26%, rgba(7,3,3,0) 52%); }
+      .scrim-left { position: absolute; inset: 0; background: linear-gradient(to right, rgba(7,3,3,0.9) 0%, rgba(7,3,3,0.55) 30%, rgba(7,3,3,0) 58%); }
+      .scrim-full { position: absolute; inset: 0; background: rgba(7,3,3,0.55); }
+
+      .lower { position: absolute; left: 90px; right: 90px; bottom: 90px; }
+      .kicker { font-size: 26px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: #f7c69a; opacity: 0; }
+      .headline { font-size: 84px; font-weight: 800; line-height: 1.06; letter-spacing: -1.5px; margin-top: 14px; opacity: 0; max-width: 1500px; }
+      .sub { font-size: 34px; font-weight: 500; color: #e8d8c8; margin-top: 16px; opacity: 0; }
+
+      /* Scene 2 counter chip */
+      .chip {
+        position: absolute; left: 90px; bottom: 320px; display: inline-flex; gap: 18px; align-items: baseline;
+        padding: 22px 36px; border-radius: 18px; opacity: 0;
+        background: rgba(20,10,8,0.82); border: 1px solid rgba(247,198,154,0.28);
+        backdrop-filter: blur(8px); font-size: 46px; font-weight: 800; letter-spacing: -0.5px;
+      }
+      .chip .num { color: #f7c69a; }
+      .chip .lbl { font-size: 30px; font-weight: 600; color: #cbb3a3; }
+
+      /* Scene 4 detail card (real screenshot) */
+      .detail-card {
+        position: absolute; top: 50%; right: 150px; transform: translateY(-50%);
+        height: 920px; width: calc(920px * (370/890)); border-radius: 22px; overflow: hidden;
+        box-shadow: 0 40px 90px rgba(0,0,0,0.6); border: 1px solid rgba(247,198,154,0.25); opacity: 0;
+      }
+      .detail-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+      .s4-copy { position: absolute; left: 110px; top: 50%; transform: translateY(-50%); width: 760px; }
+      .s4-copy h2 { font-size: 74px; font-weight: 800; line-height: 1.05; letter-spacing: -1.5px; opacity: 0; }
+      .s4-copy p { font-size: 34px; color: #e8d8c8; margin-top: 18px; line-height: 1.3; opacity: 0; }
+
+      /* Scene 5 outro */
+      .outro { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+      .claims { display: flex; gap: 26px; margin-bottom: 46px; }
+      .claim { font-size: 36px; font-weight: 700; color: #f7c69a; opacity: 0; padding: 12px 24px; border: 1px solid rgba(247,198,154,0.3); border-radius: 999px; }
+      .wordmark { font-size: 150px; font-weight: 800; letter-spacing: -4px; opacity: 0; line-height: 1; }
+      .tagline { font-size: 44px; color: #e8d8c8; margin-top: 12px; opacity: 0; }
+      .url { font-size: 32px; color: #b8a08f; margin-top: 34px; letter-spacing: 0.04em; opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <div data-hf-id="hf-at0g" id="root" data-composition-id="main" data-start="0" data-duration="20" data-width="1920" data-height="1080">
+      <audio data-hf-id="hf-z2zn" id="music" class="clip" src="assets/music/you-got-jazz-by-diego-nava-mixkit.mp3" data-start="0" data-duration="20" data-track-index="0" data-volume="0.6"></audio>
+
+      <!-- Scene 1 — Hook (real map, zoom into the South America cluster) -->
+      <div data-hf-id="hf-6uqj" id="s1" class="scene clip" data-start="0" data-duration="3.7" data-track-index="1">
+        <div data-hf-id="hf-kgs1" class="frame" id="s1-frame"><img data-hf-id="hf-v025" src="assets/captures/map.png" alt=""></div>
+        <div data-hf-id="hf-l8ky" class="scrim-bottom"></div>
+        <div data-hf-id="hf-d9jj" class="lower">
+          <div data-hf-id="hf-l7y4" class="kicker" id="s1-kicker">ROAST.</div>
+          <h1 data-hf-id="hf-wihw" class="headline display" id="s1-head">Is one of the world's <span data-hf-id="hf-ttg9" class="orange">best</span> coffee shops near you?</h1>
+        </div>
+      </div>
+
+      <!-- Scene 2 — The map + counter -->
+      <div data-hf-id="hf-civh" id="s2" class="scene clip" data-start="3.5" data-duration="4.2" data-track-index="2">
+        <div data-hf-id="hf-c7ra" class="frame" id="s2-frame"><img data-hf-id="hf-4kld" src="assets/captures/map.png" alt=""></div>
+        <div data-hf-id="hf-5ks6" class="scrim-bottom"></div>
+        <div data-hf-id="hf-urov" class="lower">
+          <div data-hf-id="hf-7b8t" class="kicker" id="s2-kicker">The World's 100 Best Coffee Shops</div>
+          <h1 data-hf-id="hf-vg9v" class="headline display" id="s2-head">All of them. On one map.</h1>
+        </div>
+        <div data-hf-id="hf-w7ja" class="chip" id="s2-chip">
+          <span data-hf-id="hf-uckh"><span data-hf-id="hf-wmov" class="num">200</span> <span data-hf-id="hf-rzdq" class="lbl">shops</span></span>
+          <span data-hf-id="hf-l73p"><span data-hf-id="hf-w0aw" class="num">56</span> <span data-hf-id="hf-hcf1" class="lbl">countries</span></span>
+          <span data-hf-id="hf-me0s"><span data-hf-id="hf-l8o7" class="num">2</span> <span data-hf-id="hf-4bxi" class="lbl">lists</span></span>
+        </div>
+      </div>
+
+      <!-- Scene 3 — The ranked list -->
+      <div data-hf-id="hf-62g7" id="s3" class="scene clip" data-start="7.5" data-duration="3.9" data-track-index="1">
+        <div data-hf-id="hf-y5wr" class="frame" id="s3-frame"><img data-hf-id="hf-5oxj" src="assets/captures/list.png" alt=""></div>
+        <div data-hf-id="hf-5z37" class="scrim-bottom"></div>
+        <div data-hf-id="hf-uddu" class="lower">
+          <div data-hf-id="hf-54qo" class="kicker" id="s3-kicker">World's Top 100  ·  South America's Top 100</div>
+          <h1 data-hf-id="hf-64ab" class="headline display" id="s3-head">Two lists.<span data-hf-id="hf-5r8t" class="orange">200 of the best.</span></h1>
+        </div>
+      </div>
+
+      <!-- Scene 4 — Real shop detail card -->
+      <div data-hf-id="hf-4nx8" id="s4" class="scene clip" data-start="11.2" data-duration="4.1" data-track-index="2">
+        <div data-hf-id="hf-p9f4" class="frame" id="s4-frame"><img data-hf-id="hf-5rig" src="assets/captures/map.png" alt=""></div>
+        <div data-hf-id="hf-j44w" class="scrim-full"></div>
+        <div data-hf-id="hf-1itl" class="s4-copy">
+          <h2 data-hf-id="hf-019c" class="display" id="s4-head">Every shop, in detail.</h2>
+          <p data-hf-id="hf-19me" id="s4-sub">Rank, address, category — and one-tap Google Maps directions. No API key needed.</p>
+        </div>
+        <div data-hf-id="hf-ab54" class="detail-card" id="s4-card"><img data-hf-id="hf-u5b0" src="assets/captures/detail.png" alt=""></div>
+      </div>
+
+      <!-- Scene 5 — Outro -->
+      <div data-hf-id="hf-yuy1" id="s5" class="scene clip" data-start="15.2" data-duration="4.8" data-track-index="1">
+        <div data-hf-id="hf-969x" class="frame" id="s5-frame"><img data-hf-id="hf-5d7f" src="assets/captures/map.png" alt=""></div>
+        <div data-hf-id="hf-iefc" class="scrim-full"></div>
+        <div data-hf-id="hf-e0lx" class="outro">
+          <div data-hf-id="hf-44kf" class="claims">
+            <span data-hf-id="hf-iza0" class="claim" id="s5-c1">Free</span>
+            <span data-hf-id="hf-gcp5" class="claim" id="s5-c2">No API key</span>
+            <span data-hf-id="hf-hzy8" class="claim" id="s5-c3">Auto-updated every February</span>
+          </div>
+          <div data-hf-id="hf-6kv8" class="wordmark display" id="s5-mark">ROAST<span data-hf-id="hf-o72z" class="orange">.</span></div>
+          <div data-hf-id="hf-mco2" class="tagline" id="s5-tag">Wherever the coffee vibes hit.</div>
+          <div data-hf-id="hf-zdmv" class="url" id="s5-url">yfc-ophey.github.io/Top-100-Best-CoffeeShops</div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      // ---------- Scene 1: Hook ---------- (zoom into the dense SA cluster, lower-left-center)
+      gsap.set("#s1-frame", { transformOrigin: "32% 60%", scale: 1.28 });
+      tl.set("#s1", { opacity: 1 }, 0);
+      tl.to("#s1-frame", { scale: 1.42, duration: 3.7, ease: "none" }, 0);
+      tl.to("#s1-kicker", { opacity: 1, duration: 0.4 }, 0.2);
+      tl.fromTo("#s1-head", { opacity: 0, y: 36 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 0.45);
+      tl.to("#s1", { opacity: 0, duration: 0.4, ease: "power2.in" }, 3.3);
+
+      // ---------- Scene 2: The map + counter ---------- (gentle pull-back)
+      gsap.set("#s2-frame", { transformOrigin: "50% 48%", scale: 1.12 });
+      tl.to("#s2", { opacity: 1, duration: 0.4 }, 3.4);
+      tl.to("#s2-frame", { scale: 1.0, duration: 4.2, ease: "sine.inOut" }, 3.5);
+      tl.to("#s2-kicker", { opacity: 1, duration: 0.4 }, 3.7);
+      tl.fromTo("#s2-head", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 3.95);
+      tl.fromTo("#s2-chip", { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 0.5, ease: "back.out(1.6)" }, 6.34); // beat-locked: 6.34s
+      tl.to("#s2", { opacity: 0, duration: 0.4, ease: "power2.in" }, 7.3);
+
+      // ---------- Scene 3: The list ---------- (slow vertical pan down the ranked table)
+      gsap.set("#s3-frame", { transformOrigin: "50% 0%", scale: 1.06, y: -28 });
+      tl.to("#s3", { opacity: 1, duration: 0.4 }, 7.4);
+      tl.to("#s3-frame", { y: 28, duration: 3.9, ease: "none" }, 7.5);
+      tl.to("#s3-kicker", { opacity: 1, duration: 0.4 }, 7.7);
+      tl.fromTo("#s3-head", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 7.95);
+      tl.to("#s3", { opacity: 0, duration: 0.4, ease: "power2.in" }, 11.0);
+
+      // ---------- Scene 4: Real shop detail ---------- // beat-locked: 12.65s
+      gsap.set("#s4-frame", { transformOrigin: "50% 50%", scale: 1.08, filter: "brightness(0.45)" });
+      tl.to("#s4", { opacity: 1, duration: 0.4 }, 11.1);
+      tl.to("#s4-frame", { scale: 1.14, duration: 4.1, ease: "sine.inOut" }, 11.2);
+      tl.fromTo("#s4-head", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 11.5);
+      tl.fromTo("#s4-sub", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5 }, 11.9);
+      tl.fromTo("#s4-card", { opacity: 0, x: 80, rotateY: 8 }, { opacity: 1, x: 0, rotateY: 0, duration: 0.7, ease: "power3.out" }, 12.65);
+      tl.to("#s4", { opacity: 0, duration: 0.45, ease: "power2.in" }, 14.85);
+
+      // ---------- Scene 5: Outro ----------
+      gsap.set("#s5-frame", { transformOrigin: "30% 58%", scale: 1.2, filter: "brightness(0.32)" });
+      tl.to("#s5", { opacity: 1, duration: 0.45 }, 14.95);
+      tl.to("#s5-frame", { scale: 1.28, duration: 5.0, ease: "none" }, 15.2);
+      tl.fromTo("#s5-c1", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.3 }, 15.4);
+      tl.fromTo("#s5-c2", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.3 }, 15.7);
+      tl.fromTo("#s5-c3", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.3 }, 16.0);
+      tl.fromTo("#s5-mark", { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.6, ease: "back.out(1.5)" }, 16.4);
+      tl.fromTo("#s5-tag", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4 }, 16.9);
+      tl.fromTo("#s5-url", { opacity: 0 }, { opacity: 1, duration: 0.4 }, 17.4);
+      tl.to("#music", { volume: 0, duration: 1.3, ease: "power1.in" }, 18.6);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
