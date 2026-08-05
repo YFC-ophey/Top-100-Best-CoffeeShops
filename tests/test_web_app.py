@@ -323,14 +323,14 @@ def test_overview_table_uses_address_column_per_row(tmp_path: Path) -> None:
     html = response.text
 
     match_a = re.search(
-        r"<tr>\s*<td>1</td>\s*<td>Shop A</td>\s*<td>Lisbon</td>\s*<td>Portugal</td>\s*<td>Top 100</td>\s*<td>R\. dos Sapateiros 111, 1100-619 Lisbon, Portugal</td>\s*</tr>",
+        r"<tr>\s*<td>1</td>\s*<td>Shop A</td>\s*<td>Lisbon</td>\s*<td>Portugal</td>\s*<td>Top 100</td>\s*<td>2026</td>\s*<td>R\. dos Sapateiros 111, 1100-619 Lisbon, Portugal</td>\s*</tr>",
         html,
         flags=re.DOTALL,
     )
     assert match_a, "Shop A row should include its address in the Address column."
 
     match_b = re.search(
-        r"<tr>\s*<td>2</td>\s*<td>Shop B</td>\s*<td>Miraflores</td>\s*<td>Peru</td>\s*<td>South America</td>\s*<td>Entre Pardos Chicken y Wong, Mal\. de la Reserva 610, Miraflores 15074, Peru</td>\s*</tr>",
+        r"<tr>\s*<td>2</td>\s*<td>Shop B</td>\s*<td>Miraflores</td>\s*<td>Peru</td>\s*<td>South America</td>\s*<td>2026</td>\s*<td>Entre Pardos Chicken y Wong, Mal\. de la Reserva 610, Miraflores 15074, Peru</td>\s*</tr>",
         html,
         flags=re.DOTALL,
     )

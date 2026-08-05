@@ -28,11 +28,16 @@ workflow that pushes to main.
    `SCRAPE_ALLOW_SHRINK=1 python src/main.py scrape-only`.
 4. **Geocode-wipe guard** (workflow step) — aborts before commit if
    place_id/coord counts drop to zero.
-5. **Provenance** — every save writes `data/metadata.json` (UTC timestamp,
-   counts, sources, geocoded count); the site footer shows "Data updated".
-6. **Commit + Pages deploy** — bot commits `data/`, `output/`, `site/`; a
+5. **Edition archive** (`src/main.py:_merge_with_archived_editions`) — a scrape
+   only ever sees the edition currently on the source pages, so rows from any
+   other `edition_year` are carried forward instead of dropped. This is what
+   keeps last year's ranking available behind the site's Edition filter.
+6. **Provenance** — every save writes `data/metadata.json` (UTC timestamp,
+   counts, sources, per-edition counts, geocoded count); the site footer shows
+   "Data updated".
+7. **Commit + Pages deploy** — bot commits `data/`, `output/`, `site/`; a
    browser-key rebuild runs only when the `GOOGLE_MAPS_JS_API_KEY` secret exists.
-7. **Auto-issue** — if shops are missing `place_id`, the workflow opens
+8. **Auto-issue** — if shops are missing `place_id`, the workflow opens
    "Owner geocode refresh needed (N shops missing place_id)".
 
 ## Playbooks
@@ -57,10 +62,16 @@ then commit `data/current_list.json`. Annual cost ~$3.40, inside free tier.
 ## Annual February release (~Feb 16)
 
 The daily Feb 10-20 cron catches the new list automatically. After it lands:
-1. Check the run log: both categories near 100 shops.
-2. Expect the geocode reminder issue (new shops lack place_ids) — run
+1. Bump `CURRENT_EDITION_YEAR` in `src/category_utils.py` **before** the release
+   window, so the incoming scrape is tagged with the new year. If it is missed,
+   the new list overwrites the previous one under the old year and the previous
+   edition is lost — recover with `git revert` of the bot commit, bump, re-run.
+2. Check the run log: both categories near 100 shops.
+3. Confirm `data/metadata.json` lists both editions under `counts_by_edition`,
+   and that the site's Edition filter shows two chips.
+4. Expect the geocode reminder issue (new shops lack place_ids) — run
    owner-geocode the same week.
-3. Spot-check the live map: #1 shop, a Peru shop, one South America shop.
+5. Spot-check the live map: #1 shop, a Peru shop, one South America shop.
 See `docs/release-timeline-2026.md` for the full timeline.
 
 ## Local development

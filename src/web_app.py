@@ -14,7 +14,12 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse
 from fastapi.templating import Jinja2Templates
 
-from src.category_utils import SOUTH_AMERICA_CATEGORY, TOP_100_CATEGORY, normalize_category
+from src.category_utils import (
+    SOUTH_AMERICA_CATEGORY,
+    TOP_100_CATEGORY,
+    normalize_category,
+    normalize_edition_year,
+)
 from src.country_centroids import (
     COUNTRY_ALIASES,
     COUNTRY_CENTROIDS,
@@ -185,6 +190,7 @@ def _load_shops(data_file: Path) -> list[CoffeeShop]:
     shops = load_previous_state(data_file)
     for shop in shops:
         shop.category = normalize_category(shop.category)
+        shop.edition_year = normalize_edition_year(shop.edition_year)
         shop.name = _normalize_shop_text(shop.name)
         shop.city = _normalize_shop_text(shop.city)
         shop.country = _normalize_shop_text(shop.country)
@@ -595,6 +601,7 @@ def _build_overview_shops(shops: list[CoffeeShop]) -> tuple[list[dict[str, objec
             "name": _normalize_shop_text(shop.name),
             "rank": shop.rank,
             "category": normalize_category(shop.category),
+            "edition_year": normalize_edition_year(shop.edition_year),
             "country_raw": _normalize_shop_text(shop.country),
             "country_normalized": country_normalized,
             "city": city,
@@ -697,12 +704,20 @@ def _build_overview_filters(
         for country in overview_countries
     ]
 
+    edition_counts = Counter(int(shop["edition_year"]) for shop in overview_shops)
+    editions = [
+        {"key": year, "label": str(year), "count": count}
+        for year, count in sorted(edition_counts.items(), reverse=True)
+    ]
+
     return {
         "categories": categories,
         "countries": countries,
+        "editions": editions,
         "rank_bands": RANK_BANDS,
         "defaults": {
             "active_categories": [TOP_100_CATEGORY, SOUTH_AMERICA_CATEGORY],
+            "active_editions": [edition["key"] for edition in editions],
             "country": "All",
             "rank_band": "All",
         },
@@ -717,7 +732,8 @@ def _rank_band(rank: int) -> str:
 
 
 def _shop_id(shop: CoffeeShop) -> str:
-    base = f"{normalize_category(shop.category)}-{shop.rank}-{shop.name}".casefold()
+    edition = normalize_edition_year(shop.edition_year)
+    base = f"{edition}-{normalize_category(shop.category)}-{shop.rank}-{shop.name}".casefold()
     normalized = re.sub(r"[^a-z0-9]+", "-", base).strip("-")
     return normalized or f"shop-{shop.rank}"
 

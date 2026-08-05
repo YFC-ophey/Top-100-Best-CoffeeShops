@@ -1407,7 +1407,8 @@
                     <th>Name</th>
                     <th>City</th>
                     <th>Country</th>
-                    <th>Category</th>
+                    <th>Collection</th>
+                    <th>Year</th>
                     <th>Address</th>
                   </tr>
                 </thead>
@@ -1419,6 +1420,7 @@
                     <td>{{ shop.city or 'Not provided' }}</td>
                     <td>{{ shop.country_normalized }}</td>
                     <td>{{ shop.category }}</td>
+                    <td>{{ shop.edition_year }}</td>
                     <td>{{ shop.formatted_address or shop.address or 'Not provided' }}</td>
                   </tr>
                   {% endfor %}
@@ -1440,6 +1442,11 @@
               <p class="filter-title">Filter</p>
               <button class="reset-btn" id="reset-filters">Reset</button>
             </div>
+
+            <section>
+              <p class="panel-title">Edition</p>
+              <div class="chip-wrap" id="edition-chip-wrap"></div>
+            </section>
 
             <section>
               <p class="panel-title">Collection</p>
@@ -1488,7 +1495,7 @@
 
             <section class="details-grid">
               <div class="details-card">
-                <p class="details-label">Category</p>
+                <p class="details-label">Collection</p>
                 <p class="details-value" id="detail-category">-</p>
               </div>
               <div class="details-card">
@@ -1530,6 +1537,7 @@
 
       const state = {
         activeCategories: new Set(overviewFilters.defaults.active_categories),
+        activeEditions: new Set(overviewFilters.defaults.active_editions || []),
         country: overviewFilters.defaults.country,
         rankBand: overviewFilters.defaults.rank_band,
         focusCountry: null,
@@ -1593,6 +1601,17 @@
       }
 
       function renderFilterControls() {
+        const editionWrap = document.getElementById("edition-chip-wrap");
+        editionWrap.innerHTML = "";
+        (overviewFilters.editions || []).forEach((edition) => {
+          const button = document.createElement("button");
+          button.textContent = edition.label;
+          button.dataset.edition = String(edition.key);
+          button.classList.toggle("active", state.activeEditions.has(edition.key));
+          button.addEventListener("click", () => toggleEdition(edition.key));
+          editionWrap.appendChild(button);
+        });
+
         const chipWrap = document.getElementById("collection-chip-wrap");
         chipWrap.innerHTML = "";
         overviewFilters.categories.forEach((category) => {
@@ -1654,6 +1673,24 @@
         });
       }
 
+      function toggleEdition(editionKey) {
+        if (state.activeEditions.has(editionKey) && state.activeEditions.size === 1) {
+          return;
+        }
+        if (state.activeEditions.has(editionKey)) {
+          state.activeEditions.delete(editionKey);
+        } else {
+          state.activeEditions.add(editionKey);
+        }
+
+        document.querySelectorAll(`[data-edition="${editionKey}"]`).forEach((node) => {
+          node.classList.toggle("active", state.activeEditions.has(editionKey));
+        });
+        state.selectedShopId = null;
+        normalizeCountryRankBand();
+        refreshView();
+      }
+
       function toggleCategory(categoryKey) {
         if (state.activeCategories.has(categoryKey) && state.activeCategories.size === 1) {
           return;
@@ -1672,17 +1709,22 @@
         refreshView();
       }
 
+      function matchesCollection(shop) {
+        if (state.activeEditions.size && !state.activeEditions.has(shop.edition_year)) return false;
+        return state.activeCategories.has(shop.category);
+      }
+
       function normalizeCountryRankBand() {
         if (state.country === "All" || state.rankBand === "All") return;
 
         const hasCountryShops = overviewShops.some((shop) => {
-          if (!state.activeCategories.has(shop.category)) return false;
+          if (!matchesCollection(shop)) return false;
           return shop.country_normalized === state.country;
         });
         if (!hasCountryShops) return;
 
         const hasCountryShopsInBand = overviewShops.some((shop) => {
-          if (!state.activeCategories.has(shop.category)) return false;
+          if (!matchesCollection(shop)) return false;
           if (shop.country_normalized !== state.country) return false;
           return shop.rank_band === state.rankBand;
         });
@@ -1693,6 +1735,7 @@
 
       function resetFilters() {
         state.activeCategories = new Set(overviewFilters.defaults.active_categories);
+        state.activeEditions = new Set(overviewFilters.defaults.active_editions || []);
         state.country = overviewFilters.defaults.country;
         state.rankBand = overviewFilters.defaults.rank_band;
         state.focusCountry = null;
@@ -1708,7 +1751,7 @@
 
       function filteredShops() {
         return overviewShops.filter((shop) => {
-          if (!state.activeCategories.has(shop.category)) return false;
+          if (!matchesCollection(shop)) return false;
           if (state.country !== "All" && shop.country_normalized !== state.country) return false;
           if (state.rankBand !== "All" && shop.rank_band !== state.rankBand) return false;
           return true;
@@ -1754,7 +1797,10 @@
       function renderListRows() {
         const body = document.getElementById("overview-list-body");
         const rows = filteredShops()
-          .sort((a, b) => a.rank - b.rank || a.name.localeCompare(b.name))
+          .sort(
+            (a, b) =>
+              b.edition_year - a.edition_year || a.rank - b.rank || a.name.localeCompare(b.name)
+          )
           .map(
             (shop) =>
               `<tr>` +
@@ -1763,6 +1809,7 @@
               `<td>${escapeHtml(shop.city || "Not provided")}</td>` +
               `<td>${escapeHtml(shop.country_normalized)}</td>` +
               `<td>${escapeHtml(shop.category)}</td>` +
+              `<td>${escapeHtml(String(shop.edition_year))}</td>` +
               `<td>${escapeHtml(shop.formatted_address || shop.address || "Not provided")}</td>` +
               `</tr>`
           )
@@ -1770,7 +1817,7 @@
 
         body.innerHTML =
           rows ||
-          '<tr><td colspan="6" style="text-align:center;color:#aeb3c6">No shops match the current filters.</td></tr>';
+          '<tr><td colspan="7" style="text-align:center;color:#aeb3c6">No shops match the current filters.</td></tr>';
       }
 
       function pickDefaultShop() {
@@ -1811,7 +1858,7 @@
         document.getElementById("detail-address").textContent = address || shop.country_normalized;
         document.getElementById("detail-rank").textContent = `#${shop.rank} ${shop.category}`;
         document.getElementById("detail-country").textContent = shop.country_normalized;
-        document.getElementById("detail-category").textContent = shop.category;
+        document.getElementById("detail-category").textContent = `${shop.category} · ${shop.edition_year}`;
         document.getElementById("detail-rank-value").textContent = `#${shop.rank}`;
         document.getElementById("detail-country-value").textContent = shop.country_normalized;
         document.getElementById("detail-city").textContent = shop.city || "Not provided";
