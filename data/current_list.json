@@ -15,7 +15,7 @@
   },
   {
     "name": "Tim Wendelboe",
-    "city": "",
+    "city": "Oslo",
     "country": "Norway",
     "rank": 2,
     "category": "Top 100",
@@ -29,7 +29,7 @@
   },
   {
     "name": "Alquimia Coffee",
-    "city": "",
+    "city": "San Salvador",
     "country": "El Salvador",
     "rank": 3,
     "category": "Top 100",
@@ -43,7 +43,7 @@
   },
   {
     "name": "Only Coffee Project Crows Nest",
-    "city": "",
+    "city": "Sydney",
     "country": "Australia",
     "rank": 4,
     "category": "Top 100",
@@ -56,8 +56,8 @@
     "formatted_address": "2/118 Willoughby Rd, Crows Nest NSW 2065, Australia"
   },
   {
-    "name": "Toby&#8217;s Estate Coffee Roasters",
-    "city": "",
+    "name": "Toby’s Estate Coffee Roasters",
+    "city": "Sydney",
     "country": "Australia",
     "rank": 5,
     "category": "Top 100",
@@ -71,7 +71,7 @@
   },
   {
     "name": "Apartment Coffee",
-    "city": "",
+    "city": "Singapore",
     "country": "Singapore",
     "rank": 6,
     "category": "Top 100",
@@ -85,7 +85,7 @@
   },
   {
     "name": "Gota Coffee Experts",
-    "city": "Vienna, Austria",
+    "city": "Vienna",
     "country": "Austria",
     "rank": 7,
     "category": "Top 100",
@@ -99,7 +99,7 @@
   },
   {
     "name": "Story of Ono",
-    "city": "",
+    "city": "Petaling Jaya",
     "country": "Malaysia",
     "rank": 8,
     "category": "Top 100",
@@ -113,13 +113,13 @@
   },
   {
     "name": "Tropicalia Coffee",
-    "city": "",
+    "city": "Bogotá",
     "country": "Colombia",
     "rank": 9,
     "category": "Top 100",
     "edition_year": 2026,
     "source_url": "https://theworlds100bestcoffeeshops.com/locales/tropicalia-coffee/",
-    "address": "CLL 81A 8 23, Bogota, Colombia",
+    "address": "Cl. 81a #8-23, Bogotá, Colombia",
     "lat": 4.6637286,
     "lng": -74.0506899,
     "place_id": "ChIJTVQUVWCaP44RZT7-gUaccBg",
@@ -127,7 +127,7 @@
   },
   {
     "name": "Tanat",
-    "city": "",
+    "city": "Paris",
     "country": "France",
     "rank": 10,
     "category": "Top 100",
@@ -141,7 +141,7 @@
   },
   {
     "name": "FANKØR",
-    "city": "",
+    "city": "Quito",
     "country": "Ecuador",
     "rank": 11,
     "category": "Top 100",
@@ -155,7 +155,7 @@
   },
   {
     "name": "Arcane Estate Coffee",
-    "city": "the western province of Chiriquí, where high elevation",
+    "city": "New York",
     "country": "USA",
     "rank": 12,
     "category": "Top 100",
@@ -169,7 +169,7 @@
   },
   {
     "name": "Beta Coffee",
-    "city": "",
+    "city": "Sydney",
     "country": "Australia",
     "rank": 13,
     "category": "Top 100",
@@ -183,7 +183,7 @@
   },
   {
     "name": "Nomadic Specialty Coffee",
-    "city": "",
+    "city": "Cairo Governorate",
     "country": "Egypt",
     "rank": 14,
     "category": "Top 100",
@@ -197,7 +197,7 @@
   },
   {
     "name": "Nemesis Coffee",
-    "city": "",
+    "city": "Vancouver",
     "country": "Canada",
     "rank": 15,
     "category": "Top 100",
@@ -211,7 +211,7 @@
   },
   {
     "name": "Nomad Frutas Selectas",
-    "city": "the heart of Poblenou, Frutas Selectas by Nomad Coffee is more than just a café—it’s a space designed to celebrate specialty coffee at its finest",
+    "city": "Barcelona",
     "country": "Spain",
     "rank": 16,
     "category": "Top 100",
@@ -225,13 +225,13 @@
   },
   {
     "name": "Kafi Wasi Café Tostaduría",
-    "city": "a white sillar (ashlar […]",
+    "city": "Arequipa",
     "country": "Peru",
     "rank": 17,
     "category": "Top 100",
     "edition_year": 2026,
     "source_url": "https://theworlds100bestcoffeeshops.com/locales/kafi-wasi-cafe-tostaduria/",
-    "address": "Calle Pte. Bolognesi 216, Arequipa 04001, Peru",
+    "address": "Calle, Calle Pte. Bolognesi 216, Arequipa, Perú",
     "lat": -16.3986215,
     "lng": -71.5392097,
     "place_id": "ChIJw9QmKVpKQpERNCLCkfpyCw0",
@@ -239,7 +239,7 @@
   },
   {
     "name": "Benchmark Coffee",
-    "city": "",
+    "city": "Sharjah",
     "country": "UAE",
     "rank": 18,
     "category": "Top 100",
@@ -253,7 +253,7 @@
   },
   {
     "name": "Hola Coffee Lagasca",
-    "city": "",
+    "city": "Madrid",
     "country": "Spain",
     "rank": 19,
     "category": "Top 100",
@@ -267,7 +267,7 @@
   },
   {
     "name": "BlendIn Coffee Club",
-    "city": "",
+    "city": "Sugar Land",
     "country": "Texas (USA)",
     "rank": 20,
     "category": "Top 100",
@@ -281,13 +281,13 @@
   },
   {
     "name": "Holaste! Specialty Coffee",
-    "city": "the city center of Puerto Natales, Magallanes Region",
+    "city": "Natales, Región de Magallanes",
     "country": "Chile",
     "rank": 21,
     "category": "Top 100",
     "edition_year": 2026,
     "source_url": "https://theworlds100bestcoffeeshops.com/locales/holaste-specialty-coffee/",
-    "address": "Carlos Bories 385, 6160000 Natales, Magallanes y la Antártica Chilena, Chile",
+    "address": "Carlos Bories 385, Ultima Esperanza, Natales, Región de Magallanes, Chile",
     "lat": -51.7261499,
     "lng": -72.50746,
     "place_id": "ChIJ2ehQLBror70RRPdloMC8JDA",
@@ -295,7 +295,7 @@
   },
   {
     "name": "Momos Coffee Flagship Store",
-    "city": "",
+    "city": "Busan",
     "country": "Republic of Korea",
     "rank": 22,
     "category": "Top 100",
@@ -309,13 +309,13 @@
   },
   {
     "name": "Monotono Specialty Coffee",
-    "city": "",
+    "city": "Barranco",
     "country": "Peru",
     "rank": 23,
     "category": "Top 100",
     "edition_year": 2026,
     "source_url": "https://theworlds100bestcoffeeshops.com/locales/monotono-specialty-coffee/",
-    "address": "Jirón Fedelli 103, Barranco 15063, Peru",
+    "address": "Jirón Fedelli 103, Barranco 15063, Perú",
     "lat": -12.1402626,
     "lng": -77.0219778,
     "place_id": "ChIJf5I-TeW3BZERvrgs8C-9MhQ",
@@ -323,7 +323,7 @@
   },
   {
     "name": "Ult Coffee",
-    "city": "Osaka, Japan",
+    "city": "Osaka",
     "country": "Japan",
     "rank": 24,
     "category": "Top 100",
@@ -337,7 +337,7 @@
   },
   {
     "name": "El Injerto",
-    "city": "",
+    "city": "Ciudad de Guatemala",
     "country": "Guatemala",
     "rank": 25,
     "category": "Top 100",
@@ -351,7 +351,7 @@
   },
   {
     "name": "Three Monkeys Coffee",
-    "city": "",
+    "city": "Cusco",
     "country": "Peru",
     "rank": 26,
     "category": "Top 100",
@@ -365,7 +365,7 @@
   },
   {
     "name": "Proud Mary Coffee",
-    "city": "",
+    "city": "Melbourne",
     "country": "Australia",
     "rank": 27,
     "category": "Top 100",
@@ -379,7 +379,7 @@
   },
   {
     "name": "Koffee Mameya Kakeru",
-    "city": "",
+    "city": "Tokyo",
     "country": "Japan",
     "rank": 28,
     "category": "Top 100",
@@ -393,7 +393,7 @@
   },
   {
     "name": "Coffee Anthology",
-    "city": "Brisbane, Australia",
+    "city": "Brisbane",
     "country": "Australia",
     "rank": 29,
     "category": "Top 100",
@@ -407,7 +407,7 @@
   },
   {
     "name": "7g Roaster",
-    "city": "",
+    "city": "Vila Nova de Gaia",
     "country": "Portugal",
     "rank": 30,
     "category": "Top 100",
@@ -421,13 +421,13 @@
   },
   {
     "name": "Espresso Alchemy",
-    "city": "",
+    "city": "Hong Kong",
     "country": "China",
     "rank": 31,
     "category": "Top 100",
     "edition_year": 2026,
     "source_url": "https://theworlds100bestcoffeeshops.com/locales/espresso-alchemy/",
-    "address": "Espresso Alchemy Shop 113, 1/F, Mira Place 1, 132 Nathan Road,  Tsim Sha Tsui, Hong Kong, China",
+    "address": "Espresso Alchemy Shop 113, 1/F, Mira Place 1, 132 Nathan Road, Tsim Sha Tsui, Hong Kong, China",
     "lat": 22.3008171,
     "lng": 114.1721995,
     "place_id": "ChIJz3I7OewABDQRKfpX9szTycI",
@@ -435,7 +435,7 @@
   },
   {
     "name": "Coffeewerk + Press",
-    "city": "",
+    "city": "Galway",
     "country": "Ireland",
     "rank": 32,
     "category": "Top 100",
@@ -449,13 +449,13 @@
   },
   {
     "name": "Typica Café",
-    "city": "La Paz, Bolivia",
+    "city": "La Paz",
     "country": "Bolivia",
     "rank": 33,
     "category": "Top 100",
     "edition_year": 2026,
     "source_url": "https://theworlds100bestcoffeeshops.com/locales/typica-cafe/",
-    "address": "Edificio Tres Cruces, Batallón Colorados 40, La Paz, Bolivia",
+    "address": "La Paz 661, Cochabamba, Bolivia",
     "lat": -16.5034865,
     "lng": -68.1302809,
     "place_id": "ChIJvW59R2UgX5ER8eyZ-y9WzGo",
@@ -463,7 +463,7 @@
   },
   {
     "name": "Yardstick",
-    "city": "",
+    "city": "Makati",
     "country": "The Philippines",
     "rank": 34,
     "category": "Top 100",
@@ -477,7 +477,7 @@
   },
   {
     "name": "Histórico",
-    "city": "San Cristóbal de las Casas, it is part of Finca Hamburgo (founded in 1888) and represents the urban continuity of its coffee legacy",
+    "city": "San Cristóbal de las Casas",
     "country": "Mexico",
     "rank": 35,
     "category": "Top 100",
@@ -491,7 +491,7 @@
   },
   {
     "name": "Coffee Sind",
-    "city": "Taipei, Coffee Sind is devoted to serving high-quality coffee in a lifestyle-inspired way",
+    "city": "Taipei City",
     "country": "Taiwan",
     "rank": 36,
     "category": "Top 100",
@@ -505,7 +505,7 @@
   },
   {
     "name": "DeLafinca Specialty Coffee",
-    "city": "",
+    "city": "Managua",
     "country": "Nicaragua",
     "rank": 37,
     "category": "Top 100",
@@ -519,7 +519,7 @@
   },
   {
     "name": "Ottoman Coffee House",
-    "city": "",
+    "city": "Glasgow",
     "country": "United Kingdom",
     "rank": 38,
     "category": "Top 100",
@@ -533,7 +533,7 @@
   },
   {
     "name": "Casa Canela",
-    "city": "",
+    "city": "Caracas",
     "country": "Venezuela",
     "rank": 39,
     "category": "Top 100",
@@ -547,7 +547,7 @@
   },
   {
     "name": "Espresso LAB",
-    "city": "",
+    "city": "Cape Town",
     "country": "South Africa",
     "rank": 40,
     "category": "Top 100",
@@ -561,7 +561,7 @@
   },
   {
     "name": "Seven Mystery",
-    "city": "",
+    "city": "Toronto",
     "country": "Canada",
     "rank": 41,
     "category": "Top 100",
@@ -575,7 +575,7 @@
   },
   {
     "name": "Faro",
-    "city": "",
+    "city": "Rome",
     "country": "Italy",
     "rank": 42,
     "category": "Top 100",
@@ -603,7 +603,7 @@
   },
   {
     "name": "Harvest Coffee",
-    "city": "",
+    "city": "Doha",
     "country": "Qatar",
     "rank": 44,
     "category": "Top 100",
@@ -617,13 +617,13 @@
   },
   {
     "name": "Origen Tostadores de Café",
-    "city": "",
+    "city": "Pueblo Libre",
     "country": "Peru",
     "rank": 45,
     "category": "Top 100",
     "edition_year": 2026,
     "source_url": "https://theworlds100bestcoffeeshops.com/locales/origen-tostadores-de-cafe/",
-    "address": "Av. Simón Bolívar 1199, Pueblo Libre 15084, Lima, Peru",
+    "address": "Av. Simón Bolívar 1199, Pueblo Libre 15084, Perú",
     "lat": -12.0725883,
     "lng": -77.06629579999999,
     "place_id": "ChIJK9g8XRrJBZER0pk3UpwRtVg",
@@ -631,7 +631,7 @@
   },
   {
     "name": "KEEP Coffee Roastery",
-    "city": "",
+    "city": "Kaohsiung City",
     "country": "Taiwan",
     "rank": 46,
     "category": "Top 100",
@@ -645,7 +645,7 @@
   },
   {
     "name": "Meet LAB Coffee",
-    "city": "",
+    "city": "Istanbul",
     "country": "Turkey",
     "rank": 47,
     "category": "Top 100",
@@ -659,13 +659,13 @@
   },
   {
     "name": "Mulano Coffee Shop",
-    "city": "the south of Ecuador in a city of 25,000 inhabitants called Piñas",
+    "city": "Piñas",
     "country": "Ecuador",
     "rank": 48,
     "category": "Top 100",
     "edition_year": 2026,
     "source_url": "https://theworlds100bestcoffeeshops.com/locales/mulano-coffee-shop/",
-    "address": null,
+    "address": "Avenida Loja, Piñas, Ecuador",
     "lat": -3.680046,
     "lng": -79.6816087,
     "place_id": "Ei9BdmVuaWRhIExvamEgJiBKdWFuIExlw7NuIE1lcmEsIFBpw7FhcywgRWN1YWRvciJmImQKFAoSCWfsZgVjXzOQERC8V9y_YqXKEhQKEgln7GYFY18zkBEQvFfcv2KlyhoUChIJV0wsB2NfM5ARkIyFvDZyPlkaFAoSCacxNOViXzOQEYp9YSW0tpKHIgoNNHjO_RUpjYHQ",
@@ -673,7 +673,7 @@
   },
   {
     "name": "La Cabra",
-    "city": "Copenhagen, Denmark",
+    "city": "Copenhagen",
     "country": "Denmark",
     "rank": 49,
     "category": "Top 100",
@@ -687,7 +687,7 @@
   },
   {
     "name": "Birch Coffee",
-    "city": "",
+    "city": "Portree",
     "country": "United Kingdom",
     "rank": 50,
     "category": "Top 100",
@@ -701,7 +701,7 @@
   },
   {
     "name": "Ruli Coffee",
-    "city": "",
+    "city": "Seoul",
     "country": "Republic of Korea",
     "rank": 51,
     "category": "Top 100",
@@ -715,7 +715,7 @@
   },
   {
     "name": "Atte For Coffee",
-    "city": "",
+    "city": "Antigua Guatemala",
     "country": "Guatemala",
     "rank": 52,
     "category": "Top 100",
@@ -729,7 +729,7 @@
   },
   {
     "name": "Single O",
-    "city": "the heart of Surry Hills, Sydney",
+    "city": "Sidney",
     "country": "Australia",
     "rank": 53,
     "category": "Top 100",
@@ -743,7 +743,7 @@
   },
   {
     "name": "Rubia Coffee Roasters",
-    "city": "",
+    "city": "Kigali",
     "country": "Rwanda",
     "rank": 54,
     "category": "Top 100",
@@ -757,7 +757,7 @@
   },
   {
     "name": "Bob Coffee Lab",
-    "city": "",
+    "city": "Bucharest",
     "country": "Romania",
     "rank": 55,
     "category": "Top 100",
@@ -771,7 +771,7 @@
   },
   {
     "name": "Unfiltered coffee",
-    "city": "",
+    "city": "Dublin",
     "country": "Ireland",
     "rank": 56,
     "category": "Top 100",
@@ -785,7 +785,7 @@
   },
   {
     "name": "Tomorrow Coffee Roasters",
-    "city": "",
+    "city": "Taichung City",
     "country": "Taiwan",
     "rank": 57,
     "category": "Top 100",
@@ -799,7 +799,7 @@
   },
   {
     "name": "Ca Passe Creme",
-    "city": "",
+    "city": "Lausanne",
     "country": "Switzerland",
     "rank": 58,
     "category": "Top 100",
@@ -813,7 +813,7 @@
   },
   {
     "name": "Eco Mapu",
-    "city": "",
+    "city": "Villarrica",
     "country": "Chile",
     "rank": 59,
     "category": "Top 100",
@@ -827,7 +827,7 @@
   },
   {
     "name": "43.12 Coffee",
-    "city": "the heart of Varna",
+    "city": "Varna",
     "country": "Bulgaria",
     "rank": 60,
     "category": "Top 100",
@@ -840,8 +840,8 @@
     "formatted_address": "Varna CenterOdesos, ul. \"Preslav\" 15, 9000 Varna, Bulgaria"
   },
   {
-    "name": "Fika &amp; Co. Cafe",
-    "city": "",
+    "name": "Fika & Co. Cafe",
+    "city": "Bangkok",
     "country": "Thailand",
     "rank": 61,
     "category": "Top 100",
@@ -855,7 +855,7 @@
   },
   {
     "name": "Ditta Artigianale Specialty Coffee Roasters",
-    "city": "",
+    "city": "Milano",
     "country": "Italy",
     "rank": 62,
     "category": "Top 100",
@@ -869,7 +869,7 @@
   },
   {
     "name": "Café Nativo",
-    "city": "",
+    "city": "Tegucigalpa",
     "country": "Honduras",
     "rank": 63,
     "category": "Top 100",
@@ -883,7 +883,7 @@
   },
   {
     "name": "Caferatto",
-    "city": "",
+    "city": "Manizales",
     "country": "Colombia",
     "rank": 64,
     "category": "Top 100",
@@ -897,7 +897,7 @@
   },
   {
     "name": "Kross Coffee Roasters",
-    "city": "",
+    "city": "Crete",
     "country": "Greece",
     "rank": 65,
     "category": "Top 100",
@@ -925,7 +925,7 @@
   },
   {
     "name": "MOK Coffee",
-    "city": "",
+    "city": "Brussels",
     "country": "Belgium",
     "rank": 67,
     "category": "Top 100",
@@ -938,8 +938,8 @@
     "formatted_address": "Rue Antoine Dansaert 196, 1000 Bruxelles, Belgium"
   },
   {
-    "name": "Azura &#8211; The Coffee Company",
-    "city": "",
+    "name": "Azura – The Coffee Company",
+    "city": "Muscat",
     "country": "Oman",
     "rank": 68,
     "category": "Top 100",
@@ -953,13 +953,13 @@
   },
   {
     "name": "Puku Puku",
-    "city": "",
+    "city": "Miraflores",
     "country": "Peru",
     "rank": 69,
     "category": "Top 100",
     "edition_year": 2026,
     "source_url": "https://theworlds100bestcoffeeshops.com/locales/puku-puku/",
-    "address": "Av. Malecón de la Reserva 610, Lima, Peru",
+    "address": "Av. la Paz 463, Miraflores, Perú",
     "lat": -12.1324766,
     "lng": -77.0300644,
     "place_id": "ChIJRZH-reG3BZERkyuz3_3qWo8",
@@ -967,7 +967,7 @@
   },
   {
     "name": "The Golden Pig",
-    "city": "",
+    "city": "San Pedro Sula",
     "country": "Honduras",
     "rank": 70,
     "category": "Top 100",
@@ -981,7 +981,7 @@
   },
   {
     "name": "Little Victories Coffee",
-    "city": "",
+    "city": "Ottawa",
     "country": "Canada",
     "rank": 71,
     "category": "Top 100",
@@ -1009,13 +1009,13 @@
   },
   {
     "name": "Galani Coffee",
-    "city": "",
+    "city": "Addis Ababa",
     "country": "Ethiopia",
     "rank": 73,
     "category": "Top 100",
     "edition_year": 2026,
     "source_url": "https://theworlds100bestcoffeeshops.com/locales/galani-coffee/",
-    "address": null,
+    "address": "Jacros - Salite Mehret Rd, Addis Ababa, Ethiopia",
     "lat": 9.011787199999999,
     "lng": 38.8217566,
     "place_id": "ChIJJ_S0kTOFSxYRDUr_NGoTwVw",
@@ -1023,7 +1023,7 @@
   },
   {
     "name": "Wake up",
-    "city": "",
+    "city": "Punta Arenas",
     "country": "Chile",
     "rank": 74,
     "category": "Top 100",
@@ -1037,7 +1037,7 @@
   },
   {
     "name": "Bouche",
-    "city": "",
+    "city": "Brussels",
     "country": "Belgium",
     "rank": 75,
     "category": "Top 100",
@@ -1051,7 +1051,7 @@
   },
   {
     "name": "Café de Reyes",
-    "city": "Quetzaltenango, Guatemala",
+    "city": "Quetzaltenango",
     "country": "Guatemala",
     "rank": 76,
     "category": "Top 100",
@@ -1079,7 +1079,7 @@
   },
   {
     "name": "Coffee Stopover Black",
-    "city": "Taichung, Taiwan",
+    "city": "Taichung City",
     "country": "Taiwan",
     "rank": 78,
     "category": "Top 100",
@@ -1093,7 +1093,7 @@
   },
   {
     "name": "Fuku",
-    "city": "Amsterdam, The Netherlands",
+    "city": "Amsterdam",
     "country": "Netherlands",
     "rank": 79,
     "category": "Top 100",
@@ -1107,7 +1107,7 @@
   },
   {
     "name": "The Miners Coffee",
-    "city": "",
+    "city": "Prague",
     "country": "Czech Republic",
     "rank": 80,
     "category": "Top 100",
@@ -1121,13 +1121,13 @@
   },
   {
     "name": "Cupping Café",
-    "city": "",
+    "city": "São Paulo",
     "country": "Brazil",
     "rank": 81,
     "category": "Top 100",
     "edition_year": 2026,
     "source_url": "https://theworlds100bestcoffeeshops.com/locales/cupping-cafe/",
-    "address": "R. Wisard, 171 - Vila Madalena, São Paulo - SP, 05434-080, Brazil",
+    "address": "R. Wisard, 171 - Vila Madalena, São Paulo - SP, 05434-080, Brasil",
     "lat": -23.5549482,
     "lng": -46.68882139999999,
     "place_id": "ChIJxdLkNJZXzpQReUwGK4nyk8Y",
@@ -1135,7 +1135,7 @@
   },
   {
     "name": "Coffea Guatemala",
-    "city": "the heart of Antigua Guatemala",
+    "city": "Antigua Guatemala",
     "country": "Guatemala",
     "rank": 82,
     "category": "Top 100",
@@ -1149,7 +1149,7 @@
   },
   {
     "name": "D·Origen Coffee Roasters Barcelona",
-    "city": "",
+    "city": "Barcelona",
     "country": "Spain",
     "rank": 83,
     "category": "Top 100",
@@ -1163,7 +1163,7 @@
   },
   {
     "name": "Coffee Stain",
-    "city": "",
+    "city": "Kuala Lumpur",
     "country": "Malaysia",
     "rank": 84,
     "category": "Top 100",
@@ -1177,7 +1177,7 @@
   },
   {
     "name": "The Dude Specialty Coffee",
-    "city": "a restored house, where each room has a unique atmosphere",
+    "city": "Skopje",
     "country": "Macedonia",
     "rank": 85,
     "category": "Top 100",
@@ -1205,7 +1205,7 @@
   },
   {
     "name": "Exploradores",
-    "city": "",
+    "city": "CDMX",
     "country": "Mexico",
     "rank": 87,
     "category": "Top 100",
@@ -1232,8 +1232,8 @@
     "formatted_address": "R. dos Sapateiros 111, 1100-051 Lisboa, Portugal"
   },
   {
-    "name": "Casa Barista &#038; Co.,Casco Historico",
-    "city": "",
+    "name": "Casa Barista & Co.,Casco Historico",
+    "city": "Santo Domingo",
     "country": "Dominican Republic",
     "rank": 89,
     "category": "Top 100",
@@ -1247,7 +1247,7 @@
   },
   {
     "name": "Cypher Urban Roastery",
-    "city": "",
+    "city": "Dubai",
     "country": "UAE",
     "rank": 90,
     "category": "Top 100",
@@ -1261,7 +1261,7 @@
   },
   {
     "name": "Cafetano Coffee Roasters",
-    "city": "the heart of Honduras, Cafetano is more than just a coffee shop; it’s a tribute to Honduran coffee and its local producers",
+    "city": "Tegucigalpa",
     "country": "Honduras",
     "rank": 91,
     "category": "Top 100",
@@ -1275,7 +1275,7 @@
   },
   {
     "name": "Coffee Five",
-    "city": "",
+    "city": "Rio de Janeiro",
     "country": "Brazil",
     "rank": 92,
     "category": "Top 100",
@@ -1289,7 +1289,7 @@
   },
   {
     "name": "Kima Coffee",
-    "city": "",
+    "city": "Malaga",
     "country": "Spain",
     "rank": 93,
     "category": "Top 100",
@@ -1303,7 +1303,7 @@
   },
   {
     "name": "Negro",
-    "city": "",
+    "city": "Buenos Aires",
     "country": "Argentina",
     "rank": 94,
     "category": "Top 100",
@@ -1317,7 +1317,7 @@
   },
   {
     "name": "Metric",
-    "city": "",
+    "city": "Chicago",
     "country": "Illinois (USA)",
     "rank": 95,
     "category": "Top 100",
@@ -1331,7 +1331,7 @@
   },
   {
     "name": "El Terrible Juan Café",
-    "city": "",
+    "city": "Guadalajara",
     "country": "México",
     "rank": 96,
     "category": "Top 100",
@@ -1345,7 +1345,7 @@
   },
   {
     "name": "Flat White Specialty Coffee",
-    "city": "",
+    "city": "Doha",
     "country": "Qatar",
     "rank": 97,
     "category": "Top 100",
@@ -1359,7 +1359,7 @@
   },
   {
     "name": "Cafeoteca",
-    "city": "San Jose, Costa Rica",
+    "city": "San Jose",
     "country": "Costa Rica",
     "rank": 98,
     "category": "Top 100",
@@ -1373,7 +1373,7 @@
   },
   {
     "name": "Surry Hills Coffee",
-    "city": "",
+    "city": "Buenos Aires",
     "country": "Argentina",
     "rank": 99,
     "category": "Top 100",
@@ -1387,7 +1387,7 @@
   },
   {
     "name": "Vacation Coffee",
-    "city": "",
+    "city": "Melbourne",
     "country": "Australia",
     "rank": 100,
     "category": "Top 100",
@@ -1401,7 +1401,7 @@
   },
   {
     "name": "Tropicalia Coffee",
-    "city": "",
+    "city": "Bogotá",
     "country": "Colombia",
     "rank": 1,
     "category": "South America",
@@ -1415,7 +1415,7 @@
   },
   {
     "name": "Kafi Wasi Café Tostaduría",
-    "city": "a white sillar (ashlar […]",
+    "city": "Arequipa",
     "country": "Peru",
     "rank": 2,
     "category": "South America",
@@ -1429,7 +1429,7 @@
   },
   {
     "name": "Holaste! Specialty Coffee",
-    "city": "Natales,  Región de Magallanes",
+    "city": "Natales, Región de Magallanes",
     "country": "Chile",
     "rank": 3,
     "category": "South America",
@@ -1443,7 +1443,7 @@
   },
   {
     "name": "FANKØR",
-    "city": "",
+    "city": "Quito",
     "country": "Ecuador",
     "rank": 4,
     "category": "South America",
@@ -1456,8 +1456,8 @@
     "formatted_address": "Whymper N27-55 y, Quito 170518, Ecuador"
   },
   {
-    "name": "TRIBUTO casa de café &#8211; Chacao",
-    "city": "",
+    "name": "TRIBUTO casa de café – Chacao",
+    "city": "Miranda",
     "country": "Venezuela",
     "rank": 5,
     "category": "South America",
@@ -1471,7 +1471,7 @@
   },
   {
     "name": "FRUTO Café",
-    "city": "",
+    "city": "Buenos Aires",
     "country": "Argentina",
     "rank": 6,
     "category": "South America",
@@ -1485,7 +1485,7 @@
   },
   {
     "name": "Monotono Specialty Coffee",
-    "city": "",
+    "city": "Barranco",
     "country": "Peru",
     "rank": 7,
     "category": "South America",
@@ -1499,7 +1499,7 @@
   },
   {
     "name": "Cupping Café",
-    "city": "",
+    "city": "São Paulo",
     "country": "Brazil",
     "rank": 8,
     "category": "South America",
@@ -1513,7 +1513,7 @@
   },
   {
     "name": "Puku Puku",
-    "city": "",
+    "city": "Miraflores",
     "country": "Peru",
     "rank": 9,
     "category": "South America",
@@ -1527,7 +1527,7 @@
   },
   {
     "name": "Eco Mapu Coffee Villarica",
-    "city": "",
+    "city": "Región de La Araucanía",
     "country": "Chile",
     "rank": 10,
     "category": "South America",
@@ -1541,7 +1541,7 @@
   },
   {
     "name": "Typica Café",
-    "city": "La Paz, Bolivia",
+    "city": "La Paz",
     "country": "Bolivia",
     "rank": 11,
     "category": "South America",
@@ -1555,7 +1555,7 @@
   },
   {
     "name": "Pergamino Café Laureles",
-    "city": "",
+    "city": "Medellín",
     "country": "Colombia",
     "rank": 12,
     "category": "South America",
@@ -1569,7 +1569,7 @@
   },
   {
     "name": "Caferatto Café Especial",
-    "city": "",
+    "city": "Caldas",
     "country": "Colombia",
     "rank": 13,
     "category": "South America",
@@ -1597,7 +1597,7 @@
   },
   {
     "name": "Masaro Café",
-    "city": "Chiclayo, Peru",
+    "city": "Santa Victoria",
     "country": "Peru",
     "rank": 15,
     "category": "South America",
@@ -1611,13 +1611,13 @@
   },
   {
     "name": "Mulano Coffee Shop",
-    "city": "the south of Ecuador in a city of 25,000 inhabitants called Piñas",
+    "city": "Piñas",
     "country": "Ecuador",
     "rank": 16,
     "category": "South America",
     "edition_year": 2026,
     "source_url": "https://theworlds100bestcoffeeshops.com/locales-south/mulano-coffee-shop/",
-    "address": null,
+    "address": "Avenida Loja, Piñas, Ecuador",
     "lat": -3.6800524,
     "lng": -79.6816882,
     "place_id": "ChIJV0wsB2NfM5ARkIyFvDZyPlk",
@@ -1625,7 +1625,7 @@
   },
   {
     "name": "Origen Tostadores de Café",
-    "city": "",
+    "city": "Pueblo Libre",
     "country": "Peru",
     "rank": 17,
     "category": "South America",
@@ -1639,7 +1639,7 @@
   },
   {
     "name": "Casa Canela",
-    "city": "",
+    "city": "Caracas",
     "country": "Venezuela",
     "rank": 18,
     "category": "South America",
@@ -1653,7 +1653,7 @@
   },
   {
     "name": "Mugen Coffee Project",
-    "city": "",
+    "city": "La Paz",
     "country": "Bolivia",
     "rank": 19,
     "category": "South America",
@@ -1667,7 +1667,7 @@
   },
   {
     "name": "Coffee Five",
-    "city": "",
+    "city": "Rio de Janeiro",
     "country": "Brazil",
     "rank": 20,
     "category": "South America",
@@ -1680,14 +1680,14 @@
     "formatted_address": "R. da Quitanda, 86 - Centro, Rio de Janeiro - RJ, 20091-005, Brazil"
   },
   {
-    "name": "Café Guayasamin &#8211; Centro Quito",
-    "city": "",
+    "name": "Café Guayasamin – Centro Quito",
+    "city": "Quito",
     "country": "Ecuador",
     "rank": 21,
     "category": "South America",
     "edition_year": 2026,
     "source_url": "https://theworlds100bestcoffeeshops.com/locales-south/cafe-guayasamin-centro-quito/",
-    "address": null,
+    "address": "Calle García Moreno y Mejía, esquina, Quito, Ecuador",
     "lat": -0.2189069,
     "lng": -78.5116685,
     "place_id": "Ei5HYXJjw61hIE1vcmVubyAmIE1lasOtYSwgMTcwNDAxIFF1aXRvLCBFY3VhZG9yImYiZAoUChIJgT1rNiia1ZERC7WmUPLF7O8SFAoSCYE9azYomtWREQu1plDyxezvGhQKEgkF3LpMKJrVkRGFIWxoSvkn7RoUChIJn0DWSSia1ZERWicT_nk8vrIiCg3zmN7_FfMRNNE",
@@ -1695,7 +1695,7 @@
   },
   {
     "name": "Café de Barrio",
-    "city": "",
+    "city": "Córdoba",
     "country": "Argentina",
     "rank": 22,
     "category": "South America",
@@ -1709,7 +1709,7 @@
   },
   {
     "name": "Three Monkeys Coffee Cusco",
-    "city": "",
+    "city": "Cusco",
     "country": "Peru",
     "rank": 23,
     "category": "South America",
@@ -1723,7 +1723,7 @@
   },
   {
     "name": "Abstrakto Café de Especialidad",
-    "city": "",
+    "city": "Maldonado",
     "country": "Uruguay",
     "rank": 24,
     "category": "South America",
@@ -1737,7 +1737,7 @@
   },
   {
     "name": "Neira Café Lab",
-    "city": "",
+    "city": "Miraflores",
     "country": "Peru",
     "rank": 25,
     "category": "South America",
@@ -1751,7 +1751,7 @@
   },
   {
     "name": "Café Local",
-    "city": "Villarrica, Chile",
+    "city": "Villarrica",
     "country": "Chile",
     "rank": 26,
     "category": "South America",
@@ -1765,7 +1765,7 @@
   },
   {
     "name": "Tasta Café",
-    "city": "",
+    "city": "Capiro",
     "country": "Peru",
     "rank": 27,
     "category": "South America",
@@ -1779,7 +1779,7 @@
   },
   {
     "name": "Oso Café",
-    "city": "",
+    "city": "Arequipa",
     "country": "Peru",
     "rank": 28,
     "category": "South America",
@@ -1793,7 +1793,7 @@
   },
   {
     "name": "Insignia Coffee",
-    "city": "",
+    "city": "Ibagué",
     "country": "Colombia",
     "rank": 29,
     "category": "South America",
@@ -1807,7 +1807,7 @@
   },
   {
     "name": "Alquimia Specialty Coffee Shop",
-    "city": "",
+    "city": "Santa Cruz",
     "country": "Bolivia",
     "rank": 30,
     "category": "South America",
@@ -1821,7 +1821,7 @@
   },
   {
     "name": "Antaqa Café",
-    "city": "",
+    "city": "Ayacucho",
     "country": "Peru",
     "rank": 31,
     "category": "South America",
@@ -1834,14 +1834,14 @@
     "formatted_address": "Jirón Tres Máscaras 510, Ayacucho 05003, Peru"
   },
   {
-    "name": "Café 4 Llamas &#8211; Santa Cruz",
-    "city": "",
+    "name": "Café 4 Llamas – Santa Cruz",
+    "city": "Santa Cruz de la Sierra",
     "country": "Bolivia",
     "rank": 32,
     "category": "South America",
     "edition_year": 2026,
     "source_url": "https://theworlds100bestcoffeeshops.com/locales-south/cafe-4-llamas-santa-cruz/",
-    "address": null,
+    "address": "Condominio You Plaza, Santa Cruz de la Sierra, Bolivia",
     "lat": -17.7585218,
     "lng": -63.19784619999999,
     "place_id": "ChIJFRztKxvn8ZMR1hDuGLatBTg",
@@ -1849,7 +1849,7 @@
   },
   {
     "name": "Café Micelio Puerto Varas",
-    "city": "",
+    "city": "Puerto Varas",
     "country": "Chile",
     "rank": 33,
     "category": "South America",
@@ -1862,8 +1862,8 @@
     "formatted_address": "Estación 262, 5550492 Puerto Varas, Los Lagos, Chile"
   },
   {
-    "name": "Rua &#8211; Café de especialidad curado",
-    "city": "Guayaquil, Ecuador",
+    "name": "Rua – Café de especialidad curado",
+    "city": "Guayaquil",
     "country": "Ecuador",
     "rank": 34,
     "category": "South America",
@@ -1876,8 +1876,8 @@
     "formatted_address": "Victor Emilio Estrada 419 y, Guayaquil 090511, Ecuador"
   },
   {
-    "name": "Café 18 &#8211; El Chicó",
-    "city": "",
+    "name": "Café 18 – El Chicó",
+    "city": "Bogotá",
     "country": "Colombia",
     "rank": 35,
     "category": "South America",
@@ -1891,7 +1891,7 @@
   },
   {
     "name": "Cronopios Café",
-    "city": "",
+    "city": "Loja",
     "country": "Ecuador",
     "rank": 36,
     "category": "South America",
@@ -1905,7 +1905,7 @@
   },
   {
     "name": "Abisinia Café y Tostaduria",
-    "city": "",
+    "city": "Pueblo Libre",
     "country": "Peru",
     "rank": 37,
     "category": "South America",
@@ -1919,7 +1919,7 @@
   },
   {
     "name": "Slow Brew Coffee Shop Cuenca",
-    "city": "",
+    "city": "Cuenca",
     "country": "Ecuador",
     "rank": 38,
     "category": "South America",
@@ -1933,7 +1933,7 @@
   },
   {
     "name": "Hb Bronze Coffeebar",
-    "city": "",
+    "city": "La Paz",
     "country": "Bolivia",
     "rank": 39,
     "category": "South America",
@@ -1947,7 +1947,7 @@
   },
   {
     "name": "Tres",
-    "city": "",
+    "city": "Buenos Aires",
     "country": "Argentina",
     "rank": 40,
     "category": "South America",
@@ -1961,7 +1961,7 @@
   },
   {
     "name": "Don Salazar",
-    "city": "",
+    "city": "San Isidro",
     "country": "Peru",
     "rank": 41,
     "category": "South America",
@@ -1975,7 +1975,7 @@
   },
   {
     "name": "Cuervo Café",
-    "city": "",
+    "city": "Buenos Aires",
     "country": "Argentina",
     "rank": 42,
     "category": "South America",
@@ -1989,7 +1989,7 @@
   },
   {
     "name": "Punto Café",
-    "city": "",
+    "city": "Miraflores",
     "country": "Peru",
     "rank": 43,
     "category": "South America",
@@ -2003,7 +2003,7 @@
   },
   {
     "name": "Famosta Café",
-    "city": "",
+    "city": "Pereira",
     "country": "Colombia",
     "rank": 44,
     "category": "South America",
@@ -2017,7 +2017,7 @@
   },
   {
     "name": "Negro Cueva de Café",
-    "city": "",
+    "city": "Buenos Aires",
     "country": "Argentina",
     "rank": 45,
     "category": "South America",
@@ -2030,8 +2030,8 @@
     "formatted_address": "Suipacha 637, C1008AAM C1008AAM, Cdad. Autónoma de Buenos Aires, Argentina"
   },
   {
-    "name": "Libertario Coffee Roasters &#8211; Calle 70a",
-    "city": "",
+    "name": "Libertario Coffee Roasters – Calle 70a",
+    "city": "Bogotá",
     "country": "Colombia",
     "rank": 46,
     "category": "South America",
@@ -2045,7 +2045,7 @@
   },
   {
     "name": "Surry Hills Coffee Palermo",
-    "city": "",
+    "city": "Buenos Aires",
     "country": "Argentina",
     "rank": 47,
     "category": "South America",
@@ -2059,7 +2059,7 @@
   },
   {
     "name": "Azahar Café",
-    "city": "",
+    "city": "Bogotá",
     "country": "Colombia",
     "rank": 48,
     "category": "South America",
@@ -2072,8 +2072,8 @@
     "formatted_address": "Cl 93b #13-91, Bogotá, Colombia"
   },
   {
-    "name": "D&#8217;Sala Caffe",
-    "city": "",
+    "name": "D’Sala Caffe",
+    "city": "Surquillo",
     "country": "Peru",
     "rank": 49,
     "category": "South America",
@@ -2087,7 +2087,7 @@
   },
   {
     "name": "Cafe Folks",
-    "city": "",
+    "city": "Puerto Varas",
     "country": "Chile",
     "rank": 50,
     "category": "South America",
@@ -2101,7 +2101,7 @@
   },
   {
     "name": "Café Melosa",
-    "city": "",
+    "city": "Caracas",
     "country": "Venezuela",
     "rank": 51,
     "category": "South America",
@@ -2115,7 +2115,7 @@
   },
   {
     "name": "Florencia y Fortunata Specialty Coffee",
-    "city": "Cusco, Peru",
+    "city": "Cusco",
     "country": "Peru",
     "rank": 52,
     "category": "South America",
@@ -2129,7 +2129,7 @@
   },
   {
     "name": "Roaster Specialty Coffee",
-    "city": "",
+    "city": "La Paz",
     "country": "Bolivia",
     "rank": 53,
     "category": "South America",
@@ -2143,7 +2143,7 @@
   },
   {
     "name": "Stratto Bodega de Café + Coffee Shop",
-    "city": "",
+    "city": "Quito",
     "country": "Ecuador",
     "rank": 54,
     "category": "South America",
@@ -2157,7 +2157,7 @@
   },
   {
     "name": "Raiz Coffee",
-    "city": "",
+    "city": "Miraflores",
     "country": "Peru",
     "rank": 55,
     "category": "South America",
@@ -2171,13 +2171,13 @@
   },
   {
     "name": "Café Buena Vista",
-    "city": "",
+    "city": "Santa Cruz",
     "country": "Bolivia",
     "rank": 56,
     "category": "South America",
     "edition_year": 2026,
     "source_url": "https://theworlds100bestcoffeeshops.com/locales-south/cafe-buena-vista/",
-    "address": null,
+    "address": "Calle los robles, C. los Claveles, Santa Cruz de la Sierra, Bolivia",
     "lat": -17.7657214,
     "lng": -63.2034664,
     "place_id": "ChIJ2a7WCljd8ZMRgmpf3izFsko",
@@ -2185,7 +2185,7 @@
   },
   {
     "name": "Buho Nomada",
-    "city": "Puerto Montt, Los Lagos region",
+    "city": "Puerto Montt",
     "country": "Chile",
     "rank": 57,
     "category": "South America",
@@ -2199,7 +2199,7 @@
   },
   {
     "name": "Colo Coffee",
-    "city": "",
+    "city": "Bogotá",
     "country": "Colombia",
     "rank": 58,
     "category": "South America",
@@ -2213,7 +2213,7 @@
   },
   {
     "name": "Atmosférico Cafetería de Especialidad",
-    "city": "Samborondón, Ecuador at CC Diana Quintana 2",
+    "city": "Samborondón",
     "country": "Ecuador",
     "rank": 59,
     "category": "South America",
@@ -2227,7 +2227,7 @@
   },
   {
     "name": "Indera Experience Cafetería de especialidad",
-    "city": "",
+    "city": "Loja",
     "country": "Ecuador",
     "rank": 60,
     "category": "South America",
@@ -2240,8 +2240,8 @@
     "formatted_address": "Av. Lateral de Paso Angel F. Rojas, Ecuador"
   },
   {
-    "name": "Kofi &amp; Co",
-    "city": "",
+    "name": "Kofi & Co",
+    "city": "São Paulo",
     "country": "Brazil",
     "rank": 61,
     "category": "South America",
@@ -2255,7 +2255,7 @@
   },
   {
     "name": "TIPICA CAFÉ Milla de Oro",
-    "city": "",
+    "city": "Medellín",
     "country": "Colombia",
     "rank": 62,
     "category": "South America",
@@ -2269,7 +2269,7 @@
   },
   {
     "name": "Coffee Busters Roastery",
-    "city": "",
+    "city": "San Isidro",
     "country": "Peru",
     "rank": 63,
     "category": "South America",
@@ -2283,7 +2283,7 @@
   },
   {
     "name": "Mato Café",
-    "city": "the heart of Arpoador, in Rio de Janeiro",
+    "city": "Rio de Janeiro",
     "country": "Brazil",
     "rank": 64,
     "category": "South America",
@@ -2297,7 +2297,7 @@
   },
   {
     "name": "Cafetería Tunki Katari",
-    "city": "",
+    "city": "San Borja",
     "country": "Peru",
     "rank": 65,
     "category": "South America",
@@ -2310,8 +2310,8 @@
     "formatted_address": "Av. San Borja Sur 610, Lima 15037, Peru"
   },
   {
-    "name": "KOF &#8211; king of the fork",
-    "city": "",
+    "name": "KOF – king of the fork",
+    "city": "Sao Paulo",
     "country": "Brazil",
     "rank": 66,
     "category": "South America",
@@ -2339,7 +2339,7 @@
   },
   {
     "name": "Primates Tostadores",
-    "city": "Talca, Chile (Calle 30 Oriente 1562",
+    "city": "Talca",
     "country": "Chile",
     "rank": 68,
     "category": "South America",
@@ -2353,7 +2353,7 @@
   },
   {
     "name": "Lucca Cafes Especiais",
-    "city": "",
+    "city": "Curitiba",
     "country": "Brazil",
     "rank": 69,
     "category": "South America",
@@ -2367,7 +2367,7 @@
   },
   {
     "name": "María Julio Coffee Shop",
-    "city": "the heart of Cartagena, on the Colombian Caribbean coast",
+    "city": "Cartagena de Indias",
     "country": "Colombia",
     "rank": 70,
     "category": "South America",
@@ -2381,13 +2381,13 @@
   },
   {
     "name": "Kaweh Coffee Shop",
-    "city": "",
+    "city": "Loja",
     "country": "Ecuador",
     "rank": 71,
     "category": "South America",
     "edition_year": 2026,
     "source_url": "https://theworlds100bestcoffeeshops.com/locales-south/kaweh-coffee-shop/",
-    "address": null,
+    "address": "XQXX+FCC, entre Bolivar &, Bernardo Valdivieso, Loja, Ecuador",
     "lat": -4.0013035,
     "lng": -79.20147399999999,
     "place_id": "ChIJQ_eCDxk3y5ER9Tmv1o_JMdg",
@@ -2395,7 +2395,7 @@
   },
   {
     "name": "Puma Café",
-    "city": "",
+    "city": "Lima",
     "country": "Peru",
     "rank": 72,
     "category": "South America",
@@ -2409,7 +2409,7 @@
   },
   {
     "name": "Dagadá",
-    "city": "the south of Ecuador, in Loja",
+    "city": "Loja",
     "country": "Ecuador",
     "rank": 73,
     "category": "South America",
@@ -2423,7 +2423,7 @@
   },
   {
     "name": "SOMOS Specialty Coffee",
-    "city": "",
+    "city": "Sucre",
     "country": "Bolivia",
     "rank": 74,
     "category": "South America",
@@ -2437,7 +2437,7 @@
   },
   {
     "name": "Coffeestylers",
-    "city": "Bogotá, Colombia (Calle 57 #19‑35)",
+    "city": "Bogotá",
     "country": "Colombia",
     "rank": 75,
     "category": "South America",
@@ -2451,7 +2451,7 @@
   },
   {
     "name": "Amanecer Coffee Store",
-    "city": "Venezuela, specifically in Araure",
+    "city": "Portuguesa",
     "country": "Venezuela",
     "rank": 76,
     "category": "South America",
@@ -2464,8 +2464,8 @@
     "formatted_address": "HQPH+J88, AvenidaVencedores de Araure &, Av. Via la Tapa de Pieda, Araure 3303, Portuguesa, Venezuela"
   },
   {
-    "name": "ARTEMISA Coffee &amp; Cocktail Bar",
-    "city": "",
+    "name": "ARTEMISA Coffee & Cocktail Bar",
+    "city": "Las Condes",
     "country": "Chile",
     "rank": 77,
     "category": "South America",
@@ -2478,14 +2478,14 @@
     "formatted_address": "Tajamar 287, r, 7550594 Las Condes, Región Metropolitana, Chile"
   },
   {
-    "name": "Alto Tostado Coffee Roasters &#8211; Santa Cruz",
-    "city": "",
+    "name": "Alto Tostado Coffee Roasters – Santa Cruz",
+    "city": "Santa Cruz de la Sierra",
     "country": "Bolivia",
     "rank": 78,
     "category": "South America",
     "edition_year": 2026,
     "source_url": "https://theworlds100bestcoffeeshops.com/locales-south/alto-tostado-coffee-roasters-santa-cruz/",
-    "address": null,
+    "address": "Patio Design Lifestyle Centr, Av. Busch y, Santa Cruz de la Sierra, Bolivia",
     "lat": -17.7715198,
     "lng": -63.2019765,
     "place_id": "ChIJp705uPjn8ZMRLVGIEte3aR4",
@@ -2493,7 +2493,7 @@
   },
   {
     "name": "Eleganza Coffee Roasters",
-    "city": "",
+    "city": "Melipeuco",
     "country": "Chile",
     "rank": 79,
     "category": "South America",
@@ -2507,7 +2507,7 @@
   },
   {
     "name": "Ciclos Café",
-    "city": "",
+    "city": "Lima",
     "country": "Peru",
     "rank": 80,
     "category": "South America",
@@ -2521,7 +2521,7 @@
   },
   {
     "name": "BlackSoul Café Brewing Lab",
-    "city": "",
+    "city": "Cochabamba",
     "country": "Bolivia",
     "rank": 81,
     "category": "South America",
@@ -2535,7 +2535,7 @@
   },
   {
     "name": "MARRÓN CAFÉ",
-    "city": "",
+    "city": "Carabobo",
     "country": "Venezuela",
     "rank": 82,
     "category": "South America",
@@ -2549,7 +2549,7 @@
   },
   {
     "name": "Laurino Coffee",
-    "city": "",
+    "city": "Armenia",
     "country": "Colombia",
     "rank": 83,
     "category": "South America",
@@ -2563,7 +2563,7 @@
   },
   {
     "name": "Cafe Nexos",
-    "city": "",
+    "city": "Mérida",
     "country": "Venezuela",
     "rank": 84,
     "category": "South America",
@@ -2577,7 +2577,7 @@
   },
   {
     "name": "9 Gramos Café",
-    "city": "",
+    "city": "Pereira",
     "country": "Colombia",
     "rank": 85,
     "category": "South America",
@@ -2591,7 +2591,7 @@
   },
   {
     "name": "MANVA Natural Market",
-    "city": "Chacao, Caracas (Venezuela)",
+    "city": "Caracas",
     "country": "Venezuela",
     "rank": 86,
     "category": "South America",
@@ -2605,7 +2605,7 @@
   },
   {
     "name": "Rita Specialty Coffee Armenia",
-    "city": "",
+    "city": "Buenos Aires",
     "country": "Argentina",
     "rank": 87,
     "category": "South America",
@@ -2619,7 +2619,7 @@
   },
   {
     "name": "Café Black Mamba",
-    "city": "",
+    "city": "Providencia",
     "country": "Chile",
     "rank": 88,
     "category": "South America",
@@ -2632,8 +2632,8 @@
     "formatted_address": "Eliodoro Yáñez 1228, local 104, R, 7500605 Providencia, Región Metropolitana, Chile"
   },
   {
-    "name": "Kaffe&#8217;i",
-    "city": "the heart of the historic district of Asunción, this specialty coffee […]",
+    "name": "Kaffe’i",
+    "city": "Asunción",
     "country": "Paraguay",
     "rank": 89,
     "category": "South America",
@@ -2647,7 +2647,7 @@
   },
   {
     "name": "Elevaria Café",
-    "city": "",
+    "city": "Trujillo",
     "country": "Peru",
     "rank": 90,
     "category": "South America",
@@ -2661,7 +2661,7 @@
   },
   {
     "name": "Casa Berracos",
-    "city": "the heart of La Blanqueada, Montevideo",
+    "city": "Montevideo",
     "country": "Uruguay",
     "rank": 91,
     "category": "South America",
@@ -2675,7 +2675,7 @@
   },
   {
     "name": "Senzuru Coffee",
-    "city": "",
+    "city": "San Isidro",
     "country": "Peru",
     "rank": 92,
     "category": "South America",
@@ -2689,7 +2689,7 @@
   },
   {
     "name": "Anella Café",
-    "city": "",
+    "city": "Carabobo",
     "country": "Venezuela",
     "rank": 93,
     "category": "South America",
@@ -2703,7 +2703,7 @@
   },
   {
     "name": "Kajue Café",
-    "city": "",
+    "city": "Buenos Aires",
     "country": "Argentina",
     "rank": 94,
     "category": "South America",
@@ -2717,7 +2717,7 @@
   },
   {
     "name": "Varietale Chapinero",
-    "city": "",
+    "city": "Bogotá",
     "country": "Colombia",
     "rank": 95,
     "category": "South America",
@@ -2731,7 +2731,7 @@
   },
   {
     "name": "Ninina",
-    "city": "",
+    "city": "Buenos Aires",
     "country": "Argentina",
     "rank": 96,
     "category": "South America",
@@ -2745,7 +2745,7 @@
   },
   {
     "name": "Guanacoffee",
-    "city": "",
+    "city": "Pueblo Libre",
     "country": "Peru",
     "rank": 97,
     "category": "South America",
@@ -2759,7 +2759,7 @@
   },
   {
     "name": "Barista Coffee House",
-    "city": "",
+    "city": "Santa Fe",
     "country": "Argentina",
     "rank": 98,
     "category": "South America",
@@ -2773,7 +2773,7 @@
   },
   {
     "name": "Café Bauda",
-    "city": "",
+    "city": "Región de los Lagos",
     "country": "Chile",
     "rank": 99,
     "category": "South America",
@@ -2786,8 +2786,8 @@
     "formatted_address": "Pedro Montt 431, 5700000 Castro, Los Lagos, Chile"
   },
   {
-    "name": "Calu&#8217;s",
-    "city": "",
+    "name": "Calu’s",
+    "city": "Buenos Aires",
     "country": "Argentina",
     "rank": 100,
     "category": "South America",

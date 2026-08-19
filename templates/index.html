@@ -189,6 +189,9 @@
 
       .workspace {
         min-height: 0;
+        /* Grid item of .app-shell. Without this it takes its min-content width
+           and the wide list table scrolls the page instead of its own box. */
+        min-width: 0;
         height: 100%;
         display: flex;
         gap: 12px;
@@ -376,6 +379,7 @@
 
       .tab-panel.active {
         display: block;
+        min-width: 0;
       }
 
       .overview-map-panel {
@@ -1331,6 +1335,12 @@
 
         .overview-list th:nth-child(6),
         .overview-list td:nth-child(6) {
+          width: 70px;
+          min-width: 70px;
+        }
+
+        .overview-list th:nth-child(7),
+        .overview-list td:nth-child(7) {
           width: 290px;
           min-width: 290px;
         }
@@ -1834,6 +1844,17 @@
         return shops[0];
       }
 
+      // A resolved address already ends with its city and country. Appending
+      // them again produced lines like "…Rogers, AR 72756, USA, Rogers,
+      // Arkansas, USA"; the City row below the card carries that detail.
+      function composeAddressLine(shop) {
+        const resolved = String(shop.formatted_address || shop.address || "").trim();
+        if (resolved) {
+          return resolved;
+        }
+        return [shop.city, shop.country_normalized].filter(Boolean).join(", ") || shop.country_normalized;
+      }
+
       function updateDetailPanel(shop) {
         if (!shop) {
           document.getElementById("detail-name").textContent = "No matching shop";
@@ -1854,8 +1875,7 @@
         state.selectedShopId = shop.id;
         state.selectedCountry = shop.country_normalized;
         document.getElementById("detail-name").textContent = safeShopName(shop);
-        const address = [shop.formatted_address, shop.city, shop.country_normalized].filter(Boolean).join(", ");
-        document.getElementById("detail-address").textContent = address || shop.country_normalized;
+        document.getElementById("detail-address").textContent = composeAddressLine(shop);
         document.getElementById("detail-rank").textContent = `#${shop.rank} ${shop.category}`;
         document.getElementById("detail-country").textContent = shop.country_normalized;
         document.getElementById("detail-category").textContent = `${shop.category} · ${shop.edition_year}`;

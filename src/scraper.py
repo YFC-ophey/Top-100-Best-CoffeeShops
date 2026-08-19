@@ -45,6 +45,14 @@ _CITY_FROM_DESCRIPTION_PATTERN = re.compile(
     r"located in (?P<city>[^,.]+(?:,\s*[^,.]+)?)",
     re.IGNORECASE,
 )
+_URL_PATTERN = re.compile(r"^https?://", re.IGNORECASE)
+_SPACE_PATTERN = re.compile(r"\s+")
+
+# "Santa Cruz de la Sierra" and "Ho Chi Minh City" are real; a 12-word sentence
+# lifted from a page's prose is not.
+_MAX_CITY_LENGTH = 60
+_MAX_CITY_WORDS = 6
+_MIN_ADDRESS_LENGTH = 10
 
 
 class _ListItemParser(HTMLParser):
@@ -142,9 +150,9 @@ def _parse_elementor_loop_cards_primary(
     for match in _LOOP_CARD_PATTERN.finditer(html):
         shops.append(
             CoffeeShop(
-                name=match.group("name").strip(),
+                name=_unescape(match.group("name")),
                 city="",
-                country=match.group("country").strip(),
+                country=_unescape(match.group("country")),
                 rank=int(match.group("rank")),
                 category=category,
                 edition_year=edition_year,
@@ -245,38 +253,81 @@ def _fetch_with_retry(url: str, fetcher, retries: int) -> str | None:
 
 
 def extract_city_address(detail_html: str, fallback_country: str) -> tuple[str | None, str | None]:
-    heading_texts = _extract_heading_texts(detail_html)
+    """Read the city and street address off a locale detail page.
 
-    country_idx = None
-    for idx, text in enumerate(heading_texts):
-        if text.casefold() == fallback_country.casefold():
-            country_idx = idx
-            break
+    Every locale page renders the same heading triplet in order — city,
+    country, address — followed by the shop's website and socials. Anchoring on
+    the country heading is what makes single-word cities ("Oslo") and addresses
+    with no street number ("Jacros - Salite Mehret Rd, Addis Ababa, Ethiopia")
+    readable; the older shape-based heuristics silently dropped both.
+    """
+    heading_texts = _extract_heading_texts(detail_html)
+    country_idx = _find_country_index(heading_texts, fallback_country)
 
     city = None
-    if country_idx is not None and country_idx > 0:
-        candidate = heading_texts[country_idx - 1]
-        if "," in candidate and not any(char.isdigit() for char in candidate):
-            city = candidate
-
     address = None
-    for text in heading_texts:
-        # heuristic: full addresses usually contain numbers and commas
-        if any(char.isdigit() for char in text) and "," in text and len(text) > 10:
-            address = text
-            break
+    if country_idx is not None:
+        if country_idx > 0:
+            city = _city_candidate(heading_texts[country_idx - 1])
+        address = _address_candidate(heading_texts[country_idx + 1 :])
 
+    if address is None:
+        address = _address_candidate(heading_texts)
     if city is None:
         city = _extract_city_from_description(detail_html)
 
     return city, address
 
 
+def _find_country_index(heading_texts: list[str], country: str) -> int | None:
+    target = country.casefold().strip()
+    if not target:
+        return None
+    matches = [
+        idx for idx, text in enumerate(heading_texts) if text.casefold().strip() == target
+    ]
+    if not matches:
+        return None
+    # A city-state repeats the name in both slots ("Singapore", "Singapore");
+    # the later heading is the country one, leaving the city readable above it.
+    return matches[-1]
+
+
+def _city_candidate(text: str) -> str | None:
+    """Accept a place label, reject a URL or a sentence of marketing prose."""
+    value = text.strip(" \t\r\n,")
+    if not value or _URL_PATTERN.match(value):
+        return None
+    if any(char.isdigit() for char in value):
+        return None
+    if len(value) > _MAX_CITY_LENGTH or len(value.split()) > _MAX_CITY_WORDS:
+        return None
+    return value
+
+
+def _address_candidate(heading_texts: list[str]) -> str | None:
+    for text in heading_texts:
+        value = text.strip(" \t\r\n,")
+        if not value or _URL_PATTERN.match(value):
+            continue
+        if len(value) <= _MIN_ADDRESS_LENGTH:
+            continue
+        if "," not in value and not any(char.isdigit() for char in value):
+            continue
+        return value
+    return None
+
+
+def _unescape(value: str) -> str:
+    """Source markup carries numeric entities (&#8217;, &#8211;) in shop names."""
+    return html.unescape(value).strip()
+
+
 def _extract_heading_texts(detail_html: str) -> list[str]:
     values: list[str] = []
     for match in _HEADING_TEXT_PATTERN.finditer(detail_html):
         text = _TAG_STRIPPER.sub("", match.group("text"))
-        text = html.unescape(text).strip()
+        text = _SPACE_PATTERN.sub(" ", html.unescape(text)).strip()
         if text:
             values.append(text)
     return values
