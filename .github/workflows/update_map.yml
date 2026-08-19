@@ -133,8 +133,11 @@ jobs:
           MISSING=$(python - <<'PY'
           import json
           from pathlib import Path
+
+          from src.geocode_gaps import count_actionable_place_id_gaps
+
           data = json.loads(Path("data/current_list.json").read_text(encoding="utf-8"))
-          print(sum(1 for row in data if not row.get("place_id")))
+          print(count_actionable_place_id_gaps(data))
           PY
           )
           echo "missing=$MISSING" >> "$GITHUB_OUTPUT"
