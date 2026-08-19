@@ -46,7 +46,10 @@ workflow that pushes to main.
 9. **Commit + Pages deploy** — bot commits `data/`, `output/`, `site/`; a
    browser-key rebuild runs only when the `GOOGLE_MAPS_JS_API_KEY` secret exists.
 10. **Auto-issue** — if shops are missing `place_id`, the workflow opens
-   "Owner geocode refresh needed (N shops missing place_id)".
+   "Owner geocode refresh needed (N shops missing place_id)". Two shops that
+   have never resolved are exempt via `src/geocode_gaps.py`, so the reminder
+   only fires for a gap a geocode run could actually close. Delete an entry
+   there the moment a run resolves it.
 
 ## Playbooks
 
@@ -56,7 +59,9 @@ shrank, re-run with `SCRAPE_ALLOW_SHRINK=1` locally, inspect the diff, push.
 If the layout changed, fix the parsers in `src/scraper.py` (legacy `<li>`
 parser first, Elementor loop-card parser second) against saved HTML.
 
-**Geocode reminder issue opened** — run locally with the owner key
+**Geocode reminder issue opened** — a shop that is not on the
+`src/geocode_gaps.py` accept list is missing its place_id. Run locally with the
+owner key
 (never commit it; it lives in `.env`):
 `python src/main.py owner-geocode --api-key "$GOOGLE_MAPS_API_KEY"`,
 then commit `data/current_list.json`. Annual cost ~$3.40, inside free tier.
