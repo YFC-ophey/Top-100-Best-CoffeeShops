@@ -4,6 +4,7 @@ import re
 import time
 from urllib.request import Request, urlopen
 
+from src.category_utils import CURRENT_EDITION_YEAR
 from src.models import CoffeeShop
 
 USER_AGENT = (
@@ -96,14 +97,16 @@ def fetch_html(
     raise last_error if last_error is not None else OSError(f"fetch failed: {url}")
 
 
-def parse_coffee_shops(html: str, category: str) -> list[CoffeeShop]:
-    shops = _parse_legacy_list_items(html, category)
+def parse_coffee_shops(
+    html: str, category: str, edition_year: int = CURRENT_EDITION_YEAR
+) -> list[CoffeeShop]:
+    shops = _parse_legacy_list_items(html, category, edition_year)
     if shops:
         return shops
-    return _parse_elementor_loop_cards(html, category)
+    return _parse_elementor_loop_cards(html, category, edition_year)
 
 
-def _parse_legacy_list_items(html: str, category: str) -> list[CoffeeShop]:
+def _parse_legacy_list_items(html: str, category: str, edition_year: int) -> list[CoffeeShop]:
     parser = _ListItemParser()
     parser.feed(html)
     shops: list[CoffeeShop] = []
@@ -118,20 +121,23 @@ def _parse_legacy_list_items(html: str, category: str) -> list[CoffeeShop]:
                 country=match.group("country").strip(),
                 rank=int(match.group("rank")),
                 category=category,
+                edition_year=edition_year,
             )
         )
     return shops
 
 
-def _parse_elementor_loop_cards(html: str, category: str) -> list[CoffeeShop]:
-    primary = _parse_elementor_loop_cards_primary(html, category)
-    fallback = _parse_elementor_loop_cards_by_href(html, category)
+def _parse_elementor_loop_cards(html: str, category: str, edition_year: int) -> list[CoffeeShop]:
+    primary = _parse_elementor_loop_cards_primary(html, category, edition_year)
+    fallback = _parse_elementor_loop_cards_by_href(html, category, edition_year)
     if len(fallback) > len(primary):
         return fallback
     return primary
 
 
-def _parse_elementor_loop_cards_primary(html: str, category: str) -> list[CoffeeShop]:
+def _parse_elementor_loop_cards_primary(
+    html: str, category: str, edition_year: int
+) -> list[CoffeeShop]:
     shops: list[CoffeeShop] = []
     for match in _LOOP_CARD_PATTERN.finditer(html):
         shops.append(
@@ -141,13 +147,16 @@ def _parse_elementor_loop_cards_primary(html: str, category: str) -> list[Coffee
                 country=match.group("country").strip(),
                 rank=int(match.group("rank")),
                 category=category,
+                edition_year=edition_year,
                 source_url=match.group("href").strip(),
             )
         )
     return sorted(shops, key=lambda value: value.rank)
 
 
-def _parse_elementor_loop_cards_by_href(html_content: str, category: str) -> list[CoffeeShop]:
+def _parse_elementor_loop_cards_by_href(
+    html_content: str, category: str, edition_year: int
+) -> list[CoffeeShop]:
     links: list[tuple[str, str]] = []
     for match in _LOCALE_LINK_PATTERN.finditer(html_content):
         href = match.group("href").strip()
@@ -194,6 +203,7 @@ def _parse_elementor_loop_cards_by_href(html_content: str, category: str) -> lis
                 country=country,
                 rank=rank,
                 category=category,
+                edition_year=edition_year,
                 source_url=href,
             )
         )

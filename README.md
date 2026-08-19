@@ -30,7 +30,9 @@ Watch or download the full **[ROAST demo video](demo/roast-brag.mp4)**.
 The site features:
 - Interactive world map with country-level shop density bubbles
 - Drill-down to individual shop details (address, city, country, rank)
-- Filterable list view by collection, country, and rank band
+- Filterable list view by edition year, collection, country, and rank band
+- Every shop carries an `edition_year`; past editions are archived rather than
+  overwritten, so the year filter grows as new rankings are released
 - Public Google Maps links — no API key required for visitors
 - Dataset freshness footer backed by `data/metadata.json` provenance
 

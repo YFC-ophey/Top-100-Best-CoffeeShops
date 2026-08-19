@@ -5,6 +5,12 @@
     "South America": 100,
     "Top 100": 100
   },
+  "counts_by_edition": {
+    "2026": 200
+  },
+  "editions": [
+    2026
+  ],
   "sources": {
     "Top 100": "https://theworlds100bestcoffeeshops.com/top-100-coffee-shops/",
     "South America": "https://theworlds100bestcoffeeshops.com/top-100-coffee-shops-south/"

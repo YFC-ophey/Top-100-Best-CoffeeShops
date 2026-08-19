@@ -8,6 +8,7 @@ import sys
 if __package__ in (None, ""):
     sys.path.append(str(Path(__file__).resolve().parent.parent))
 
+from src.category_utils import normalize_edition_year
 from src.generator import generate_csv, generate_kml
 from src.env_utils import load_env_file
 from src.geocoder import GooglePlacesGeocoder
@@ -35,12 +36,11 @@ def _guard_against_scrape_collapse(
 ) -> None:
     if os.getenv("SCRAPE_ALLOW_SHRINK", "").strip().lower() in {"1", "true", "yes", "on"}:
         return
-    prev_counts: dict[str, int] = {}
-    for shop in previous:
-        prev_counts[shop.category] = prev_counts.get(shop.category, 0) + 1
-    cur_counts: dict[str, int] = {}
-    for shop in current:
-        cur_counts[shop.category] = cur_counts.get(shop.category, 0) + 1
+    # Compare per category rather than per edition: when a new edition drops,
+    # the scrape yields a year that has no history yet, and the previous year's
+    # healthy count is still the right floor to judge it against.
+    prev_counts = _best_count_per_category(previous)
+    cur_counts = _best_count_per_category(current)
     for category, prev_count in prev_counts.items():
         cur_count = cur_counts.get(category, 0)
         if prev_count > 0 and cur_count < int(prev_count * SHRINK_FLOOR_RATIO):
@@ -49,6 +49,36 @@ def _guard_against_scrape_collapse(
                 f"(floor {SHRINK_FLOOR_RATIO:.0%}). The source layout likely changed; "
                 "keeping the previous data. Re-run with SCRAPE_ALLOW_SHRINK=1 to force."
             )
+
+
+def _best_count_per_category(shops: list[CoffeeShop]) -> dict[str, int]:
+    """Largest single-edition shop count for each category."""
+    per_edition: dict[tuple[str, int], int] = {}
+    for shop in shops:
+        key = (shop.category, normalize_edition_year(shop.edition_year))
+        per_edition[key] = per_edition.get(key, 0) + 1
+
+    best: dict[str, int] = {}
+    for (category, _year), count in per_edition.items():
+        best[category] = max(best.get(category, 0), count)
+    return best
+
+
+def _merge_with_archived_editions(
+    previous: list[CoffeeShop], scraped: list[CoffeeShop]
+) -> list[CoffeeShop]:
+    """Keep past editions alongside the one currently on the source pages.
+
+    The source replaces its list pages in place each February, so a scrape only
+    ever sees the newest edition. Without this, last year's ranking would be
+    dropped on the first run after a release and the year filter would collapse
+    back to a single value.
+    """
+    scraped_years = {normalize_edition_year(shop.edition_year) for shop in scraped}
+    archived = [
+        shop for shop in previous if normalize_edition_year(shop.edition_year) not in scraped_years
+    ]
+    return list(scraped) + archived
 
 
 def scrape_only(sleep_seconds: float = 1.0) -> tuple[list[CoffeeShop], bool]:
@@ -61,6 +91,7 @@ def scrape_only(sleep_seconds: float = 1.0) -> tuple[list[CoffeeShop], bool]:
     _guard_against_scrape_collapse(previous, all_shops)
     all_shops = enrich_shops_with_details(all_shops, sleep_seconds=sleep_seconds)
     all_shops = _carry_forward_geocode(previous, all_shops)
+    all_shops = _merge_with_archived_editions(previous, all_shops)
     changed = has_shop_changes(previous, all_shops)
     _save_state(all_shops)
     generate_csv(all_shops, CSV_FILE)
@@ -96,12 +127,17 @@ def _save_state(shops: list[CoffeeShop]) -> None:
 def _save_metadata(shops: list[CoffeeShop]) -> None:
     """Dataset provenance for consumers of the JSON/CSV/KML and the site footer."""
     counts: dict[str, int] = {}
+    edition_counts: dict[str, int] = {}
     for shop in shops:
         counts[shop.category] = counts.get(shop.category, 0) + 1
+        edition = str(normalize_edition_year(shop.edition_year))
+        edition_counts[edition] = edition_counts.get(edition, 0) + 1
     metadata = {
         "updated_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "total_shops": len(shops),
         "counts_by_category": dict(sorted(counts.items())),
+        "counts_by_edition": dict(sorted(edition_counts.items(), reverse=True)),
+        "editions": sorted({int(year) for year in edition_counts}, reverse=True),
         "sources": SOURCE_URLS,
         "geocoded_shops": sum(1 for s in shops if s.lat is not None and s.lng is not None),
     }
@@ -114,7 +150,8 @@ def _carry_forward_geocode(previous: list[CoffeeShop], current: list[CoffeeShop]
     previous_by_source: dict[str, CoffeeShop] = {}
     previous_by_identity: dict[tuple[str, int, str, str], CoffeeShop] = {}
 
-    for shop in previous:
+    # Oldest edition first so the newest known geocode for a shop wins.
+    for shop in sorted(previous, key=lambda value: normalize_edition_year(value.edition_year)):
         if shop.source_url:
             previous_by_source[shop.source_url.strip().casefold()] = shop
         previous_by_identity[(shop.category.strip().casefold(), shop.rank, shop.name.strip().casefold(), shop.country.strip().casefold())] = shop

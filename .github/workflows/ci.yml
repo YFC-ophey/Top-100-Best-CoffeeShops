@@ -1,0 +1,44 @@
+name: CI
+
+# Tests only. This workflow must never commit data or deploy Pages — that is
+# update_map.yml's job, and a second workflow doing it caused a push race on
+# 2026-06-08. Read-only permissions keep that mistake from being repeatable.
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install package
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Run tests
+        run: |
+          pytest
+
+      # Renders templates/index.html end to end, so a broken Jinja tag or a
+      # site-builder regression fails here instead of on the next data push.
+      - name: Build static site
+        run: |
+          python src/main.py build-site
