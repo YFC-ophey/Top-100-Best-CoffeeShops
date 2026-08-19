@@ -6,7 +6,7 @@ from urllib.parse import parse_qs, urlparse
 from fastapi.testclient import TestClient
 
 from src.models import CoffeeShop
-from src.web_app import _best_map_query_text, _city_from_address, _google_maps_link, _mobile_maps_link, create_app
+from src.web_app import _best_map_query_text, _city_from_address, _city_from_shop, _google_maps_link, _mobile_maps_link, create_app
 
 
 def _write_state(path: Path) -> None:
@@ -507,7 +507,9 @@ def test_best_map_query_text_sanitizes_entities_and_duplicate_country_suffix() -
     assert deduped_query == "Miraflores, Peru"
 
 
-def test_rank_68_top_100_is_corrected_to_azure_muscat_oman(tmp_path: Path) -> None:
+def test_rank_68_top_100_keeps_its_published_name_and_muscat_address(tmp_path: Path) -> None:
+    """The source and the shop's own domain both spell it "Azura"; only the
+    location fields are corrected by hand."""
     data_file = tmp_path / "data" / "current_list.json"
     payload = [
         {
@@ -531,7 +533,8 @@ def test_rank_68_top_100_is_corrected_to_azure_muscat_oman(tmp_path: Path) -> No
     response = client.get("/")
 
     assert response.status_code == 200
-    assert "Azure The Coffee Company" in response.text
+    assert "Azura – The Coffee Company" in response.text
+    assert "Azure" not in response.text
     assert '"country_normalized": "Oman"' in response.text
     assert '"city": "Muscat"' in response.text
     assert "Multiple locations, Muscat, Oman" in response.text
@@ -585,3 +588,44 @@ def test_home_page_uses_address_city_when_explicit_city_is_noisy(tmp_path: Path)
     assert response.status_code == 200
     assert '"city": "Arequipa"' in response.text
     assert "a white sillar (ashlar [volcanic stone]) district" not in response.text
+
+
+def test_city_from_shop_prefers_the_published_city_over_address_guessing() -> None:
+    """The source publishes a city per locale; guessing from the street address
+    only exists as a fallback for rows the crawl could not enrich."""
+    shop = CoffeeShop(
+        name="Flat White Specialty Coffee",
+        city="Doha",
+        country="Qatar",
+        rank=97,
+        category="Top 100",
+        address="Education City Student Center, Al Rayyan, Qatar",
+    )
+
+    assert _city_from_shop(shop, "Qatar") == "Doha"
+
+
+def test_city_from_shop_falls_back_to_address_when_city_missing() -> None:
+    shop = CoffeeShop(
+        name="Onyx Coffee LAB",
+        city="",
+        country="USA",
+        rank=1,
+        category="Top 100",
+        formatted_address="101 E Walnut St, Rogers, AR 72756, USA",
+    )
+
+    assert _city_from_shop(shop, "USA") == "Rogers"
+
+
+def test_city_from_shop_ignores_an_unusable_published_city() -> None:
+    shop = CoffeeShop(
+        name="Mulano Coffee Shop",
+        city="the south of Ecuador in a city of 25,000 inhabitants called Piñas",
+        country="Ecuador",
+        rank=48,
+        category="Top 100",
+        address="Avenida Loja, Piñas, Ecuador",
+    )
+
+    assert _city_from_shop(shop, "Ecuador") == "Piñas"

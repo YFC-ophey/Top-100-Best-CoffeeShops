@@ -26,7 +26,7 @@ syncs got timestamped backup branches first
 (`codex/backup-local-main-20260222-165402`). Local work happens in gitignored
 `.worktrees/`, so parallel agents never collide on a working tree.
 
-**Verification gates, not trust.** CI runs the full pytest suite (55 tests
+**Verification gates, not trust.** CI runs the full pytest suite (81 tests
 across 14 files) before the pipeline may touch data. Two data guards sit
 between scrape and commit: a scrape-collapse guard (any category shrinking
 below 80% of the previous run aborts the save) and a geocode-wipe guard

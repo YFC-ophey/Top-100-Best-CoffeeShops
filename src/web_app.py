@@ -81,12 +81,17 @@ _SUBREGION_EXACT_LABELS = {
     "magallanes y la antartica chilena",
 }
 
+# Hand corrections for rows the source or the geocoder gets wrong. Keep these
+# minimal — an entry should only carry a field that is still demonstrably
+# wrong, never a name the source itself spells differently.
 _SHOP_FIELD_OVERRIDES: dict[tuple[str, int], dict[str, str]] = {
+    # Geocoding resolves this one to a Seeb street address; the shop publishes
+    # Muscat and operates several branches. City and country also guard against
+    # the numeric-country row this locale has produced in the past.
     (
         TOP_100_CATEGORY,
         68,
     ): {
-        "name": "Azure The Coffee Company",
         "city": "Muscat",
         "country": "Oman",
         "formatted_address": "Multiple locations, Muscat, Oman",
@@ -385,15 +390,21 @@ def _sanitize_map_query(text: str, country: str | None = None) -> str:
 
 
 def _city_from_shop(shop: CoffeeShop, country_normalized: str) -> str:
-    for address in (shop.formatted_address, shop.address):
-        derived = _city_from_address(address, country_normalized)
-        if derived:
-            return derived
+    """The city the source publishes for a locale, or one inferred from its address.
 
+    The published city is authoritative and is checked first; address guessing
+    stays as the fallback for rows the detail crawl could not enrich, and for
+    the occasional locale page that puts prose where the city belongs.
+    """
     explicit_city_raw = (shop.city or "").strip()
     explicit_city = _clean_city_candidate(explicit_city_raw)
     if explicit_city and _is_valid_explicit_city(explicit_city_raw, explicit_city):
         return explicit_city
+
+    for address in (shop.formatted_address, shop.address):
+        derived = _city_from_address(address, country_normalized)
+        if derived:
+            return derived
 
     if explicit_city and (_looks_city_like(explicit_city) or _looks_city_acronym(explicit_city)):
         return explicit_city
@@ -508,8 +519,17 @@ def _looks_city_acronym(value: str) -> bool:
     return bool(re.fullmatch(r"[A-Z]{3,5}", value.strip()))
 
 
+_MAX_EXPLICIT_CITY_LENGTH = 40
+_MAX_EXPLICIT_CITY_SPACES = 5
+
+
 def _is_valid_explicit_city(raw_value: str, cleaned_value: str) -> bool:
     if any(symbol in raw_value for symbol in ("[", "]", "<", ">", "{", "}")):
+        return False
+    # A locale page occasionally puts a sentence where the city belongs. Judge
+    # the raw value here: the cleaner below salvages a plausible-looking tail
+    # out of prose ("...called Piñas" -> "called Piñas") that must not win.
+    if len(raw_value) > _MAX_EXPLICIT_CITY_LENGTH or raw_value.count(" ") > _MAX_EXPLICIT_CITY_SPACES:
         return False
     if _looks_street_like(raw_value):
         return False

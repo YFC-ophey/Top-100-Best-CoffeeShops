@@ -33,6 +33,8 @@ The site features:
 - Filterable list view by edition year, collection, country, and rank band
 - Every shop carries an `edition_year`; past editions are archived rather than
   overwritten, so the year filter grows as new rankings are released
+- Every shop carries the city and street address published on its locale page
+  (200/200 rows), so the list view and the CSV/KML exports are complete
 - Public Google Maps links — no API key required for visitors
 - Dataset freshness footer backed by `data/metadata.json` provenance
 
@@ -59,7 +61,7 @@ A zero-cost, open-source pipeline that:
 | Preview UI | FastAPI + Jinja2 |
 | Site Builder | Static HTML/CSS generator |
 | Maps | Public Google Maps links (zero API cost) |
-| Testing | pytest (55 tests passing) |
+| Testing | pytest (81 tests passing) |
 | CI/CD | GitHub Actions → GitHub Pages |
 
 ---

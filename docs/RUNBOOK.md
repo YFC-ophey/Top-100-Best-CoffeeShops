@@ -26,18 +26,26 @@ workflow that pushes to main.
    category shrinks below 80% of the previous run (source redesign, partial
    fetch, WAF block). Committed data stays intact. Deliberate override:
    `SCRAPE_ALLOW_SHRINK=1 python src/main.py scrape-only`.
-4. **Geocode-wipe guard** (workflow step) — aborts before commit if
+4. **Detail enrichment** (`src/scraper.py:extract_city_address`) — each locale
+   page renders the same heading triplet, city / country / address, so the
+   parser anchors on the country heading and reads its neighbours. Do not
+   reintroduce shape-based guesses ("has a comma", "has a digit"): those
+   silently dropped 151 cities and 8 addresses until 2026-08-19.
+5. **Enrichment carry-forward** (`src/main.py:_carry_forward_geocode`) — city
+   and address are reused from the previous run when a detail fetch fails, so
+   one flaky Monday cannot blank a full crawl's worth of enrichment.
+6. **Geocode-wipe guard** (workflow step) — aborts before commit if
    place_id/coord counts drop to zero.
-5. **Edition archive** (`src/main.py:_merge_with_archived_editions`) — a scrape
+7. **Edition archive** (`src/main.py:_merge_with_archived_editions`) — a scrape
    only ever sees the edition currently on the source pages, so rows from any
    other `edition_year` are carried forward instead of dropped. This is what
    keeps last year's ranking available behind the site's Edition filter.
-6. **Provenance** — every save writes `data/metadata.json` (UTC timestamp,
+8. **Provenance** — every save writes `data/metadata.json` (UTC timestamp,
    counts, sources, per-edition counts, geocoded count); the site footer shows
    "Data updated".
-7. **Commit + Pages deploy** — bot commits `data/`, `output/`, `site/`; a
+9. **Commit + Pages deploy** — bot commits `data/`, `output/`, `site/`; a
    browser-key rebuild runs only when the `GOOGLE_MAPS_JS_API_KEY` secret exists.
-8. **Auto-issue** — if shops are missing `place_id`, the workflow opens
+10. **Auto-issue** — if shops are missing `place_id`, the workflow opens
    "Owner geocode refresh needed (N shops missing place_id)".
 
 ## Playbooks
@@ -78,7 +86,7 @@ See `docs/release-timeline-2026.md` for the full timeline.
 
 ```bash
 python3.11 -m venv .venv && ./.venv/bin/pip install -e ".[dev]"
-./.venv/bin/python -m pytest            # 55 tests
+./.venv/bin/python -m pytest            # 81 tests
 ./.venv/bin/python src/main.py scrape-only
 ./.venv/bin/python src/main.py build-site   # writes site/index.html
 ```

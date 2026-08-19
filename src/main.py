@@ -147,6 +147,7 @@ def _save_metadata(shops: list[CoffeeShop]) -> None:
 
 
 def _carry_forward_geocode(previous: list[CoffeeShop], current: list[CoffeeShop]) -> list[CoffeeShop]:
+    """Reuse previously resolved geocode and enrichment fields for a matched shop."""
     previous_by_source: dict[str, CoffeeShop] = {}
     previous_by_identity: dict[tuple[str, int, str, str], CoffeeShop] = {}
 
@@ -174,6 +175,13 @@ def _carry_forward_geocode(previous: list[CoffeeShop], current: list[CoffeeShop]
             shop.lng = match.lng
         if shop.formatted_address is None and match.formatted_address:
             shop.formatted_address = match.formatted_address
+        # A detail-page fetch that times out returns a shop with no city or
+        # address. Without this, one flaky Monday would blank enrichment that
+        # took a full crawl to collect.
+        if not shop.city and match.city:
+            shop.city = match.city
+        if not shop.address and match.address:
+            shop.address = match.address
 
     return current
 
