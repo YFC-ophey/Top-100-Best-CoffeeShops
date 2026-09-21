@@ -1,5 +1,5 @@
 {
-  "updated_at_utc": "2026-09-14T15:45:48Z",
+  "updated_at_utc": "2026-09-21T15:45:25Z",
   "total_shops": 200,
   "counts_by_category": {
     "South America": 100,
@@ -15,5 +15,5 @@
     "Top 100": "https://theworlds100bestcoffeeshops.com/top-100-coffee-shops/",
     "South America": "https://theworlds100bestcoffeeshops.com/top-100-coffee-shops-south/"
   },
-  "geocoded_shops": 199
+  "geocoded_shops": 154
 }
