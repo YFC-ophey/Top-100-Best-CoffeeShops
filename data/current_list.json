@@ -1638,7 +1638,7 @@
     "formatted_address": null
   },
   {
-    "name": "Benchtime Bakery & Cafe Cumbayá",
+    "name": "Benchtime Cumbayá",
     "city": "Quito",
     "country": "Ecuador",
     "rank": 18,
@@ -2352,6 +2352,20 @@
     "formatted_address": "Tajamar 287, r, 7550594 Las Condes, Región Metropolitana, Chile"
   },
   {
+    "name": "Sailor Coffee",
+    "city": "Samborondón",
+    "country": "Ecuador",
+    "rank": 69,
+    "category": "South America",
+    "edition_year": 2026,
+    "source_url": "https://theworlds100bestcoffeeshops.com/locales-south/sailor-coffee/",
+    "address": "Av. Samborondón Km 9.5, Samborondón, Ecuador",
+    "lat": null,
+    "lng": null,
+    "place_id": null,
+    "formatted_address": null
+  },
+  {
     "name": "Soul Coffee House",
     "city": "Loja",
     "country": "Ecuador",
@@ -2490,20 +2504,6 @@
     "lng": -79.20147399999999,
     "place_id": "ChIJQ_eCDxk3y5ER9Tmv1o_JMdg",
     "formatted_address": "XQXX+FCC, entre Bolivar &, Bernardo Valdivieso, Loja, Ecuador"
-  },
-  {
-    "name": "Sailor Coffee",
-    "city": "Samborondón",
-    "country": "Ecuador",
-    "rank": 79,
-    "category": "South America",
-    "edition_year": 2026,
-    "source_url": "https://theworlds100bestcoffeeshops.com/locales-south/sailor-coffee/",
-    "address": "Av. Samborondón Km 9.5, Samborondón, Ecuador",
-    "lat": null,
-    "lng": null,
-    "place_id": null,
-    "formatted_address": null
   },
   {
     "name": "Simón Coffee",

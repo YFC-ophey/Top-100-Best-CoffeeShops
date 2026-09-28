@@ -33,7 +33,7 @@ rank,name,city,country,category,edition_year,lat,lng,place_id,formatted_address
 16,Nomad Frutas Selectas,Barcelona,Spain,Top 100,2026,41.397966,2.1956227,ChIJc7PCoBejpBIREP_Tn2a4s08,"Carrer de Pujades, 95, Sant Martí, 08005 Barcelona, Spain"
 17,Elisa Café e Torrefação,Belo Horizonte,Brazil,South America,2026,,,,
 17,Kafi Wasi Café Tostaduría,Arequipa,Peru,Top 100,2026,-16.3986215,-71.5392097,ChIJw9QmKVpKQpERNCLCkfpyCw0,"Calle Pte. Bolognesi 216, Arequipa 04001, Peru"
-18,Benchtime Bakery & Cafe Cumbayá,Quito,Ecuador,South America,2026,,,,
+18,Benchtime Cumbayá,Quito,Ecuador,South America,2026,,,,
 18,Benchmark Coffee,Sharjah,UAE,Top 100,2026,25.3184047,55.4742758,ChIJG-AcxVxfXz4RZm4nv-1CiQI,Aljada Discovery Centre Aljada - Muwaileh Commercial - Sharjah - United Arab Emirates
 19,Origen Tostadores de Café,Pueblo Libre,Peru,South America,2026,-12.0725883,-77.06629579999999,ChIJK9g8XRrJBZER0pk3UpwRtVg,"Av. Simón Bolívar 1199, Pueblo Libre 15084, Peru"
 19,Hola Coffee Lagasca,Madrid,Spain,Top 100,2026,40.4250325,-3.685306299999999,ChIJi2D7CpcoQg0Rr5w4FbRHfSU,"Calle de Lagasca, 42, Salamanca, 28001 Madrid, Spain"
@@ -135,6 +135,7 @@ rank,name,city,country,category,edition_year,lat,lng,place_id,formatted_address
 67,MOK Coffee,Brussels,Belgium,Top 100,2026,50.8528174,4.341749399999999,ChIJleDmRYnDw0cRdur3w4KDCrE,"Rue Antoine Dansaert 196, 1000 Bruxelles, Belgium"
 68,ARTEMISA Coffee & Cocktail Bar,Las Condes,Chile,South America,2026,-33.4169162,-70.60438789999999,EkBUYWphbWFyIDI4NywgciwgNzU1MDU5NCBMYXMgQ29uZGVzLCBSZWdpw7NuIE1ldHJvcG9saXRhbmEsIENoaWxlIh0aGwoWChQKEgnv95_9ac9ilhHaJn87KZzorRIBcg,"Tajamar 287, r, 7550594 Las Condes, Región Metropolitana, Chile"
 68,Azura – The Coffee Company,Muscat,Oman,Top 100,2026,23.6453963,58.148331,ChIJwQKF64HkjT4RYWS4rBynEtY,"A Salam St, Seeb, Oman"
+69,Sailor Coffee,Samborondón,Ecuador,South America,2026,,,,
 69,Puku Puku,Lima,Peru,Top 100,2026,-12.1324766,-77.0300644,ChIJRZH-reG3BZERkyuz3_3qWo8,"Larcomar, Mal. de la Reserva 610, Miraflores 15074, Peru"
 70,Soul Coffee House,Loja,Ecuador,South America,2026,,,,
 70,The Golden Pig,San Pedro Sula,Honduras,Top 100,2026,15.507472,-88.0440769,ChIJCxDm1HNbZo8RoTPNIwbOvww,"Boulevard Los Próceres, San Pedro Sula, Cortés, Honduras"
@@ -155,7 +156,6 @@ rank,name,city,country,category,edition_year,lat,lng,place_id,formatted_address
 78,Masaro Café,Santa Victoria,Peru,South America,2026,-6.7798677,-79.83960569999999,ChIJ6R2yly_vTJAR27NqQxo3NGI,"La Florida 576, Chiclayo 14000, Peru"
 78,Coffee Stopover Black,Taichung City,Taiwan,Top 100,2026,24.1454638,120.671868,EiY0MDPlj7DngaPoh7rkuK3luILopb_ljYDnpo_pvo3ooZc36JmfMSIdGhsKFgoUChIJnYmJYXM9aTQRk02EnOsO9vYSATE,"1, No. 7, Fulong St, West District, Taichung City, Taiwan 403"
 79,Kaweh Coffee Shop,Loja,Ecuador,South America,2026,-4.0013035,-79.20147399999999,ChIJQ_eCDxk3y5ER9Tmv1o_JMdg,"XQXX+FCC, entre Bolivar &, Bernardo Valdivieso, Loja, Ecuador"
-79,Sailor Coffee,Samborondón,Ecuador,South America,2026,,,,
 79,Fuku,Amsterdam,Netherlands,Top 100,2026,52.3812737,4.855158100000001,ChIJ1V3kG2XixUcRH1nQwIBJwmg,"Bos en Lommerweg 136 HS, 1055 ED Amsterdam, Netherlands"
 80,Simón Coffee,Medellín,Colombia,South America,2026,,,,
 80,The Miners Coffee,Prague,Czech Republic,Top 100,2026,50.0864025,14.4218479,ChIJgWbZU-mUC0cR8ohJfa5HNWk,"Železná 490/14, 110 00 Staré Město, Czechia"
