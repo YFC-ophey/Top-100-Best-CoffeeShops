@@ -3,6 +3,7 @@ import html
 import re
 import time
 from urllib.request import Request, urlopen
+from urllib.parse import urlparse
 
 from src.category_utils import CURRENT_EDITION_YEAR
 from src.models import CoffeeShop
@@ -15,6 +16,8 @@ USER_AGENT = (
 SOURCE_URLS: dict[str, str] = {
     "Top 100": "https://theworlds100bestcoffeeshops.com/top-100-coffee-shops/",
     "South America": "https://theworlds100bestcoffeeshops.com/top-100-coffee-shops-south/",
+    "Europe": "https://theworlds100bestcoffeeshops.com/top-100-coffee-shops-europe/",
+    "North, Central America and the Caribbean": "https://theworlds100bestcoffeeshops.com/top-100-coffee-shops-north/",
 }
 
 _ITEM_PATTERN = re.compile(
@@ -29,7 +32,7 @@ _LOOP_CARD_PATTERN = re.compile(
     re.DOTALL,
 )
 _LOCALE_LINK_PATTERN = re.compile(
-    r'<a href="(?P<href>https://theworlds100bestcoffeeshops\.com/locales/[^"]+/)">(?P<text>.*?)</a>',
+    r'<a href="(?P<href>https://theworlds100bestcoffeeshops\.com/locales(?:-[a-z]+)?/[^"]+/)">(?P<text>.*?)</a>',
     re.DOTALL,
 )
 _TAG_STRIPPER = re.compile(r"<[^>]+>")
@@ -47,6 +50,7 @@ _CITY_FROM_DESCRIPTION_PATTERN = re.compile(
 )
 _URL_PATTERN = re.compile(r"^https?://", re.IGNORECASE)
 _SPACE_PATTERN = re.compile(r"\s+")
+_SOURCE_HOST = "theworlds100bestcoffeeshops.com"
 
 # "Santa Cruz de la Sierra" and "Ho Chi Minh City" are real; a 12-word sentence
 # lifted from a page's prose is not.
@@ -80,6 +84,63 @@ class _ListItemParser(HTMLParser):
             self._buffer = []
 
 
+def _official_image_url(value: str | None) -> str | None:
+    """Only accept the ranking site's uploaded images, never tracking or sponsor art."""
+    url = html.unescape(value or "").strip()
+    parsed = urlparse(url)
+    if (
+        parsed.scheme in {"http", "https"}
+        and parsed.hostname in {_SOURCE_HOST, f"www.{_SOURCE_HOST}"}
+        and parsed.path.startswith("/wp-content/uploads/")
+        and parsed.path.lower().endswith((".jpg", ".jpeg", ".png", ".webp"))
+    ):
+        return url
+    return None
+
+
+class _ShopImageParser(HTMLParser):
+    """Associate a featured image with its own shop link on ranking pages."""
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.images: dict[str, str] = {}
+        self._link: str | None = None
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        attributes = dict(attrs)
+        if tag == "a":
+            href = html.unescape(attributes.get("href") or "").strip()
+            parsed = urlparse(href)
+            self._link = href if parsed.hostname in {_SOURCE_HOST, f"www.{_SOURCE_HOST}"} and parsed.path.startswith("/locales") else None
+        elif tag == "img" and self._link and self._link not in self.images:
+            image = _official_image_url(attributes.get("src") or attributes.get("data-src"))
+            if image:
+                self.images[self._link] = image
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag == "a":
+            self._link = None
+
+
+class _OpenGraphImageParser(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__()
+        self.image_url: str | None = None
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        if tag != "meta" or self.image_url:
+            return
+        attributes = dict(attrs)
+        if (attributes.get("property") or "").lower() == "og:image":
+            self.image_url = _official_image_url(attributes.get("content"))
+
+
+def extract_shop_image(detail_html: str) -> str | None:
+    parser = _OpenGraphImageParser()
+    parser.feed(detail_html)
+    return parser.image_url
+
+
 def fetch_html(
     url: str,
     timeout_seconds: int = 30,
@@ -109,9 +170,14 @@ def parse_coffee_shops(
     html: str, category: str, edition_year: int = CURRENT_EDITION_YEAR
 ) -> list[CoffeeShop]:
     shops = _parse_legacy_list_items(html, category, edition_year)
-    if shops:
-        return shops
-    return _parse_elementor_loop_cards(html, category, edition_year)
+    if not shops:
+        shops = _parse_elementor_loop_cards(html, category, edition_year)
+    image_parser = _ShopImageParser()
+    image_parser.feed(html)
+    for shop in shops:
+        if shop.source_url:
+            shop.image_url = image_parser.images.get(shop.source_url)
+    return shops
 
 
 def _parse_legacy_list_items(html: str, category: str, edition_year: int) -> list[CoffeeShop]:
@@ -138,7 +204,8 @@ def _parse_legacy_list_items(html: str, category: str, edition_year: int) -> lis
 def _parse_elementor_loop_cards(html: str, category: str, edition_year: int) -> list[CoffeeShop]:
     primary = _parse_elementor_loop_cards_primary(html, category, edition_year)
     fallback = _parse_elementor_loop_cards_by_href(html, category, edition_year)
-    if len(fallback) > len(primary):
+    if fallback and len(fallback) >= len(primary):
+        # Group by the shop URL so absent fields cannot consume the next card.
         return fallback
     return primary
 
@@ -202,13 +269,13 @@ def _parse_elementor_loop_cards_by_href(
             name = non_numeric[0]
         if len(non_numeric) > 1:
             country = non_numeric[1]
-        if rank is None or name is None or country is None:
+        if rank is None or name is None:
             continue
         shops.append(
             CoffeeShop(
                 name=name,
                 city="",
-                country=country,
+                country=country or "",
                 rank=rank,
                 category=category,
                 edition_year=edition_year,
@@ -232,6 +299,8 @@ def enrich_shops_with_details(
         detail_html = _fetch_with_retry(shop.source_url, fetcher, retries=retries)
         if detail_html:
             city, address = extract_city_address(detail_html, fallback_country=shop.country)
+            if not shop.image_url:
+                shop.image_url = extract_shop_image(detail_html)
             if city:
                 shop.city = city
             if address:

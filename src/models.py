@@ -12,6 +12,7 @@ class CoffeeShop:
     category: str
     edition_year: int = CURRENT_EDITION_YEAR
     source_url: str | None = None
+    image_url: str | None = None
     address: str | None = None
     lat: float | None = None
     lng: float | None = None

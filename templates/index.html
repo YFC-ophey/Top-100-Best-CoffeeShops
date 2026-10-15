@@ -740,6 +740,24 @@
         filter: brightness(0.96);
       }
 
+      .hero.no-photo {
+        background: radial-gradient(circle at 50% 25%, #65422d, #241915 70%);
+      }
+
+      .hero.no-photo img { display: none; }
+
+      .hero-photo-note {
+        position: absolute;
+        bottom: 10px;
+        right: 12px;
+        z-index: 2;
+        color: #fff;
+        font-size: 0.68rem;
+        text-shadow: 0 1px 4px #000;
+      }
+
+      .hero-photo-note a { color: inherit; }
+
       .hero::after {
         content: "";
         position: absolute;
@@ -1478,11 +1496,12 @@
           <div class="preview-head">
             <p>Coffee Shop Preview</p>
           </div>
-          <div class="hero">
+          <div class="hero no-photo" id="detail-hero">
             <img
-              src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=1200&auto=format&fit=crop"
-              alt="Coffee shop interior"
+              id="detail-image"
+              alt=""
             />
+            <span class="hero-photo-note" id="detail-photo-note"></span>
             <div class="hero-badges">
               <span class="hero-badge rank" id="detail-rank">#1 Top 100</span>
               <span class="hero-badge country" id="detail-country">Country</span>
@@ -1855,7 +1874,104 @@
         return [shop.city, shop.country_normalized].filter(Boolean).join(", ") || shop.country_normalized;
       }
 
+      async function updateShopPhoto(shop) {
+        const hero = document.getElementById("detail-hero");
+        const image = document.getElementById("detail-image");
+        const note = document.getElementById("detail-photo-note");
+        const shopId = shop ? shop.id : "";
+        if (image.dataset.shopId === shopId && image.dataset.photoStatus !== "waiting") return;
+        image.dataset.shopId = shopId;
+        image.dataset.photoStatus = "done";
+        image.removeAttribute("src");
+        image.alt = shop ? `Photo of ${safeShopName(shop)}` : "";
+        hero.classList.add("no-photo");
+        note.replaceChildren();
+        if (!shop) return;
+
+        const credit = (label, url) => {
+          note.replaceChildren();
+          const link = document.createElement("a");
+          link.textContent = label;
+          link.href = url;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          note.appendChild(link);
+        };
+        const display = (url) => {
+          image.onload = () => {
+            if (image.dataset.shopId === shopId) hero.classList.remove("no-photo");
+          };
+          image.onerror = () => {
+            if (image.dataset.shopId !== shopId) return;
+            hero.classList.add("no-photo");
+            note.replaceChildren();
+            if (url === shop.image_url) loadGoogleShopPhoto(shop, shopId, image, hero, note);
+          };
+          image.src = url;
+        };
+        if (shop.image_url) {
+          credit("Photo: World's 100 Best Coffee Shops", shop.source_url);
+          display(shop.image_url);
+        } else {
+          await loadGoogleShopPhoto(shop, shopId, image, hero, note);
+        }
+      }
+
+      async function loadGoogleShopPhoto(shop, shopId, image, hero, note) {
+        if (!shop.place_id || !googleMapsKey) return;
+        if (!window.google?.maps?.importLibrary) {
+          image.dataset.photoStatus = "waiting";
+          return;
+        }
+        try {
+          const { Place } = await google.maps.importLibrary("places");
+          const place = new Place({ id: shop.place_id });
+          await place.fetchFields({ fields: ["photos"] });
+          if (image.dataset.shopId !== shopId || !place.photos?.length) return;
+          const photo = place.photos[0];
+          image.onload = () => {
+            if (image.dataset.shopId === shopId) hero.classList.remove("no-photo");
+          };
+          image.onerror = () => {
+            if (image.dataset.shopId === shopId) hero.classList.add("no-photo");
+          };
+          image.src = photo.getURI({ maxWidth: 1200 });
+          note.replaceChildren();
+          const attributions = photo.authorAttributions || [];
+          if (attributions.length) {
+            note.append("Photo: ");
+            attributions.forEach((author, index) => {
+              if (index) note.append(", ");
+              if (author.uri?.startsWith("https://")) {
+                const link = document.createElement("a");
+                link.href = author.uri;
+                link.textContent = author.displayName || "Google Maps contributor";
+                link.target = "_blank";
+                link.rel = "noopener noreferrer";
+                note.appendChild(link);
+              } else {
+                note.append(author.displayName || "Google Maps contributor");
+              }
+            });
+          } else {
+            note.append("Photo: Google Maps");
+          }
+          if (photo.googleMapsURI?.startsWith("https://")) {
+            note.append(" · ");
+            const source = document.createElement("a");
+            source.href = photo.googleMapsURI;
+            source.textContent = "View on Google Maps";
+            source.target = "_blank";
+            source.rel = "noopener noreferrer";
+            note.appendChild(source);
+          }
+        } catch (_error) {
+          // Official images and a neutral background remain usable without Places access.
+        }
+      }
+
       function updateDetailPanel(shop) {
+        updateShopPhoto(shop);
         if (!shop) {
           document.getElementById("detail-name").textContent = "No matching shop";
           document.getElementById("detail-address").textContent = "Adjust filters to view coffee shop details.";
@@ -2127,61 +2243,19 @@
           String(shop.lat).trim() !== "" &&
           String(shop.lng).trim() !== "" &&
           Number.isFinite(Number(shop.lat)) &&
-          Number.isFinite(Number(shop.lng))
+          Number.isFinite(Number(shop.lng)) &&
+          Math.abs(Number(shop.lat)) <= 90 &&
+          Math.abs(Number(shop.lng)) <= 180
         );
       }
 
-      function stableSeed(value) {
-        let seed = 2166136261;
-        for (let index = 0; index < value.length; index += 1) {
-          seed ^= value.charCodeAt(index);
-          seed = Math.imul(seed, 16777619);
-        }
-        return seed >>> 0;
+      function coordinatePosition(shop) {
+        if (!hasValidCoordinates(shop)) return null;
+        return { lat: Number(shop.lat), lng: Number(shop.lng) };
       }
 
-      function stableUnitValue(value) {
-        return (stableSeed(value) % 10000) / 10000;
-      }
-
-      function clampLatitude(value) {
-        return Math.max(-84, Math.min(84, value));
-      }
-
-      function wrapLongitude(value) {
-        if (value > 180) return value - 360;
-        if (value < -180) return value + 360;
-        return value;
-      }
-
-      function centroidOffset(shop, axis) {
-        const base = stableUnitValue(`${shop.id}|${shop.rank}|${shop.country_normalized}|${axis}`) - 0.5;
-        const spread = axis === "lat" ? 1.1 : 1.8;
-        return base * spread;
-      }
-
-      function coordinatePosition(shop, countriesByName, fallbackCountriesByName = allCountriesByName) {
-        if (hasValidCoordinates(shop)) {
-          return { lat: Number(shop.lat), lng: Number(shop.lng), approximate: false };
-        }
-        const country =
-          countriesByName.get(shop.country_normalized) ||
-          fallbackCountriesByName.get(shop.country_normalized);
-        const countryLat = country ? Number(country.lat) : NaN;
-        const countryLng = country ? Number(country.lng) : NaN;
-        if (!Number.isFinite(countryLat) || !Number.isFinite(countryLng)) return null;
-        return {
-          lat: clampLatitude(countryLat + centroidOffset(shop, "lat")),
-          lng: wrapLongitude(countryLng + centroidOffset(shop, "lng")),
-          approximate: true,
-        };
-      }
-
-      function unresolvedHint(approximateCount, hiddenCount) {
-        const parts = [];
-        if (approximateCount > 0) parts.push(`${approximateCount} use country-centroid placement`);
-        if (hiddenCount > 0) parts.push(`${hiddenCount} could not be positioned`);
-        return parts.length ? ` ${parts.join("; ")}.` : "";
+      function unresolvedHint(hiddenCount) {
+        return hiddenCount > 0 ? ` ${hiddenCount} have no verified coordinates.` : "";
       }
 
       function renderCountryMarkers(
@@ -2232,23 +2306,21 @@
         });
       }
 
-      function renderShopMarkers(shops, countriesByName, fallbackCountriesByName = allCountriesByName) {
+      function renderShopMarkers(shops, countriesByName, countries, maxCount) {
         const positionedShops = shops
           .map((shop) => ({
             shop,
-            position: coordinatePosition(shop, countriesByName, fallbackCountriesByName),
-            exact: hasValidCoordinates(shop),
+            position: coordinatePosition(shop),
           }))
           .filter((entry) => Boolean(entry.position));
-        const approximateCount = positionedShops.filter((entry) => !entry.exact).length;
         const hiddenCount = shops.length - positionedShops.length;
         setMapHint(
-          `Zoomed in: individual coffee shop pins.${unresolvedHint(approximateCount, hiddenCount)}`
+          `Zoomed in: individual coffee shop pins.${unresolvedHint(hiddenCount)}`
         );
 
         if (!positionedShops.length) {
           hideMapMessage();
-          setMapHint("No coordinates are available for the current filter set.");
+          renderCountryMarkers(countries, shops, maxCount, "No verified shop coordinates are available for the current filter set. Select a country to browse its shops.");
           const fallbackShop = shops.find((shop) => shop.id === state.selectedShopId) || shops[0] || null;
           updateDetailPanel(fallbackShop);
           return;
@@ -2328,7 +2400,7 @@
           }
           return;
         }
-        renderShopMarkers(mapShops, countriesByName, allCountriesByName);
+        renderShopMarkers(mapShops, countriesByName, countries, maxCount);
       }
 
       const MAP_STYLE_BASE = [

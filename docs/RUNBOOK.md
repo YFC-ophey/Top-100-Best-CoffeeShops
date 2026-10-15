@@ -54,7 +54,7 @@ workflow that pushes to main.
 ## Playbooks
 
 **Run failed on "Scrape collapse"** — the source layout probably changed.
-Check the two list URLs in a browser. If the site is fine and the list really
+Check the four list URLs in a browser. If the site is fine and the list really
 shrank, re-run with `SCRAPE_ALLOW_SHRINK=1` locally, inspect the diff, push.
 If the layout changed, fix the parsers in `src/scraper.py` (legacy `<li>`
 parser first, Elementor loop-card parser second) against saved HTML.
@@ -79,7 +79,7 @@ The daily Feb 10-20 cron catches the new list automatically. After it lands:
    window, so the incoming scrape is tagged with the new year. If it is missed,
    the new list overwrites the previous one under the old year and the previous
    edition is lost — recover with `git revert` of the bot commit, bump, re-run.
-2. Check the run log: both categories near 100 shops.
+2. Check the run log: all four categories near 100 shops.
 3. Confirm `data/metadata.json` lists both editions under `counts_by_edition`,
    and that the site's Edition filter shows two chips.
 4. Expect the geocode reminder issue (new shops lack place_ids) — run
@@ -97,3 +97,18 @@ python3.11 -m venv .venv && ./.venv/bin/pip install -e ".[dev]"
 ```
 Branch discipline: work in `.worktrees/<name>` (gitignored) on isolated
 branches; never commit directly to main — CI owns main's data commits.
+
+
+## Regional list updates
+
+`src/scraper.py:SOURCE_URLS` contains all four official sources, including Europe
+and North, Central America and the Caribbean. Collection controls are populated
+from the dataset, so regional rows appear in the map and list by default.
+Before shipping an added region, verify ranks 1–100, check new country labels
+against `COUNTRY_CENTROIDS`, and review missing city/address/coordinate coverage.
+The shared 2026 edition year identifies these current rankings; it does not imply
+that every region releases in February. Regional sources refresh every Monday too.
+Shop images come from each official ranking card, with detail-page Open Graph
+images as a fallback. Preserve prior image URLs when transient detail fetches fail.
+Google Place photo URLs are requested only in the browser with the optional key
+and are never cached. Missing coordinates do not produce individual map pins.

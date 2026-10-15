@@ -85,16 +85,14 @@ _SUBREGION_EXACT_LABELS = {
 # minimal — an entry should only carry a field that is still demonstrably
 # wrong, never a name the source itself spells differently.
 _SHOP_FIELD_OVERRIDES: dict[tuple[str, int], dict[str, str]] = {
-    # Geocoding resolves this one to a Seeb street address; the shop publishes
-    # Muscat and operates several branches. City and country also guard against
-    # the numeric-country row this locale has produced in the past.
+    # Keep the source's Muscat city and country when its list card omits them.
+    # The published street address must take precedence over a generic label.
     (
         TOP_100_CATEGORY,
         68,
     ): {
         "city": "Muscat",
         "country": "Oman",
-        "formatted_address": "Multiple locations, Muscat, Oman",
     }
 }
 
@@ -202,6 +200,7 @@ def _load_shops(data_file: Path) -> list[CoffeeShop]:
         shop.address = _normalize_shop_text(shop.address)
         shop.formatted_address = _normalize_shop_text(shop.formatted_address)
         shop.source_url = _normalize_shop_text(shop.source_url)
+        shop.image_url = _normalize_shop_text(shop.image_url)
         _apply_shop_override(shop)
     _apply_address_overrides(shops)
     return shops
@@ -627,6 +626,7 @@ def _build_overview_shops(shops: list[CoffeeShop]) -> tuple[list[dict[str, objec
             "city": city,
             "address": _normalize_shop_text(shop.address),
             "source_url": _normalize_shop_text(shop.source_url),
+            "image_url": _normalize_shop_text(shop.image_url),
             "google_maps_url": _google_maps_link(shop),
             "mobile_google_maps_url": _mobile_maps_link(shop),
             "rank_band": _rank_band(shop.rank),
@@ -715,6 +715,13 @@ def _build_overview_filters(
         },
     ]
 
+    known_categories = {item["key"] for item in categories}
+    categories.extend(
+        {"key": category, "label": category, "count": count, "active": True}
+        for category, count in sorted(category_counts.items())
+        if category not in known_categories
+    )
+
     countries = [
         {
             "key": str(country["country"]),
@@ -736,7 +743,7 @@ def _build_overview_filters(
         "editions": editions,
         "rank_bands": RANK_BANDS,
         "defaults": {
-            "active_categories": [TOP_100_CATEGORY, SOUTH_AMERICA_CATEGORY],
+            "active_categories": [item["key"] for item in categories],
             "active_editions": [edition["key"] for edition in editions],
             "country": "All",
             "rank_band": "All",

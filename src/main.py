@@ -175,6 +175,8 @@ def _carry_forward_geocode(previous: list[CoffeeShop], current: list[CoffeeShop]
             shop.lng = match.lng
         if shop.formatted_address is None and match.formatted_address:
             shop.formatted_address = match.formatted_address
+        if not shop.image_url and match.image_url:
+            shop.image_url = match.image_url
         # A detail-page fetch that times out returns a shop with no city or
         # address. Without this, one flaky Monday would blank enrichment that
         # took a full crawl to collect.
