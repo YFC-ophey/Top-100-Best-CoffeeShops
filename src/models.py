@@ -11,6 +11,7 @@ class CoffeeShop:
     rank: int
     category: str
     edition_year: int = CURRENT_EDITION_YEAR
+    snapshot_label: str = ""
     source_url: str | None = None
     image_url: str | None = None
     address: str | None = None
@@ -18,6 +19,10 @@ class CoffeeShop:
     lng: float | None = None
     place_id: str | None = None
     formatted_address: str | None = None
+
+    def __post_init__(self) -> None:
+        if not self.snapshot_label:
+            self.snapshot_label = f"{self.edition_year} · Current"
 
     def to_dict(self) -> dict[str, object]:
         return asdict(self)

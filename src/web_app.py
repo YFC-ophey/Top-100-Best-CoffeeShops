@@ -748,6 +748,7 @@ def _build_overview_shops(shops: list[CoffeeShop]) -> tuple[list[dict[str, objec
             "rank": shop.rank,
             "category": normalize_category(shop.category),
             "edition_year": normalize_edition_year(shop.edition_year),
+            "snapshot_label": shop.snapshot_label,
             "country_raw": _normalize_shop_text(shop.country),
             "country_normalized": country_normalized,
             "city": city,
@@ -871,7 +872,7 @@ def _build_overview_filters(
         "rank_bands": RANK_BANDS,
         "defaults": {
             "active_categories": [item["key"] for item in categories],
-            "active_editions": [edition["key"] for edition in editions],
+            "active_editions": [editions[0]["key"]] if editions else [],
             "country": "All",
             "rank_band": "All",
         },
@@ -887,7 +888,9 @@ def _rank_band(rank: int) -> str:
 
 def _shop_id(shop: CoffeeShop) -> str:
     edition = normalize_edition_year(shop.edition_year)
-    base = f"{edition}-{normalize_category(shop.category)}-{shop.rank}-{shop.name}".casefold()
+    snapshot = shop.snapshot_label.strip()
+    snapshot_prefix = "" if snapshot.endswith("· Current") else f"{snapshot}-"
+    base = f"{snapshot_prefix}{edition}-{normalize_category(shop.category)}-{shop.rank}-{shop.name}".casefold()
     normalized = re.sub(r"[^a-z0-9]+", "-", base).strip("-")
     return normalized or f"shop-{shop.rank}"
 
