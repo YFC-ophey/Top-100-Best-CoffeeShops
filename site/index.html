@@ -7961,6 +7961,34 @@
       const googleMapsKey = "";
       const likesApiBase = "";
       const likesEndpoint = `${(likesApiBase || window.location.origin).replace(/\/$/, "")}/api/likes`;
+      const likesSupabaseUrl = "https://tkktkfqutsqeljzxqunx.supabase.co";
+      const likesSupabaseKey = "sb_publishable_Eem5Oy9dYgXErP9TcdHr6A_bxkT2OF-";
+      const useSupabaseLikes = Boolean(likesSupabaseUrl && likesSupabaseKey);
+
+      function requestMapLikes(payload = null) {
+        if (useSupabaseLikes) {
+          const action = payload ? "submit_map_like" : "get_map_likes";
+          return fetch(`${likesSupabaseUrl}/rest/v1/rpc/${action}`, {
+            method: "POST",
+            headers: {
+              apikey: likesSupabaseKey,
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload ? {
+              p_nickname: payload.nickname,
+              p_rating: payload.rating,
+              p_voter_id: payload.voter_id,
+              p_website: payload.website,
+            } : {}),
+          });
+        }
+        return fetch(likesEndpoint, payload ? {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify(payload),
+        } : { headers: { Accept: "application/json" } });
+      }
       const SHOP_ZOOM_THRESHOLD = 4;
       const GLOBAL_COUNTRY_MIN_SHOPS = 2;
 
@@ -9030,7 +9058,7 @@
 
       async function refreshMapLoveCount() {
         try {
-          const response = await fetch(likesEndpoint, { headers: { Accept: "application/json" } });
+          const response = await requestMapLikes();
           if (!response.ok) throw new Error("Likes service unavailable");
           const data = await response.json();
           likesServiceReady = true;
@@ -9104,18 +9132,14 @@
         submitButton.disabled = true;
         ratingStatus.textContent = "Sending your rating…";
         try {
-          const response = await fetch(likesEndpoint, {
-            method: "POST",
-            headers: { "Content-Type": "application/json", Accept: "application/json" },
-            body: JSON.stringify({
-              nickname: document.getElementById("rating-nickname").value,
-              rating: selectedLoveRating,
-              voter_id: getVoterId(),
-              website: ratingForm.elements.website.value,
-            }),
+          const response = await requestMapLikes({
+            nickname: document.getElementById("rating-nickname").value,
+            rating: selectedLoveRating,
+            voter_id: getVoterId(),
+            website: ratingForm.elements.website.value,
           });
           const data = await response.json().catch(() => ({}));
-          if (!response.ok) throw new Error(data.detail || "Could not send your rating. Please try again.");
+          if (!response.ok) throw new Error(data.message || data.detail || "Could not send your rating. Please try again.");
           likesServiceReady = true;
           document.getElementById("map-love-count").textContent = `${Number(data.love_count || 0).toLocaleString()} loves`;
           ratingStatus.textContent = "Thanks for sharing the love! Your rating is now on the likes page.";
@@ -9133,14 +9157,16 @@
         }
       });
 
-      refreshMapLoveCount();
-      let alreadyPrompted = false;
-      try { alreadyPrompted = sessionStorage.getItem("roast-rating-prompt-seen-v2") === "1"; } catch (_error) {}
-      if (!alreadyPrompted) setTimeout(() => {
-        let seenSinceLoad = false;
-        try { seenSinceLoad = sessionStorage.getItem("roast-rating-prompt-seen-v2") === "1"; } catch (_error) {}
-        if (!seenSinceLoad) openRatingDialog();
-      }, 3000);
+      refreshMapLoveCount().then((ready) => {
+        if (!ready) return;
+        let alreadyPrompted = false;
+        try { alreadyPrompted = sessionStorage.getItem("roast-rating-prompt-seen-v2") === "1"; } catch (_error) {}
+        if (!alreadyPrompted) setTimeout(() => {
+          let seenSinceLoad = false;
+          try { seenSinceLoad = sessionStorage.getItem("roast-rating-prompt-seen-v2") === "1"; } catch (_error) {}
+          if (!seenSinceLoad && likesServiceReady) openRatingDialog();
+        }, 3000);
+      });
 
       document.getElementById("reset-filters").addEventListener("click", resetFilters);
       document.querySelector(".hero-save").addEventListener("click", toggleSavedShop);
