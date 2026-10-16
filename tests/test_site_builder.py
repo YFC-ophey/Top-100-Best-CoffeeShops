@@ -22,6 +22,7 @@ def test_build_static_site_generates_index_and_styles(tmp_path: Path) -> None:
     build_static_site(data_file=data_file, site_dir=site_dir, csv_file=output_csv, kml_file=output_kml)
 
     index = (site_dir / "index.html").read_text(encoding="utf-8")
+    likes = (site_dir / "likes.html").read_text(encoding="utf-8")
     style = (site_dir / "assets" / "style.css").read_text(encoding="utf-8")
     assert "<title>ROAST. | Global Coffee Explorer</title>" in index
     assert "World's 100 Best Coffee Shops" in index
@@ -40,6 +41,10 @@ def test_build_static_site_generates_index_and_styles(tmp_path: Path) -> None:
     assert "const overviewShops = " in index
     assert "const overviewCountries = " in index
     assert "const overviewFilters = " in index
+    assert 'href="likes.html"' in index
+    assert "rate-map-button" in index
+    assert 'const likesApiBase = "";' in index
+    assert "Latest love notes" in likes
     assert "styles are inlined in templates/index.html" in style
 
 
@@ -122,3 +127,20 @@ def test_build_static_site_embeds_api_key_when_opt_in_enabled(tmp_path: Path, mo
 
     index = (site_dir / "index.html").read_text(encoding="utf-8")
     assert 'const googleMapsKey = "TEST_MAPS_KEY_PLACEHOLDER_DO_NOT_USE";' in index
+
+
+def test_build_static_site_embeds_public_likes_api_url(tmp_path: Path, monkeypatch) -> None:
+    data_file = tmp_path / "data" / "current_list.json"
+    output_csv = tmp_path / "output" / "coffee_shops.csv"
+    output_kml = tmp_path / "output" / "coffee_shops.kml"
+    site_dir = tmp_path / "site"
+    data_file.parent.mkdir(parents=True, exist_ok=True)
+    data_file.write_text(json.dumps([]), encoding="utf-8")
+    monkeypatch.setenv("LIKES_API_URL", "https://likes.example.test/")
+
+    build_static_site(data_file=data_file, site_dir=site_dir, csv_file=output_csv, kml_file=output_kml)
+
+    index = (site_dir / "index.html").read_text(encoding="utf-8")
+    likes = (site_dir / "likes.html").read_text(encoding="utf-8")
+    assert 'const likesApiBase = "https://likes.example.test";' in index
+    assert 'const likesApiBase = "https://likes.example.test";' in likes

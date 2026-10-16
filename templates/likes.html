@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#130a08" />
+    <title>Map Love | ROAST.</title>
+    <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@500,700,800&f[]=general-sans@400,500,600,700&display=swap" />
+    <style>
+      :root { color-scheme: dark; --gold: #f7c69a; --orange: #df6e2e; --white: #f8efe6; --muted: #d0bba9; --line: rgba(247, 198, 154, .22); }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-height: 100vh; color: var(--white); font-family: "General Sans", system-ui, sans-serif; background: radial-gradient(circle at 10% 0%, rgba(223, 110, 46, .22), transparent 35%), linear-gradient(158deg, #080403, #21120d); }
+      a, button { touch-action: manipulation; }
+      :is(a, button):focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+      .page { width: min(780px, calc(100% - 32px)); margin: 0 auto; padding: 24px 0 48px; }
+      .topbar { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 16px; border: 1px solid var(--line); border-radius: 18px; background: rgba(31, 18, 14, .9); }
+      .brand { color: var(--gold); text-decoration: none; font-family: "Cabinet Grotesk", sans-serif; font-size: 1.25rem; font-weight: 800; }
+      .back { display: inline-flex; min-height: 44px; align-items: center; padding: 8px 12px; border: 1px solid var(--line); border-radius: 11px; color: var(--white); text-decoration: none; font-size: .9rem; font-weight: 700; }
+      main { padding-top: 52px; }
+      .eyebrow { margin: 0 0 10px; color: var(--gold); font-size: .78rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+      h1 { margin: 0; font-family: "Cabinet Grotesk", sans-serif; font-size: clamp(2rem, 7vw, 3.5rem); line-height: 1.04; }
+      .intro { max-width: 560px; margin: 14px 0 26px; color: var(--muted); line-height: 1.65; }
+      .summary { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; padding: 20px; border: 1px solid var(--line); border-radius: 16px; background: rgba(31, 18, 14, .86); }
+      .count { color: var(--gold); font-family: "Cabinet Grotesk", sans-serif; font-size: 2.5rem; font-weight: 800; }
+      .summary-label { color: var(--muted); }
+      .sentiment-summary { width: 100%; display: flex; flex-wrap: wrap; gap: 10px; }
+      .sentiment-count { min-height: 38px; display: inline-flex; align-items: center; gap: 7px; padding: 7px 12px; border: 1px solid var(--line); border-radius: 999px; color: var(--white); background: rgba(255,255,255,.035); font-size: .88rem; font-weight: 700; }
+      .ratings { margin-top: 24px; }
+      .ratings h2 { margin: 0 0 12px; font-family: "Cabinet Grotesk", sans-serif; font-size: 1.3rem; }
+      .status { padding: 18px; border: 1px solid var(--line); border-radius: 14px; color: var(--muted); background: rgba(31, 18, 14, .7); line-height: 1.5; }
+      .like-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+      .like-item { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 16px 18px; border: 1px solid var(--line); border-radius: 14px; background: rgba(31, 18, 14, .78); }
+      .nickname { overflow-wrap: anywhere; font-weight: 700; }
+      .date { margin-top: 3px; color: var(--muted); font-size: .78rem; }
+      .sentiment { color: #ff9cab; white-space: nowrap; font-size: 1.25rem; }
+      .sentiment[data-rating="0"] { color: var(--gold); }
+      .hide { display: none !important; }
+      @media (max-width: 480px) { .page { width: min(100% - 24px, 780px); padding-top: 12px; } main { padding-top: 38px; } .like-item { padding: 14px; } }
+      @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; } }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header class="topbar">
+        <a class="brand" href="index.html" aria-label="ROAST coffee map home">ROAST<span aria-hidden="true">.</span></a>
+        <a class="back" href="index.html">← Back to the map</a>
+      </header>
+      <main>
+        <p class="eyebrow">Coffee people, together</p>
+        <h1>Map love</h1>
+        <p class="intro">Every ❤️ or 💔 is a rating from someone who explored ROAST. Nicknames are shared here with their permission when they submit a rating.</p>
+        <section class="summary" aria-label="Total map ratings">
+          <span class="count" id="total-likes">—</span>
+          <span class="summary-label">people have rated this map</span>
+          <div class="sentiment-summary" aria-label="Rating breakdown">
+            <span class="sentiment-count" id="love-votes">— ❤️</span>
+            <span class="sentiment-count" id="broken-heart-votes">— 💔</span>
+          </div>
+        </section>
+        <section class="ratings" aria-labelledby="ratings-heading">
+          <h2 id="ratings-heading">Latest love notes</h2>
+          <p class="status" id="likes-status" role="status" aria-live="polite">Loading ratings…</p>
+          <ul class="like-list hide" id="like-list"></ul>
+        </section>
+      </main>
+    </div>
+    <script>
+      const likesApiBase = {{ likes_api_url | tojson }};
+      const endpoint = `${(likesApiBase || window.location.origin).replace(/\/$/, "")}/api/likes`;
+      const list = document.getElementById("like-list");
+      const status = document.getElementById("likes-status");
+      const dateFormatter = new Intl.DateTimeFormat(undefined, { dateStyle: "medium" });
+
+      function makeLikeItem(like) {
+        const item = document.createElement("li");
+        item.className = "like-item";
+        const identity = document.createElement("div");
+        const nickname = document.createElement("div");
+        nickname.className = "nickname";
+        nickname.textContent = like.nickname;
+        const date = document.createElement("div");
+        date.className = "date";
+        const parsed = new Date(like.created_at);
+        date.textContent = Number.isNaN(parsed.getTime()) ? "Coffee map fan" : dateFormatter.format(parsed);
+        identity.append(nickname, date);
+        const sentiment = document.createElement("span");
+        sentiment.className = "sentiment";
+        sentiment.dataset.rating = String(like.rating);
+        const isLove = Number(like.rating) === 1;
+        sentiment.setAttribute("aria-label", isLove ? "Loves this map" : "This map needs improvement");
+        sentiment.textContent = isLove ? "❤️" : "💔";
+        item.append(identity, sentiment);
+        return item;
+      }
+
+      async function loadLikes() {
+        try {
+          const response = await fetch(endpoint, { headers: { Accept: "application/json" } });
+          if (!response.ok) throw new Error("The ratings service is not available yet.");
+          const data = await response.json();
+          document.getElementById("total-likes").textContent = Number(data.count || 0).toLocaleString();
+          document.getElementById("love-votes").textContent = `${Number(data.love_count || 0).toLocaleString()} ❤️`;
+          document.getElementById("broken-heart-votes").textContent = `${Number(data.broken_heart_count || 0).toLocaleString()} 💔`;
+          list.replaceChildren(...(Array.isArray(data.likes) ? data.likes.map(makeLikeItem) : []));
+          status.classList.toggle("hide", list.children.length > 0);
+          status.textContent = list.children.length ? "" : "No ratings yet. Be the first to leave a little love on the map.";
+          list.classList.toggle("hide", list.children.length === 0);
+        } catch (_error) {
+          document.getElementById("total-likes").textContent = "—";
+          status.textContent = "Ratings are not connected yet. Once the shared voting service is configured, all ratings will appear here.";
+        }
+      }
+
+      loadLikes();
+    </script>
+  </body>
+</html>

@@ -7,12 +7,16 @@ from functools import lru_cache
 import os
 from pathlib import Path
 import re
+import sqlite3
+import uuid
 import unicodedata
 from urllib.parse import urlencode
 
 from fastapi import FastAPI, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.templating import Jinja2Templates
+from pydantic import BaseModel, Field
 
 from src.category_utils import (
     SOUTH_AMERICA_CATEGORY,
@@ -102,11 +106,94 @@ _ADDRESS_FILE_SPECS = (
     ("south america coffee shops address.csv", SOUTH_AMERICA_CATEGORY),
 )
 
-def create_app(data_file: Path, csv_file: Path, kml_file: Path) -> FastAPI:
+class MapLikeSubmission(BaseModel):
+    nickname: str = Field(min_length=1, max_length=24)
+    rating: int = Field(ge=0, le=1)
+    voter_id: uuid.UUID
+    website: str = ""
+
+
+def _ensure_likes_table(database: Path) -> None:
+    database.parent.mkdir(parents=True, exist_ok=True)
+    with sqlite3.connect(database) as connection:
+        schema = connection.execute(
+            "SELECT sql FROM sqlite_master WHERE type = 'table' AND name = 'map_likes'"
+        ).fetchone()
+        if schema is None:
+            connection.execute(
+                """CREATE TABLE map_likes (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                voter_id TEXT NOT NULL UNIQUE,
+                nickname TEXT NOT NULL,
+                rating INTEGER NOT NULL CHECK (rating IN (0, 1)),
+                created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+                )"""
+            )
+        elif "between 1 and 5" in " ".join(schema[0].lower().split()):
+            connection.execute(
+                """CREATE TABLE map_likes_new (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    voter_id TEXT NOT NULL UNIQUE,
+                    nickname TEXT NOT NULL,
+                    rating INTEGER NOT NULL CHECK (rating IN (0, 1)),
+                    created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+                )"""
+            )
+            connection.execute(
+                """INSERT INTO map_likes_new (id, voter_id, nickname, rating, created_at)
+                   SELECT id, voter_id, nickname, CASE WHEN rating >= 3 THEN 1 ELSE 0 END, created_at
+                   FROM map_likes"""
+            )
+            connection.execute("DROP TABLE map_likes")
+            connection.execute("ALTER TABLE map_likes_new RENAME TO map_likes")
+
+
+def _read_likes(database: Path) -> dict[str, object]:
+    _ensure_likes_table(database)
+    with sqlite3.connect(database) as connection:
+        connection.row_factory = sqlite3.Row
+        count, love_count, broken_heart_count = connection.execute(
+            """SELECT COUNT(*),
+                      COALESCE(SUM(CASE WHEN rating = 1 THEN 1 ELSE 0 END), 0),
+                      COALESCE(SUM(CASE WHEN rating = 0 THEN 1 ELSE 0 END), 0)
+               FROM map_likes"""
+        ).fetchone()
+        rows = connection.execute(
+            "SELECT nickname, rating, created_at FROM map_likes ORDER BY id DESC"
+        ).fetchall()
+    return {
+        "count": count,
+        "love_count": love_count,
+        "broken_heart_count": broken_heart_count,
+        "likes": [dict(row) for row in rows],
+    }
+
+
+def create_app(
+    data_file: Path,
+    csv_file: Path,
+    kml_file: Path,
+    likes_db_path: Path | None = None,
+) -> FastAPI:
     app = FastAPI(title="Top100BestCoffeeShops Preview")
     app.state.data_file = data_file
     app.state.csv_file = csv_file
     app.state.kml_file = kml_file
+    app.state.likes_db_path = likes_db_path or Path(
+        os.getenv("LIKES_DB_PATH", str(BASE_DIR / "data" / "likes.sqlite3"))
+    )
+    app.state.likes_api_url = os.getenv("LIKES_API_URL", "").strip().rstrip("/")
+    allowed_origins = [
+        origin.strip()
+        for origin in os.getenv("LIKES_ALLOWED_ORIGINS", "*").split(",")
+        if origin.strip()
+    ]
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=allowed_origins or ["*"],
+        allow_methods=["GET", "POST", "OPTIONS"],
+        allow_headers=["Accept", "Content-Type"],
+    )
 
     @app.get("/health")
     def health() -> dict[str, str]:
@@ -142,8 +229,46 @@ def create_app(data_file: Path, csv_file: Path, kml_file: Path) -> FastAPI:
             "overview_filters": overview_filters,
             "data_quality": data_quality,
             "google_maps_js_api_key": _google_maps_js_key(),
+            "likes_api_url": app.state.likes_api_url,
         }
         return TEMPLATES.TemplateResponse(request=request, name="index.html", context=context)
+
+    @app.get("/likes")
+    def likes_page(request: Request):
+        return TEMPLATES.TemplateResponse(
+            request=request,
+            name="likes.html",
+            context={"likes_api_url": app.state.likes_api_url},
+        )
+
+    @app.get("/api/likes")
+    def get_likes():
+        return _read_likes(app.state.likes_db_path)
+
+    @app.post("/api/likes", status_code=201)
+    def add_like(submission: MapLikeSubmission):
+        nickname = "".join(
+            character
+            for character in unicodedata.normalize("NFKC", submission.nickname).strip()
+            if not unicodedata.category(character).startswith("C")
+        )[:24]
+        if not nickname:
+            raise HTTPException(status_code=422, detail="Enter a nickname to continue.")
+        if submission.website.strip():
+            raise HTTPException(status_code=422, detail="Unable to accept this submission.")
+
+        _ensure_likes_table(app.state.likes_db_path)
+        with sqlite3.connect(app.state.likes_db_path) as connection:
+            connection.execute(
+                """INSERT INTO map_likes (voter_id, nickname, rating) VALUES (?, ?, ?)
+                   ON CONFLICT(voter_id) DO UPDATE SET
+                       nickname = excluded.nickname,
+                       rating = excluded.rating,
+                       created_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')""",
+                (str(submission.voter_id), nickname, submission.rating),
+            )
+
+        return _read_likes(app.state.likes_db_path)
 
     @app.get("/artifacts/{artifact_name}")
     def artifact(artifact_name: str):
