@@ -24,7 +24,7 @@ as $$
     'count', (select pg_catalog.count(*) from private.map_likes),
     'love_count', (select pg_catalog.count(*) from private.map_likes where rating = 1),
     'broken_heart_count', (select pg_catalog.count(*) from private.map_likes where rating = 0),
-    'likes', pg_catalog.coalesce(
+    'likes', coalesce(
       (
         select pg_catalog.jsonb_agg(
           pg_catalog.jsonb_build_object(
@@ -59,13 +59,13 @@ set search_path = ''
 as $$
 declare
   cleaned_nickname text := pg_catalog.btrim(
-    pg_catalog.regexp_replace(pg_catalog.coalesce(p_nickname, ''), '[[:cntrl:]]', '', 'g')
+    pg_catalog.regexp_replace(coalesce(p_nickname, ''), '[[:cntrl:]]', '', 'g')
   );
 begin
   if pg_catalog.char_length(cleaned_nickname) not between 1 and 24
      or p_rating is null or p_rating not in (0, 1)
      or p_voter_id is null
-     or pg_catalog.btrim(pg_catalog.coalesce(p_website, '')) <> '' then
+     or pg_catalog.btrim(coalesce(p_website, '')) <> '' then
     raise exception 'Invalid map rating' using errcode = '22023';
   end if;
 
