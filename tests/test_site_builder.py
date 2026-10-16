@@ -144,3 +144,22 @@ def test_build_static_site_embeds_public_likes_api_url(tmp_path: Path, monkeypat
     likes = (site_dir / "likes.html").read_text(encoding="utf-8")
     assert 'const likesApiBase = "https://likes.example.test";' in index
     assert 'const likesApiBase = "https://likes.example.test";' in likes
+
+
+def test_build_static_site_embeds_supabase_rating_config(tmp_path: Path, monkeypatch) -> None:
+    data_file = tmp_path / "data" / "current_list.json"
+    output_csv = tmp_path / "output" / "coffee_shops.csv"
+    output_kml = tmp_path / "output" / "coffee_shops.kml"
+    site_dir = tmp_path / "site"
+    data_file.parent.mkdir(parents=True, exist_ok=True)
+    data_file.write_text(json.dumps([]), encoding="utf-8")
+    monkeypatch.setenv("LIKES_SUPABASE_URL", "https://ratings.supabase.co/")
+    monkeypatch.setenv("LIKES_SUPABASE_PUBLISHABLE_KEY", "sb_publishable_test")
+
+    build_static_site(data_file=data_file, site_dir=site_dir, csv_file=output_csv, kml_file=output_kml)
+
+    for page in ("index.html", "likes.html"):
+        html = (site_dir / page).read_text(encoding="utf-8")
+        assert 'const likesSupabaseUrl = "https://ratings.supabase.co";' in html
+        assert 'const likesSupabaseKey = "sb_publishable_test";' in html
+        assert "/rest/v1/rpc/" in html
