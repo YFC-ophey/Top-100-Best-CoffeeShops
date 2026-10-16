@@ -17,10 +17,11 @@ def has_shop_changes(previous: list[CoffeeShop], current: list[CoffeeShop]) -> b
     return _canonical(previous) != _canonical(current)
 
 
-def _canonical(shops: list[CoffeeShop]) -> list[tuple[int, str, int, str, str, str]]:
+def _canonical(shops: list[CoffeeShop]) -> list[tuple[int, str, str, int, str, str, str]]:
     normalized = [
         (
             normalize_edition_year(shop.edition_year),
+            shop.snapshot_label.strip().casefold(),
             normalize_category(shop.category),
             shop.rank,
             shop.name.strip().casefold(),

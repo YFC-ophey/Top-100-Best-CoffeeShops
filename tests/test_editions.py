@@ -13,6 +13,7 @@ def _shop(
     rank: int = 1,
     category: str = "Top 100",
     edition_year: int = CURRENT_EDITION_YEAR,
+    snapshot_label: str = "",
 ) -> CoffeeShop:
     return CoffeeShop(
         name=name,
@@ -21,6 +22,7 @@ def _shop(
         rank=rank,
         category=category,
         edition_year=edition_year,
+        snapshot_label=snapshot_label,
     )
 
 
@@ -78,6 +80,17 @@ class TestArchivedEditions:
 
         assert [shop.name for shop in merged] == ["Fresh"]
 
+    def test_rescraping_current_snapshot_keeps_earlier_capture_in_same_year(self) -> None:
+        previous = [
+            _shop(name="Earlier", snapshot_label="2026 · Jul 13 capture"),
+            _shop(name="Current old"),
+        ]
+        scraped = [_shop(name="Current fresh")]
+
+        merged = src_main._merge_with_archived_editions(previous, scraped)
+
+        assert [shop.name for shop in merged] == ["Current fresh", "Earlier"]
+
 
 class TestCollapseGuardAcrossEditions:
     def test_new_edition_year_does_not_trip_the_guard(self) -> None:
@@ -101,7 +114,7 @@ class TestCollapseGuardAcrossEditions:
 
 
 class TestEditionFilters:
-    def test_filters_expose_every_edition_newest_first_and_all_active(self) -> None:
+    def test_filters_expose_edition_years_newest_first(self) -> None:
         shops = [
             _shop(name="New", edition_year=2027),
             _shop(name="Old A", rank=2, edition_year=2026),
@@ -113,7 +126,7 @@ class TestEditionFilters:
 
         assert [edition["key"] for edition in filters["editions"]] == [2027, 2026]
         assert [edition["count"] for edition in filters["editions"]] == [1, 2]
-        assert filters["defaults"]["active_editions"] == [2027, 2026]
+        assert filters["defaults"]["active_editions"] == [2027]
 
     def test_single_edition_dataset_yields_one_chip(self) -> None:
         overview_shops, _ = _build_overview_shops([_shop()])
@@ -127,6 +140,18 @@ class TestEditionFilters:
 
         assert overview_shops[0]["edition_year"] == 2025
 
+    def test_edition_filter_uses_earlier_captures_formal_year(self) -> None:
+        shops = [
+            _shop(name="Current"),
+            _shop(name="Earlier", edition_year=2025, snapshot_label="2026 · Jul 13 capture"),
+        ]
+        overview_shops, _ = _build_overview_shops(shops)
+
+        filters = _build_overview_filters(overview_shops, [])
+
+        assert filters["defaults"]["active_editions"] == [2026]
+        assert [edition["key"] for edition in filters["editions"]] == [2026, 2025]
+
 
 class TestShopIdentity:
     def test_same_rank_in_two_editions_gets_distinct_ids(self) -> None:
@@ -134,3 +159,9 @@ class TestShopIdentity:
         second = _shop(name="Onyx Coffee LAB", edition_year=2027)
 
         assert _shop_id(first) != _shop_id(second)
+
+    def test_same_list_entry_in_distinct_snapshots_gets_distinct_ids(self) -> None:
+        current = _shop(name="Onyx Coffee LAB")
+        earlier = _shop(name="Onyx Coffee LAB", snapshot_label="2026 · Jul 13 capture")
+
+        assert _shop_id(current) != _shop_id(earlier)

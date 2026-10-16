@@ -1,23 +1,29 @@
 {
-  "updated_at_utc": "2026-10-16T01:37:20Z",
-  "total_shops": 400,
+  "updated_at_utc": "2026-10-16T02:26:07Z",
+  "total_shops": 600,
   "counts_by_category": {
     "Europe": 100,
     "North, Central America and the Caribbean": 100,
-    "South America": 100,
-    "Top 100": 100
+    "South America": 200,
+    "Top 100": 200
   },
   "counts_by_edition": {
-    "2026": 400
+    "2026": 400,
+    "2025": 200
   },
   "editions": [
-    2026
+    2026,
+    2025
   ],
+  "counts_by_snapshot": {
+    "2026 · Current": 400,
+    "2026 · Jul 13 capture": 200
+  },
   "sources": {
     "Top 100": "https://theworlds100bestcoffeeshops.com/top-100-coffee-shops/",
     "South America": "https://theworlds100bestcoffeeshops.com/top-100-coffee-shops-south/",
     "Europe": "https://theworlds100bestcoffeeshops.com/top-100-coffee-shops-europe/",
     "North, Central America and the Caribbean": "https://theworlds100bestcoffeeshops.com/top-100-coffee-shops-north/"
   },
-  "geocoded_shops": 169
+  "geocoded_shops": 600
 }

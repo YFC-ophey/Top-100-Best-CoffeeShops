@@ -54,13 +54,13 @@ def _guard_against_scrape_collapse(
 
 def _best_count_per_category(shops: list[CoffeeShop]) -> dict[str, int]:
     """Largest single-edition shop count for each category."""
-    per_edition: dict[tuple[str, int], int] = {}
+    per_snapshot: dict[tuple[str, int, str], int] = {}
     for shop in shops:
-        key = (shop.category, normalize_edition_year(shop.edition_year))
-        per_edition[key] = per_edition.get(key, 0) + 1
+        key = (shop.category, normalize_edition_year(shop.edition_year), shop.snapshot_label)
+        per_snapshot[key] = per_snapshot.get(key, 0) + 1
 
     best: dict[str, int] = {}
-    for (category, _year), count in per_edition.items():
+    for (category, _year, _snapshot), count in per_snapshot.items():
         best[category] = max(best.get(category, 0), count)
     return best
 
@@ -68,16 +68,14 @@ def _best_count_per_category(shops: list[CoffeeShop]) -> dict[str, int]:
 def _merge_with_archived_editions(
     previous: list[CoffeeShop], scraped: list[CoffeeShop]
 ) -> list[CoffeeShop]:
-    """Keep past editions alongside the one currently on the source pages.
+    """Keep past list snapshots alongside the one currently on source pages.
 
-    The source replaces its list pages in place each February, so a scrape only
-    ever sees the newest edition. Without this, last year's ranking would be
-    dropped on the first run after a release and the year filter would collapse
-    back to a single value.
+    A source scrape replaces the current snapshot. Historical captures remain
+    available even when they share the same formal edition year.
     """
-    scraped_years = {normalize_edition_year(shop.edition_year) for shop in scraped}
+    scraped_snapshots = {shop.snapshot_label.strip().casefold() for shop in scraped}
     archived = [
-        shop for shop in previous if normalize_edition_year(shop.edition_year) not in scraped_years
+        shop for shop in previous if shop.snapshot_label.strip().casefold() not in scraped_snapshots
     ]
     return list(scraped) + archived
 
@@ -131,16 +129,19 @@ def _save_metadata(shops: list[CoffeeShop]) -> None:
     """Dataset provenance for consumers of the JSON/CSV/KML and the site footer."""
     counts: dict[str, int] = {}
     edition_counts: dict[str, int] = {}
+    snapshot_counts: dict[str, int] = {}
     for shop in shops:
         counts[shop.category] = counts.get(shop.category, 0) + 1
         edition = str(normalize_edition_year(shop.edition_year))
         edition_counts[edition] = edition_counts.get(edition, 0) + 1
+        snapshot_counts[shop.snapshot_label] = snapshot_counts.get(shop.snapshot_label, 0) + 1
     metadata = {
         "updated_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "total_shops": len(shops),
         "counts_by_category": dict(sorted(counts.items())),
         "counts_by_edition": dict(sorted(edition_counts.items(), reverse=True)),
         "editions": sorted({int(year) for year in edition_counts}, reverse=True),
+        "counts_by_snapshot": dict(sorted(snapshot_counts.items())),
         "sources": SOURCE_URLS,
         "geocoded_shops": sum(1 for s in shops if s.lat is not None and s.lng is not None),
     }
@@ -155,8 +156,15 @@ def _carry_forward_geocode(previous: list[CoffeeShop], current: list[CoffeeShop]
     previous_by_identity: dict[tuple[str, int, str, str], CoffeeShop] = {}
     previous_by_location: dict[tuple[str, str, str, str], list[CoffeeShop]] = {}
 
-    # Oldest edition first so the newest known geocode for a shop wins.
-    for shop in sorted(previous, key=lambda value: normalize_edition_year(value.edition_year)):
+    # Older snapshots first so current records remain authoritative when a
+    # shop appears in more than one captured list version.
+    for shop in sorted(
+        previous,
+        key=lambda value: (
+            normalize_edition_year(value.edition_year),
+            "· Current" in value.snapshot_label,
+        ),
+    ):
         if shop.source_url:
             previous_by_source[shop.source_url.strip().casefold()] = shop
         previous_by_identity[(shop.category.strip().casefold(), shop.rank, shop.name.strip().casefold(), shop.country.strip().casefold())] = shop

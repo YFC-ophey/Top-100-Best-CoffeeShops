@@ -17,6 +17,7 @@
         --brand-black: #070303;
         --brand-surface: #1d100d;
         --brand-card: #2b1712;
+        --brand-panel: rgba(31, 18, 14, 0.86);
         --brand-pink: #c88f75;
         --brand-green: #4a3528;
         --brand-gray: #b8a08f;
@@ -76,7 +77,7 @@
       }
 
       .glass-panel {
-        background: rgba(31, 18, 14, 0.86);
+        background: var(--brand-panel);
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
         border: 1px solid rgba(247, 198, 154, 0.2);
@@ -667,7 +668,7 @@
         border: 1px solid rgba(247, 198, 154, 0.14);
         background:
           linear-gradient(175deg, rgba(23, 13, 10, 0.9), rgba(45, 25, 17, 0.88)),
-          #130a08;
+          var(--brand-dark);
         box-shadow: inset 0 0 0 1px rgba(247, 198, 154, 0.08), 0 14px 32px rgba(0, 0, 0, 0.32);
       }
 
@@ -885,8 +886,8 @@
         scrollbar-gutter: stable;
         position: relative;
         background:
-          linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 30%),
-          rgba(26, 29, 46, 0.9);
+          linear-gradient(180deg, rgba(247, 198, 154, 0.045), transparent 34%),
+          var(--brand-panel);
       }
 
       @media (max-width: 1440px) and (min-width: 981px) {
@@ -2156,17 +2157,11 @@
       }
 
       function toggleEdition(editionKey) {
-        if (state.activeEditions.has(editionKey) && state.activeEditions.size === 1) {
-          return;
-        }
-        if (state.activeEditions.has(editionKey)) {
-          state.activeEditions.delete(editionKey);
-        } else {
-          state.activeEditions.add(editionKey);
-        }
-
-        document.querySelectorAll(`[data-edition="${editionKey}"]`).forEach((node) => {
-          node.classList.toggle("active", state.activeEditions.has(editionKey));
+        state.activeEditions = new Set([editionKey]);
+        document.querySelectorAll("[data-edition]").forEach((node) => {
+          const isActive = state.activeEditions.has(Number(node.dataset.edition));
+          node.classList.toggle("active", isActive);
+          node.setAttribute("aria-pressed", String(isActive));
         });
         state.selectedShopId = null;
         normalizeCountryRankBand();
