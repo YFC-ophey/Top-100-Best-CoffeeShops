@@ -5,6 +5,11 @@ on:
     - cron: "0 9 * * 1"
     - cron: "0 9 10-20 2 *"
   workflow_dispatch:
+    inputs:
+      deploy_verified_data_only:
+        description: Build and deploy the current verified 600-shop dataset without refreshing source pages
+        type: boolean
+        default: false
 
 # Never let two update runs race each other to push data commits
 # (a duplicate workflow file caused exactly that failure on 2026-06-08).
@@ -63,6 +68,7 @@ jobs:
           PY
 
       - name: Scrape-only sync (no API key needed)
+        if: github.event_name != 'workflow_dispatch' || inputs.deploy_verified_data_only != true
         run: |
           python src/main.py scrape-only
 
