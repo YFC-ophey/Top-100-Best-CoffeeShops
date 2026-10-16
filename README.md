@@ -30,9 +30,13 @@ Watch or download the full **[ROAST demo video](demo/roast-brag.mp4)**.
 The site features:
 - Interactive world map with country-level shop density bubbles
 - Drill-down to individual shop details (address, city, country, rank)
-- Filterable list view by edition year, collection, country, and rank band
+- **2026** and **2025** Edition buttons: 400 current entries and 200 archived
+  entries, respectively, with list and map results updating together
+- Filterable list view by collection, country, and rank band
 - Every shop carries an `edition_year`; past editions are archived rather than
   overwritten, so the year filter grows as new rankings are released
+- Reviewed shop coordinates against their addresses and corrected the reported
+  Colombia pins for Rituales Compañía de Café, Simón Coffee, and Mr Wush Wush
 - Shop cities and street addresses come from their official locale pages;
   missing source fields display as "Not provided" in the list
 - Public Google Maps links — no API key required for visitors
