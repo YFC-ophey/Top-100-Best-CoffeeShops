@@ -5417,11 +5417,11 @@
     "snapshot_label": "2026 · Current",
     "source_url": "https://theworlds100bestcoffeeshops.com/locales-north/mexican-harvest/",
     "image_url": "https://theworlds100bestcoffeeshops.com/wp-content/uploads/2026/03/IMG_WEB-21-40-MEXICAN-HARVEST.jpg",
-    "address": null,
-    "lat": null,
-    "lng": null,
-    "place_id": null,
-    "formatted_address": null
+    "address": "C. 2 Sur 907, Centro Histórico, Puebla, Mexico",
+    "lat": 19.0400971,
+    "lng": -98.1992654,
+    "place_id": "ChIJoyXWNwDBz4URqQV6cj0zoro",
+    "formatted_address": "C. 2 Sur 907, Centro histórico de Puebla, 72000 Heroica Puebla de Zaragoza, Pue., Mexico"
   },
   {
     "name": "Be Bright Coffee",

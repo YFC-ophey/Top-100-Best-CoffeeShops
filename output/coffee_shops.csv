@@ -152,7 +152,7 @@ rank,name,city,country,category,edition_year,lat,lng,place_id,formatted_address
 38,Pergamino Café Laureles,Medellín,Colombia,South America,2026,6.2413788,-75.5961869,,"Pergamino | Cafe - Laureles, Tv 34 #34-65, Medellín, Colombia"
 38,Ottoman Coffee House,Glasgow,United Kingdom,Top 100,2026,55.8650191,-4.2748397,ChIJC3Ir0StEiEgRgwMFrySDRjw,"The Shah Noor, 73 Berkeley St., Glasgow G3 7DX, UK"
 39,Dark Pony,Falmouth,United Kingdom,Europe,2026,50.154671099999995,-5.0733247,,"Dark Pony Coffee, 6 The Moor, Falmouth TR11 3QA, United Kingdom"
-39,Mexican Harvest,Puebla,Mexico,"North, Central America and the Caribbean",2026,,,,
+39,Mexican Harvest,Puebla,Mexico,"North, Central America and the Caribbean",2026,19.0400971,-98.1992654,ChIJoyXWNwDBz4URqQV6cj0zoro,"C. 2 Sur 907, Centro histórico de Puebla, 72000 Heroica Puebla de Zaragoza, Pue., Mexico"
 39,Savignano Café,Caracas,Venezuela,South America,2026,10.4124987,-66.8254594,,"Savignano Café, Caracas 1083, Miranda, Venezuela"
 39,Casa Canela,Caracas,Venezuela,Top 100,2026,10.4258045,-66.82546909999999,,"C5GF+8RC Casa Canela, C. Bolivar las Marias, Caracas 1083, Miranda, Venezuela"
 40,Black Honey,Lviv,Ukraine,Europe,2026,49.8403536,24.0266014,,"Black Honey, провулок, Kryva Lypa Passage, 3, Lviv, Lviv Oblast, Ukraine, 79000"

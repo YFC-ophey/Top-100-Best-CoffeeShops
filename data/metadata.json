@@ -1,5 +1,5 @@
 {
-  "updated_at_utc": "2026-10-16T02:25:17Z",
+  "updated_at_utc": "2026-10-16T02:26:07Z",
   "total_shops": 600,
   "counts_by_category": {
     "Europe": 100,
@@ -25,5 +25,5 @@
     "Europe": "https://theworlds100bestcoffeeshops.com/top-100-coffee-shops-europe/",
     "North, Central America and the Caribbean": "https://theworlds100bestcoffeeshops.com/top-100-coffee-shops-north/"
   },
-  "geocoded_shops": 599
+  "geocoded_shops": 600
 }
