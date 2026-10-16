@@ -99,17 +99,26 @@ This project runs entirely for free:
 
 The main page includes a two-choice map rating prompt (❤️ or 💔) and a
 `likes.html` page that lists submitted nicknames and ratings. Nicknames are
-public; the service stores a random browser ID to accept one rating per browser,
-and does not store email addresses or IP addresses. The map itself is static
-GitHub Pages, so shared ratings require a separately hosted FastAPI service
-with persistent storage.
+public; the ratings table stores a random browser ID to accept one rating per
+browser, but no email addresses or IP addresses. The map itself is static
+GitHub Pages, so shared ratings need a hosted database or API.
 
-Deploy this app as a FastAPI service with a persistent disk and run
+For GitHub Pages, create a Supabase project and run
+[`supabase/migrations/20261016000000_map_likes.sql`](supabase/migrations/20261016000000_map_likes.sql)
+in its SQL editor. Set the GitHub Actions repository variables
+`LIKES_SUPABASE_URL` and `LIKES_SUPABASE_PUBLISHABLE_KEY` to that project's
+URL and **publishable** key, then rebuild and deploy the site. The browser calls
+only the rating RPCs; the ratings table and browser IDs stay outside the
+exposed API schema. Never put a Supabase secret or service-role key in these
+variables or in the static site.
+
+Alternatively, deploy this app as a FastAPI service with a persistent disk and run
 `uvicorn src.web_app:app --host 0.0.0.0 --port $PORT`. Set `LIKES_DB_PATH` to a
 file on that persistent disk and `LIKES_ALLOWED_ORIGINS` to the Pages origin
 (for this repository: `https://yfc-ophey.github.io`). Then add the service's
 public base URL as the GitHub Actions repository variable `LIKES_API_URL`.
-The Pages workflow embeds that URL in both generated pages. Until this is
+The Pages workflow embeds the selected configuration in both generated pages;
+Supabase takes precedence when both backends are configured. Until one is
 configured, the rating count and public list show that the shared service is
 unavailable, and the automatic rating prompt stays closed.
 

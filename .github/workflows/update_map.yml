@@ -112,6 +112,8 @@ jobs:
       - name: Build static site
         env:
           LIKES_API_URL: ${{ vars.LIKES_API_URL }}
+          LIKES_SUPABASE_URL: ${{ vars.LIKES_SUPABASE_URL }}
+          LIKES_SUPABASE_PUBLISHABLE_KEY: ${{ vars.LIKES_SUPABASE_PUBLISHABLE_KEY }}
         run: |
           python src/main.py build-site
 
@@ -128,6 +130,8 @@ jobs:
           GOOGLE_MAPS_JS_API_KEY: ${{ secrets.GOOGLE_MAPS_JS_API_KEY }}
           GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
           LIKES_API_URL: ${{ vars.LIKES_API_URL }}
+          LIKES_SUPABASE_URL: ${{ vars.LIKES_SUPABASE_URL }}
+          LIKES_SUPABASE_PUBLISHABLE_KEY: ${{ vars.LIKES_SUPABASE_PUBLISHABLE_KEY }}
         run: |
           if [ -n "${GOOGLE_MAPS_JS_API_KEY}${GOOGLE_MAPS_API_KEY}" ]; then
             echo "Google Maps browser key detected. Rebuilding Pages artifact with embedded key."

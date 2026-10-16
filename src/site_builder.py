@@ -58,12 +58,16 @@ def build_static_site(
         data_quality=data_quality,
         google_maps_js_api_key=_google_maps_js_key(),
         likes_api_url=os.getenv("LIKES_API_URL", "").strip().rstrip("/"),
+        likes_supabase_url=os.getenv("LIKES_SUPABASE_URL", "").strip().rstrip("/"),
+        likes_supabase_publishable_key=os.getenv("LIKES_SUPABASE_PUBLISHABLE_KEY", "").strip(),
         data_updated=_data_updated_date(data_file),
     )
 
     (site_dir / "index.html").write_text(html_output, encoding="utf-8")
     likes_output = _template_env().get_template("likes.html").render(
-        likes_api_url=os.getenv("LIKES_API_URL", "").strip().rstrip("/")
+        likes_api_url=os.getenv("LIKES_API_URL", "").strip().rstrip("/"),
+        likes_supabase_url=os.getenv("LIKES_SUPABASE_URL", "").strip().rstrip("/"),
+        likes_supabase_publishable_key=os.getenv("LIKES_SUPABASE_PUBLISHABLE_KEY", "").strip(),
     )
     (site_dir / "likes.html").write_text(likes_output, encoding="utf-8")
     (assets_dir / "style.css").write_text(

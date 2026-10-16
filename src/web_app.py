@@ -183,6 +183,10 @@ def create_app(
         os.getenv("LIKES_DB_PATH", str(BASE_DIR / "data" / "likes.sqlite3"))
     )
     app.state.likes_api_url = os.getenv("LIKES_API_URL", "").strip().rstrip("/")
+    app.state.likes_supabase_url = os.getenv("LIKES_SUPABASE_URL", "").strip().rstrip("/")
+    app.state.likes_supabase_publishable_key = os.getenv(
+        "LIKES_SUPABASE_PUBLISHABLE_KEY", ""
+    ).strip()
     allowed_origins = [
         origin.strip()
         for origin in os.getenv("LIKES_ALLOWED_ORIGINS", "*").split(",")
@@ -230,6 +234,8 @@ def create_app(
             "data_quality": data_quality,
             "google_maps_js_api_key": _google_maps_js_key(),
             "likes_api_url": app.state.likes_api_url,
+            "likes_supabase_url": app.state.likes_supabase_url,
+            "likes_supabase_publishable_key": app.state.likes_supabase_publishable_key,
         }
         return TEMPLATES.TemplateResponse(request=request, name="index.html", context=context)
 
@@ -238,7 +244,11 @@ def create_app(
         return TEMPLATES.TemplateResponse(
             request=request,
             name="likes.html",
-            context={"likes_api_url": app.state.likes_api_url},
+            context={
+                "likes_api_url": app.state.likes_api_url,
+                "likes_supabase_url": app.state.likes_supabase_url,
+                "likes_supabase_publishable_key": app.state.likes_supabase_publishable_key,
+            },
         )
 
     @app.get("/api/likes")
