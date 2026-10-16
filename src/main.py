@@ -153,12 +153,22 @@ def _carry_forward_geocode(previous: list[CoffeeShop], current: list[CoffeeShop]
     """Reuse previously resolved geocode and enrichment fields for a matched shop."""
     previous_by_source: dict[str, CoffeeShop] = {}
     previous_by_identity: dict[tuple[str, int, str, str], CoffeeShop] = {}
+    previous_by_location: dict[tuple[str, str, str, str], list[CoffeeShop]] = {}
 
     # Oldest edition first so the newest known geocode for a shop wins.
     for shop in sorted(previous, key=lambda value: normalize_edition_year(value.edition_year)):
         if shop.source_url:
             previous_by_source[shop.source_url.strip().casefold()] = shop
         previous_by_identity[(shop.category.strip().casefold(), shop.rank, shop.name.strip().casefold(), shop.country.strip().casefold())] = shop
+        location_identity = _shop_location_identity(shop)
+        if (
+            location_identity
+            and shop.lat is not None
+            and shop.lng is not None
+            and shop.place_id
+            and shop.formatted_address
+        ):
+            previous_by_location.setdefault(location_identity, []).append(shop)
 
     for shop in current:
         match: CoffeeShop | None = None
@@ -167,43 +177,65 @@ def _carry_forward_geocode(previous: list[CoffeeShop], current: list[CoffeeShop]
         if match is None:
             identity = (shop.category.strip().casefold(), shop.rank, shop.name.strip().casefold(), shop.country.strip().casefold())
             match = previous_by_identity.get(identity)
-        if match is None:
-            continue
 
-        # Coordinates and their Google identity are inseparable. Carry them
-        # forward only when the current published street address still agrees;
-        # this prevents a moved shop or a stale wrong branch from regaining a
-        # pin after a clean scrape.
-        previous_pin_matches = False
-        if shop.address and match.lat is not None and match.lng is not None and match.formatted_address:
-            previous_result = GeocodeResult(
-                lat=float(match.lat),
-                lng=float(match.lng),
-                place_id=match.place_id or "",
-                formatted_address=match.formatted_address,
-            )
-            previous_pin_matches = GooglePlacesGeocoder("")._result_matches_shop(shop, previous_result)
+        # Coordinates and their Google identity are inseparable. Prefer the
+        # same source/list record, then reuse a pin from another collection
+        # only for an exact name, city, country, and address match with one
+        # unambiguous verified Google result.
+        pin_match = match if match and _previous_pin_matches_shop(shop, match) else None
+        if pin_match is None:
+            location_identity = _shop_location_identity(shop)
+            candidates = previous_by_location.get(location_identity, []) if location_identity else []
+            signatures = {
+                (candidate.place_id, candidate.lat, candidate.lng, candidate.formatted_address)
+                for candidate in candidates
+            }
+            if len(signatures) == 1 and candidates:
+                candidate = candidates[-1]
+                if _previous_pin_matches_shop(shop, candidate):
+                    pin_match = candidate
 
-        if previous_pin_matches:
-            if shop.place_id is None and match.place_id:
-                shop.place_id = match.place_id
+        if pin_match is not None:
+            if shop.place_id is None and pin_match.place_id:
+                shop.place_id = pin_match.place_id
             if shop.lat is None:
-                shop.lat = match.lat
+                shop.lat = pin_match.lat
             if shop.lng is None:
-                shop.lng = match.lng
-            if shop.formatted_address is None and match.formatted_address:
-                shop.formatted_address = match.formatted_address
-        if not shop.image_url and match.image_url:
+                shop.lng = pin_match.lng
+            if shop.formatted_address is None and pin_match.formatted_address:
+                shop.formatted_address = pin_match.formatted_address
+        if match and not shop.image_url and match.image_url:
             shop.image_url = match.image_url
         # A detail-page fetch that times out returns a shop with no city or
         # address. Without this, one flaky Monday would blank enrichment that
         # took a full crawl to collect.
-        if not shop.city and match.city:
+        if match and not shop.city and match.city:
             shop.city = match.city
-        if not shop.address and match.address:
+        if match and not shop.address and match.address:
             shop.address = match.address
 
     return current
+
+
+def _shop_location_identity(shop: CoffeeShop) -> tuple[str, str, str, str] | None:
+    """Build a strict identity for sharing a verified pin across list editions."""
+    values = (shop.name, shop.city, shop.country, shop.address or "")
+    normalized = tuple(" ".join(value.casefold().split()) for value in values)
+    if not all(normalized):
+        return None
+    return normalized[0], normalized[1], normalized[2], normalized[3]
+
+
+def _previous_pin_matches_shop(shop: CoffeeShop, match: CoffeeShop) -> bool:
+    if not shop.address or match.lat is None or match.lng is None or not match.formatted_address:
+        return False
+    previous_result = GeocodeResult(
+        lat=float(match.lat),
+        lng=float(match.lng),
+        place_id=match.place_id or "",
+        formatted_address=match.formatted_address,
+    )
+    return GooglePlacesGeocoder("")._result_matches_shop(shop, previous_result)
 
 
 def main() -> int:
