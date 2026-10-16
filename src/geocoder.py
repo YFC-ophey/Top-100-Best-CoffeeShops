@@ -179,31 +179,74 @@ class GooglePlacesGeocoder:
     def _result_matches_shop(self, shop: CoffeeShop, result: GeocodeResult) -> bool:
         formatted_address = self._clean_text(result.formatted_address)
         if not formatted_address:
-            return True
+            return False
 
-        if self._address_overlap_ok(shop.address, formatted_address):
-            return True
+        if shop.address:
+            if self._normalized_phrase(shop.country) == "colombia":
+                source_road = self._colombian_road_anchor(shop.address)
+                resolved_road = self._colombian_road_anchor(formatted_address)
+                if source_road and resolved_road and source_road != resolved_road:
+                    return False
+            return self._address_overlap_ok(
+                shop.address, formatted_address, locality=f"{shop.city} {shop.country}"
+            )
 
+        # A country match identifies far too many candidates for a shop without
+        # an address. Require the returned place to at least be in its city.
         expected_country, unknown_country = normalize_country(shop.country)
         if not unknown_country and expected_country != UNKNOWN_COUNTRY:
-            return self._country_matches_formatted(expected_country, formatted_address)
+            if not self._country_matches_formatted(expected_country, formatted_address):
+                return False
+        city = self._normalized_phrase(shop.city)
+        resolved = self._normalized_phrase(formatted_address)
+        return bool(city and f" {city} " in f" {resolved} ")
 
-        return True
-
-    def _address_overlap_ok(self, source_address: str | None, resolved_address: str) -> bool:
+    def _address_overlap_ok(
+        self, source_address: str | None, resolved_address: str, locality: str = ""
+    ) -> bool:
+        if self._normalized_phrase(source_address) == self._normalized_phrase(resolved_address):
+            return True
         source_tokens = self._address_tokens(source_address)
         resolved_tokens = self._address_tokens(resolved_address)
         if not source_tokens or not resolved_tokens:
             return False
 
+        # City and country occur in every nearby branch; they cannot establish
+        # that a returned place is at the shop's street address.
+        locality_tokens = self._address_tokens(locality)
+        source_tokens -= locality_tokens
+        resolved_tokens -= locality_tokens
+        if not source_tokens or not resolved_tokens:
+            return False
+
         overlap = source_tokens & resolved_tokens
+        # A matching city, department, or generic road word is not enough to
+        # identify a shop branch. When the source and result both include a
+        # street/building number, require that specific number to agree.
+        source_numbers = self._address_numbers(source_address)
+        resolved_numbers = self._address_numbers(resolved_address)
+        if source_numbers and resolved_numbers and not (source_numbers & resolved_numbers):
+            return False
         if len(overlap) >= 2:
+            return True
+
+        matching_short_number = any(
+            number.isdigit() and len(number) <= 3
+            for number in source_numbers & resolved_numbers
+        )
+        if matching_short_number and len(overlap) == 1 and overlap <= (source_numbers & resolved_numbers):
+            return True
+
+        # A single distinctive street token is acceptable for short published
+        # addresses such as "Bayfield Rd, Portree"; multi-token address labels
+        # need at least two shared distinctive tokens.
+        if len(overlap) == 1 and overlap == source_tokens:
             return True
 
         union = source_tokens | resolved_tokens
         if not union:
             return False
-        return (len(overlap) / len(union)) >= 0.18
+        return (len(overlap) / len(union)) >= 0.35
 
     def _country_matches_formatted(self, expected_country: str, formatted_address: str) -> bool:
         normalized_formatted = self._normalized_phrase(formatted_address)
@@ -225,8 +268,32 @@ class GooglePlacesGeocoder:
         return {
             token
             for token in normalized.split()
-            if len(token) >= 3 and token not in _GENERIC_ADDRESS_TOKENS
+            if (len(token) >= 3 or token.isdigit())
+            and token not in _GENERIC_ADDRESS_TOKENS
+            and not re.fullmatch(r"(?:[a-z]{1,2}\d{1,2}|\d[a-z]{2})", token)
         }
+
+    def _address_numbers(self, value: str | None) -> set[str]:
+        normalized = self._normalized_phrase(value)
+        return set(re.findall(r"(?<![a-z])\d+[a-z]?(?![a-z])", normalized))
+
+    @staticmethod
+    def _colombian_road_anchor(value: str | None) -> tuple[str, str] | None:
+        normalized = GooglePlacesGeocoder._normalized_phrase(value)
+        match = re.search(
+            r"(?:^| )(circular|cq|carrera|cra|calle|cl|avenida|av|transversal|tv) (\d+[a-z]?)\b",
+            normalized,
+        )
+        if not match:
+            return None
+        road_type = {
+            "cq": "circular",
+            "cra": "carrera",
+            "cl": "calle",
+            "av": "avenida",
+            "tv": "transversal",
+        }.get(match.group(1), match.group(1))
+        return road_type, match.group(2)
 
     @staticmethod
     def _normalized_phrase(value: str | None) -> str:
@@ -247,6 +314,27 @@ _GENERIC_ADDRESS_TOKENS = {
     "ave",
     "boulevard",
     "blvd",
+    "av",
+    "avenida",
+    "calle",
+    "cl",
+    "carrera",
+    "cra",
+    "circular",
+    "cq",
+    "transversal",
+    "tv",
+    "rua",
+    "jiron",
+    "jr",
+    "road",
+    "r",
+    "oriente",
+    "poniente",
+    "norte",
+    "sur",
+    "francisco",
+    "morazan",
     "city",
     "region",
     "state",

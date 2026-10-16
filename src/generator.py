@@ -96,6 +96,7 @@ def generate_csv(shops: list[CoffeeShop], output_path: Path) -> None:
         )
         for shop in ordered:
             row = {header: shop.to_dict().get(header) for header in CSV_HEADERS}
+            row["formatted_address"] = shop.formatted_address or shop.address
             row["category"] = normalize_category(shop.category)
             row["edition_year"] = normalize_edition_year(shop.edition_year)
             writer.writerow(row)

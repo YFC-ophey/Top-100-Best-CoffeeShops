@@ -537,7 +537,8 @@ def test_rank_68_top_100_keeps_its_published_name_and_muscat_address(tmp_path: P
     assert "Azure" not in response.text
     assert '"country_normalized": "Oman"' in response.text
     assert '"city": "Muscat"' in response.text
-    assert "Multiple locations, Muscat, Oman" in response.text
+    assert "Way Number: 9203 Building Number: 790, Muscat, Oman" in response.text
+    assert "Multiple locations, Muscat, Oman" not in response.text
 
 
 def test_city_extraction_derives_city_from_address_patterns() -> None:

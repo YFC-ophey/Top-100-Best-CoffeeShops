@@ -11,7 +11,7 @@
 
 Earlier this year I visited **[Bouche](https://theworlds100bestcoffeeshops.com/)** in Brussels, Belgium and it completely changed what I thought a coffee shop could be. The beans were a house blend, but the quality was on another level. The interior, the merch, the whole vibe: "I was hooked".
 
-That trip sent me down a rabbit hole. I discovered **[The World's 100 Best Coffee Shops](https://theworlds100bestcoffeeshops.com/)**, an annual ranking published every February at a global coffee festival. They release two lists: a **Top 100 Global** and a **Top 100 South America** edition. Bouche made it at #75.
+That trip sent me down a rabbit hole. I discovered **[The World's 100 Best Coffee Shops](https://theworlds100bestcoffeeshops.com/)**, an annual ranking published every February at a global coffee festival. The project initially covered **Top 100 Global** and **Top 100 South America**; it now also includes **Europe** and **North, Central America and the Caribbean**. Bouche made it at #75.
 
 I built ROAST. to make that data actually explorable. 
 Whether you're on a work trip, traveling, on vacation, or just visiting someone;  
@@ -33,8 +33,8 @@ The site features:
 - Filterable list view by edition year, collection, country, and rank band
 - Every shop carries an `edition_year`; past editions are archived rather than
   overwritten, so the year filter grows as new rankings are released
-- Every shop carries the city and street address published on its locale page
-  (200/200 rows), so the list view and the CSV/KML exports are complete
+- Shop cities and street addresses come from their official locale pages;
+  missing source fields display as "Not provided" in the list
 - Public Google Maps links — no API key required for visitors
 - Dataset freshness footer backed by `data/metadata.json` provenance
 
@@ -44,7 +44,7 @@ The site features:
 
 A zero-cost, open-source pipeline that:
 
-1. **Scrapes** the annual Top 100 + South America rankings from [theworlds100bestcoffeeshops.com](https://theworlds100bestcoffeeshops.com/)
+1. **Scrapes** the World, South America, Europe, and North/Central America and Caribbean rankings from [theworlds100bestcoffeeshops.com](https://theworlds100bestcoffeeshops.com/)
 2. **Enriches** each shop entry with city, address, and geocoordinates
 3. **Generates** `JSON`, `CSV`, and `KML` artifacts
 4. **Guards** against partial scrapes and geocode wipes before committing data
@@ -61,7 +61,7 @@ A zero-cost, open-source pipeline that:
 | Preview UI | FastAPI + Jinja2 |
 | Site Builder | Static HTML/CSS generator |
 | Maps | Public Google Maps links (zero API cost) |
-| Testing | pytest (81 tests passing) |
+| Testing | pytest |
 | CI/CD | GitHub Actions → GitHub Pages |
 
 ---
@@ -168,3 +168,24 @@ All coffee shop data sourced from **[theworlds100bestcoffeeshops.com](https://th
 ---
 
 *Built by [@YFC-ophey](https://github.com/YFC-ophey) · [Buy Me a Coffee](https://buymeacoffee.com/opheliachen)*
+
+
+## Regional lists and shop photos
+
+The explorer now includes the official [Europe Top 100](https://theworlds100bestcoffeeshops.com/top-100-coffee-shops-europe/)
+and [North, Central America and the Caribbean Top 100](https://theworlds100bestcoffeeshops.com/top-100-coffee-shops-north/),
+alongside World and South America. Use **Collection** to combine or isolate rankings;
+the same shop may appear in more than one ranking, with a separate rank in each.
+All four sources participate in the existing weekly refresh. Each ranking card
+provides a shop-specific image. The preview credits the ranking source and, if
+that image fails, can request a Google Place photo with author attribution when
+the optional Maps/Places browser key is enabled. Google photo requests may incur
+Places charges; the site does not cache their photo URLs.
+
+Regional source pages use different shop URL paths. Parsing groups fields by shop
+URL so an omitted country cannot absorb the next shop's rank. Missing source fields
+remain blank, and directions fall back to a shop search when exact coordinates are
+unavailable. New country overview positions use Google's canonical country coordinates;
+these are country bubbles, not shop locations. Individual pins require verified
+coordinates; shops without them remain available in the list and country view.
+No paid geocoding was run for this update.

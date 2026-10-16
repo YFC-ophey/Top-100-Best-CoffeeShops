@@ -31,7 +31,7 @@ def test_geocode_shop_returns_first_candidate() -> None:
         geocoder = GooglePlacesGeocoder(api_key="test-key")
         shop = CoffeeShop(
             name="Coffee Collective",
-            city="Copenhagen",
+            city="Frederiksberg",
             country="Denmark",
             rank=1,
             category="Top 100",
@@ -124,7 +124,7 @@ def test_geocode_shop_falls_back_to_geocoding_api_when_places_has_zero_results()
         geocoder = GooglePlacesGeocoder(api_key="test-key")
         shop = CoffeeShop(
             name="The Folks",
-            city="Lisbon",
+            city="Lisboa",
             country="Portugal",
             rank=88,
             category="Top 100",
@@ -164,7 +164,7 @@ def test_geocode_shop_retries_and_recovers_on_transient_error() -> None:
         )
         shop = CoffeeShop(
             name="Coffee Collective",
-            city="Copenhagen",
+            city="Frederiksberg",
             country="Denmark",
             rank=1,
             category="Top 100",
@@ -232,3 +232,75 @@ def test_geocode_shop_rejects_country_mismatch_and_uses_next_query() -> None:
 
     assert result == correct_result
     assert mocked.call_count == 2
+
+
+def test_geocode_shop_rejects_another_branch_in_the_same_country() -> None:
+    geocoder = GooglePlacesGeocoder(api_key="test-key")
+    shop = CoffeeShop(
+        name="Simón Coffee",
+        city="Medellín",
+        country="Colombia",
+        rank=80,
+        category="South America",
+        address="Cra. 37 #10-54, El Poblado, Medellín, Colombia",
+    )
+    wrong_branch = GeocodeResult(
+        lat=6.2,
+        lng=-75.6,
+        place_id="wrong-branch",
+        formatted_address="Cl. 45 #12-78, Laureles, Medellín, Colombia",
+    )
+    correct_branch = GeocodeResult(
+        lat=6.21,
+        lng=-75.57,
+        place_id="correct-branch",
+        formatted_address="Cra. 37 #10-54, El Poblado, Medellín, Colombia",
+    )
+
+    with patch.object(geocoder, "geocode_text", side_effect=[wrong_branch, correct_branch]) as mocked:
+        result = geocoder.geocode_shop(shop)
+
+    assert result == correct_branch
+    assert mocked.call_count == 2
+
+
+def test_geocode_shop_rejects_blank_formatted_address() -> None:
+    geocoder = GooglePlacesGeocoder(api_key="test-key")
+    shop = CoffeeShop(
+        name="Mr Wush Wush", city="Ibagué", country="Colombia", rank=72, category="South America"
+    )
+    blank_result = GeocodeResult(lat=4.4, lng=-75.2, place_id="unknown", formatted_address="")
+
+    with patch.object(geocoder, "geocode_text", return_value=blank_result):
+        result = geocoder.geocode_shop(shop)
+
+    assert result is None
+
+
+def test_rituales_does_not_accept_the_wrong_circular_with_same_building_number() -> None:
+    geocoder = GooglePlacesGeocoder(api_key="test-key")
+    shop = CoffeeShop(
+        name="Rituales Compañía de Café",
+        city="Medellín",
+        country="Colombia",
+        rank=64,
+        category="South America",
+        address="Circular 74A #39B-22, Laureles, Medellín, Colombia",
+    )
+    wrong_road = GeocodeResult(
+        lat=6.2,
+        lng=-75.6,
+        place_id="wrong-circular",
+        formatted_address="Cq. 6 #39B-22, Laureles, Medellín, Colombia",
+    )
+    correct_road = GeocodeResult(
+        lat=6.25,
+        lng=-75.59,
+        place_id="right-circular",
+        formatted_address="Cq. 74A #39B-22, Laureles, Medellín, Colombia",
+    )
+
+    with patch.object(geocoder, "geocode_text", side_effect=[wrong_road, correct_road]):
+        result = geocoder.geocode_shop(shop)
+
+    assert result == correct_road
