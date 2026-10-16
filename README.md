@@ -37,6 +37,7 @@ The site features:
   missing source fields display as "Not provided" in the list
 - Public Google Maps links — no API key required for visitors
 - Dataset freshness footer backed by `data/metadata.json` provenance
+- Optional map-love ratings with a public nickname list, backed by the FastAPI likes endpoint
 
 ---
 
@@ -89,6 +90,24 @@ This project runs entirely for free:
 - **Visitors** never need a Google API key — all map links are plain Google Maps URLs
 - **CI** handles scraping, building, and deploying automatically
 - **Optional**: Owner-only geocoding refresh via CLI (uses Google Places API once annually)
+
+## Map Love Ratings
+
+The main page includes a two-choice map rating prompt (❤️ or 💔) and a
+`likes.html` page that lists submitted nicknames and ratings. Nicknames are
+public; the service stores a random browser ID to accept one rating per browser,
+and does not store email addresses or IP addresses. The map itself is static
+GitHub Pages, so shared ratings require a separately hosted FastAPI service
+with persistent storage.
+
+Deploy this app as a FastAPI service with a persistent disk and run
+`uvicorn src.web_app:app --host 0.0.0.0 --port $PORT`. Set `LIKES_DB_PATH` to a
+file on that persistent disk and `LIKES_ALLOWED_ORIGINS` to the Pages origin
+(for this repository: `https://yfc-ophey.github.io`). Then add the service's
+public base URL as the GitHub Actions repository variable `LIKES_API_URL`.
+The Pages workflow embeds that URL in both generated pages. Until this is
+configured, the rating count and public list show that the shared service is
+unavailable, and the automatic rating prompt stays closed.
 
 ---
 

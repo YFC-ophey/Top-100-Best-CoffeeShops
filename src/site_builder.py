@@ -57,10 +57,15 @@ def build_static_site(
         overview_filters=overview_filters,
         data_quality=data_quality,
         google_maps_js_api_key=_google_maps_js_key(),
+        likes_api_url=os.getenv("LIKES_API_URL", "").strip().rstrip("/"),
         data_updated=_data_updated_date(data_file),
     )
 
     (site_dir / "index.html").write_text(html_output, encoding="utf-8")
+    likes_output = _template_env().get_template("likes.html").render(
+        likes_api_url=os.getenv("LIKES_API_URL", "").strip().rstrip("/")
+    )
+    (site_dir / "likes.html").write_text(likes_output, encoding="utf-8")
     (assets_dir / "style.css").write_text(
         "/* styles are inlined in templates/index.html for the static Pages build. */\n",
         encoding="utf-8",

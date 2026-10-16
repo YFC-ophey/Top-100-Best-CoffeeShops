@@ -156,6 +156,143 @@
         font-style: italic;
       }
 
+      .topbar-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 8px;
+        flex: 0 0 auto;
+      }
+
+      .love-count-link,
+      .rate-map-button {
+        min-height: 44px;
+        border-radius: 999px;
+        padding: 9px 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        color: var(--brand-white);
+        font: inherit;
+        font-size: 0.78rem;
+        font-weight: 700;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+      }
+
+      .love-count-link {
+        border: 1px solid var(--line);
+        background: rgba(0, 0, 0, 0.2);
+      }
+
+      .rate-map-button {
+        border: 1px solid rgba(247, 198, 154, 0.38);
+        padding-inline: 15px;
+        background: linear-gradient(135deg, rgba(223, 110, 46, 0.2), rgba(223, 110, 46, 0.08));
+        color: var(--brand-white);
+        box-shadow: inset 0 1px rgba(255, 255, 255, 0.06);
+      }
+
+      .love-count-link:hover { background: rgba(247, 198, 154, 0.12); }
+      .rate-map-button iconify-icon { color: var(--brand-gold); font-size: 1.05rem; }
+      .rate-map-button:hover {
+        transform: translateY(-1px);
+        border-color: var(--brand-orange);
+        background: linear-gradient(135deg, #ef8243, var(--brand-orange));
+        color: #21110a;
+        box-shadow: 0 6px 18px rgba(223, 110, 46, 0.24);
+      }
+      .rate-map-button:hover iconify-icon { color: #21110a; }
+      .rate-map-button:active { transform: translateY(0); }
+
+      .map-rating-dialog {
+        width: min(440px, calc(100vw - 32px));
+        max-width: none;
+        padding: 0;
+        border: 1px solid rgba(247, 198, 154, 0.34);
+        border-radius: 20px;
+        color: var(--brand-white);
+        background: #1b100d;
+        box-shadow: 0 28px 90px rgba(0, 0, 0, 0.65);
+      }
+
+      .map-rating-dialog::backdrop { background: rgba(5, 3, 2, 0.76); backdrop-filter: blur(5px); }
+
+      .rating-form { padding: 24px; display: grid; gap: 16px; }
+      .rating-form h2 { margin: 0; font-family: "Cabinet Grotesk", sans-serif; font-size: 1.55rem; }
+      .rating-form p { margin: 0; color: #d0bba9; line-height: 1.55; }
+      .rating-close {
+        justify-self: end;
+        margin: -8px -8px -20px 0;
+        width: 44px;
+        height: 44px;
+        border: 0;
+        border-radius: 50%;
+        color: var(--brand-white);
+        background: transparent;
+        font-size: 1.35rem;
+        cursor: pointer;
+      }
+      .rating-close:hover { background: rgba(255, 255, 255, 0.09); }
+      .rating-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+      .rating-choice {
+        min-height: 104px;
+        display: grid;
+        align-content: center;
+        justify-items: center;
+        gap: 8px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        color: #dfd2c8;
+        background: rgba(255, 255, 255, 0.035);
+        font: inherit;
+        font-size: 0.82rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background-color 180ms ease, border-color 180ms ease, transform 180ms ease;
+      }
+      .rating-choice:hover { transform: translateY(-1px); border-color: rgba(247, 198, 154, 0.5); }
+      .rating-choice[aria-checked="true"][data-rating="1"] { border-color: #ff8797; color: #fff1f2; background: rgba(255, 106, 128, 0.13); }
+      .rating-choice[aria-checked="true"][data-rating="0"] { border-color: var(--brand-gold); color: #fff4e8; background: rgba(247, 198, 154, 0.13); }
+      .rating-choice-emoji { font-size: 2rem; line-height: 1; }
+      .rating-label { color: #f1d0b1 !important; font-size: 0.86rem; font-weight: 700; text-align: center; }
+      .rating-form label { display: grid; gap: 7px; font-size: 0.88rem; font-weight: 700; }
+      .rating-form input:not([type="text"]) { width: 100%; }
+      .rating-form input[type="text"] {
+        width: 100%;
+        min-height: 48px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 10px 12px;
+        color: var(--brand-white);
+        background: #100906;
+        font: inherit;
+      }
+      .rating-privacy { color: #d0bba9; font-size: 0.75rem; line-height: 1.45; }
+      .rating-status { min-height: 1.25em; color: #f7c69a; font-size: 0.83rem; }
+      .rating-submit {
+        min-height: 48px;
+        border: 0;
+        border-radius: 12px;
+        color: #21110a;
+        background: var(--brand-orange);
+        font: inherit;
+        font-weight: 800;
+        cursor: pointer;
+      }
+      .rating-submit:disabled { opacity: 0.55; cursor: wait; }
+      .rating-honeypot { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+
+      @media (max-width: 520px) {
+        .topbar-actions { width: 100%; justify-content: stretch; }
+        .topbar-actions > * { flex: 1; }
+        .love-count-link, .rate-map-button { font-size: 0.73rem; padding-inline: 8px; }
+        .rating-form { padding: 20px; }
+        .rating-choice { min-height: 92px; }
+      }
+
       .view-toggle {
         display: flex;
         gap: 2px;
@@ -224,7 +361,7 @@
         padding: 10px 10px 9px;
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        gap: 14px;
         align-items: stretch;
         flex: 0 0 auto;
         border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -235,6 +372,8 @@
         width: 100%;
         max-width: none;
       }
+
+      .filters-panel section { display: grid; gap: 8px; }
 
       .filter-title {
         margin: 0;
@@ -248,6 +387,7 @@
       .panel-title {
         margin: 0;
         font-size: 0.74rem;
+        line-height: 1.35;
         text-transform: uppercase;
         letter-spacing: 0.08em;
         color: var(--brand-gray);
@@ -273,39 +413,62 @@
       .chip-wrap {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 8px;
+        gap: 10px;
       }
 
       .chip-wrap button,
       .rank-wrap button {
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 10px;
+        border: 1px solid rgba(247, 198, 154, 0.16);
+        border-radius: 999px;
         min-height: 44px;
         padding: 8px 10px;
         font-size: 0.7rem;
         font-weight: 700;
-        color: #d7d9e5;
-        background: rgba(255, 255, 255, 0.04);
+        color: #e5d9cf;
+        background: rgba(255, 255, 255, 0.025);
         cursor: pointer;
         width: 100%;
         line-height: 1.2;
-        transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease;
+        transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
       }
 
       .chip-wrap button:hover,
       .rank-wrap button:hover {
-        border-color: rgba(247, 198, 154, 0.55);
-        background: rgba(247, 198, 154, 0.1);
+        transform: translateY(-1px);
+        border-color: rgba(247, 198, 154, 0.42);
+        background: rgba(247, 198, 154, 0.075);
       }
 
       .collection-chips button {
-        min-height: 64px;
+        min-height: 60px;
         padding: 9px 10px;
         display: flex;
         align-items: center;
-        justify-content: center;
-        text-align: center;
+        justify-content: flex-start;
+        gap: 8px;
+        border-radius: 14px;
+        text-align: left;
         text-wrap: balance;
+      }
+
+      .collection-check {
+        display: grid;
+        flex: 0 0 16px;
+        width: 16px;
+        height: 16px;
+        place-items: center;
+        border: 1px solid rgba(247, 198, 154, 0.32);
+        border-radius: 5px;
+        background: rgba(0, 0, 0, 0.2);
+        transition: background-color 180ms ease, border-color 180ms ease;
+      }
+
+      .collection-check iconify-icon {
+        color: #f7c69a;
+        font-size: 13px;
+        opacity: 0;
+        transform: scale(0.72);
+        transition: opacity 180ms ease, transform 180ms ease, color 180ms ease;
       }
 
       .search-wrap input {
@@ -338,9 +501,21 @@
 
       .chip-wrap button.active,
       .rank-wrap button.active {
-        background: var(--brand-orange);
-        color: #1d1106;
-        border-color: rgba(255, 118, 0, 0.5);
+        border-color: rgba(223, 110, 46, 0.7);
+        color: #fff1e4;
+        background: linear-gradient(135deg, rgba(223, 110, 46, 0.25), rgba(223, 110, 46, 0.11));
+        box-shadow: inset 0 1px rgba(255, 255, 255, 0.055);
+      }
+
+      .collection-chips button.active .collection-check {
+        border-color: var(--brand-gold);
+        background: var(--brand-gold);
+      }
+
+      .collection-chips button.active .collection-check iconify-icon {
+        color: #21110a;
+        opacity: 1;
+        transform: scale(1);
       }
 
       @media (prefers-reduced-motion: reduce) {
@@ -759,7 +934,7 @@
 
         .filters-panel {
           padding: 10px;
-          gap: 8px;
+          gap: 12px;
         }
 
         .filters-panel .filter-head,
@@ -830,6 +1005,8 @@
         position: relative;
         height: clamp(156px, 17.5vh, 190px);
         flex: 0 0 auto;
+        overflow: hidden;
+        isolation: isolate;
       }
 
       .hero img {
@@ -852,13 +1029,16 @@
       .hero.no-photo img { display: none; }
 
       .hero-photo-note {
-        position: absolute;
-        bottom: 10px;
-        right: 12px;
-        z-index: 2;
-        color: #fff;
+        display: block;
+        min-height: 26px;
+        overflow: hidden;
+        padding: 5px 12px;
+        color: #d9c9bd;
+        background: rgba(13, 9, 8, 0.88);
         font-size: 0.68rem;
-        text-shadow: 0 1px 4px #000;
+        line-height: 1.4;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       .hero-photo-note a { color: inherit; }
@@ -867,7 +1047,8 @@
         content: "";
         position: absolute;
         inset: 0;
-        background: linear-gradient(to top, rgba(10, 10, 14, 0.92), rgba(10, 10, 14, 0.2));
+        background: linear-gradient(to top, rgba(10, 10, 14, 0.94), rgba(10, 10, 14, 0.05) 78%);
+        pointer-events: none;
       }
 
       .hero-badges {
@@ -877,6 +1058,7 @@
         z-index: 2;
         display: flex;
         gap: 7px;
+        max-width: calc(100% - 70px);
       }
 
       .hero-badge {
@@ -886,6 +1068,8 @@
         font-weight: 800;
         text-transform: uppercase;
         letter-spacing: 0.06em;
+        line-height: 1.2;
+        white-space: nowrap;
       }
 
       .hero-badge.rank {
@@ -894,8 +1078,47 @@
       }
 
       .hero-badge.country {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
         background: rgba(0, 0, 0, 0.54);
         border: 1px solid rgba(255, 255, 255, 0.18);
+      }
+
+      .hero-caption {
+        position: absolute;
+        z-index: 2;
+        left: 14px;
+        right: 64px;
+        bottom: 12px;
+        display: grid;
+        gap: 3px;
+        min-width: 0;
+        pointer-events: none;
+      }
+
+      .hero-caption .shop-title {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        color: #fffaf5;
+        font-size: clamp(1.05rem, 1.5vw, 1.28rem);
+        line-height: 1.12;
+        text-overflow: ellipsis;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+        overflow-wrap: anywhere;
+      }
+
+      .hero-caption .shop-sub {
+        margin: 0;
+        overflow: hidden;
+        color: #f0ded0;
+        font-size: 0.73rem;
+        line-height: 1.3;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        text-shadow: 0 1px 6px #000;
       }
 
       .hero-save {
@@ -988,8 +1211,32 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 8px;
-        grid-auto-rows: minmax(56px, auto);
+        grid-auto-rows: minmax(60px, auto);
         align-content: start;
+      }
+
+      .detail-address {
+        margin: 0;
+        padding: 10px 11px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        color: #e6d8cd;
+        background: rgba(255, 255, 255, 0.035);
+        font-size: 0.76rem;
+        line-height: 1.45;
+        overflow-wrap: anywhere;
+      }
+
+      .detail-address[hidden] { display: none; }
+      .detail-address-label {
+        display: block;
+        margin-bottom: 3px;
+        color: #b8a08f;
+        font-size: 0.63rem;
+        font-style: normal;
+        font-weight: 700;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
       }
 
       .details-card {
@@ -1145,7 +1392,7 @@
 
         .filters-panel {
           padding: 10px 10px 9px;
-          gap: 8px;
+          gap: 12px;
         }
 
         .filters-panel .filter-head,
@@ -1250,7 +1497,7 @@
 
         .filters-panel {
           padding: 9px 10px;
-          gap: 8px;
+          gap: 12px;
         }
 
         .preview-head {
@@ -1500,6 +1747,16 @@
           <h2 class="banner-title">World's 100 Best Coffee Shops</h2>
           <p class="banner-subtitle">Interactive map with country-level shop density and source-backed shop details.</p>
         </div>
+        <nav class="topbar-actions" aria-label="Map feedback">
+          <a class="love-count-link" href="likes.html" aria-label="See map love ratings">
+            <span aria-hidden="true">♥</span>
+            <span id="map-love-count">— loves</span>
+          </a>
+          <button class="rate-map-button" id="open-map-rating" type="button">
+            <iconify-icon icon="ph:heart-straight-fill" aria-hidden="true"></iconify-icon>
+            <span>Rate this map</span>
+          </button>
+        </nav>
       </header>
 
       <main class="workspace">
@@ -1629,23 +1886,23 @@
             />
             <span class="hero-photo-note" id="detail-photo-note"></span>
             <div class="hero-badges">
-              <span class="hero-badge rank" id="detail-rank">#1 Top 100</span>
+              <span class="hero-badge rank" id="detail-rank">#1</span>
               <span class="hero-badge country" id="detail-country">Country</span>
             </div>
             <button class="hero-save" type="button" aria-label="Save shop" aria-pressed="false">
               <iconify-icon icon="ph:heart-bold"></iconify-icon>
             </button>
+            <div class="hero-caption">
+              <h3 class="shop-title" id="detail-name">Select a shop</h3>
+              <p class="shop-sub" id="detail-address">Choose a pin or shop to see its details.</p>
+            </div>
           </div>
+          <span class="hero-photo-note" id="detail-photo-note"></span>
 
           <div class="detail-body">
-            <section>
-              <h3 class="shop-title" id="detail-name">Select a marker</h3>
-              <p class="shop-sub" id="detail-address">Pick a country marker to explore the featured coffee shop.</p>
-            </section>
-
             <section class="actions">
               <a class="primary" id="detail-directions" href="#" target="_blank" rel="noopener">Get Directions</a>
-              <a id="detail-website" href="#" target="_blank" rel="noopener">Website</a>
+              <a id="detail-website" href="#" target="_blank" rel="noopener">Official listing</a>
             </section>
 
             <section class="details-grid">
@@ -1654,18 +1911,14 @@
                 <p class="details-value" id="detail-category">-</p>
               </div>
               <div class="details-card">
-                <p class="details-label">Rank</p>
-                <p class="details-value" id="detail-rank-value">-</p>
-              </div>
-              <div class="details-card">
-                <p class="details-label">Country</p>
-                <p class="details-value" id="detail-country-value">-</p>
-              </div>
-              <div class="details-card">
-                <p class="details-label">City</p>
-                <p class="details-value" id="detail-city">Not provided</p>
+                <p class="details-label">Edition</p>
+                <p class="details-value" id="detail-edition">-</p>
               </div>
             </section>
+            <p class="detail-address" id="detail-street-address" hidden>
+              <span class="detail-address-label">Address</span>
+              <span id="detail-address-value"></span>
+            </p>
 
           </div>
         </aside>
@@ -1682,11 +1935,41 @@
       </footer>
     </div>
 
+    <dialog class="map-rating-dialog" id="map-rating-dialog" aria-labelledby="rating-title">
+      <form class="rating-form" id="map-rating-form">
+        <button class="rating-close" type="button" id="close-map-rating" aria-label="Close rating form">×</button>
+        <div>
+          <h2 id="rating-title">Do you love this coffee map?</h2>
+          <p>Your rating helps us see how many coffee lovers find the map useful.</p>
+        </div>
+        <div class="rating-options" role="radiogroup" aria-label="Choose a love or broken heart">
+          <button class="rating-choice" type="button" role="radio" aria-checked="false" aria-label="Love this map" data-rating="1">
+            <span class="rating-choice-emoji" aria-hidden="true">❤️</span><span>Love it</span>
+          </button>
+          <button class="rating-choice" type="button" role="radio" aria-checked="false" aria-label="This map needs improvement" data-rating="0">
+            <span class="rating-choice-emoji" aria-hidden="true">💔</span><span>Not yet</span>
+          </button>
+        </div>
+        <p class="rating-label" id="rating-label" aria-live="polite">Choose ❤️ or 💔</p>
+        <label for="rating-nickname">Nickname
+          <input id="rating-nickname" name="nickname" type="text" minlength="1" maxlength="24" autocomplete="nickname" required placeholder="How should we credit you?" />
+        </label>
+        <p class="rating-privacy">Your nickname and rating will appear on the public likes page. You can update your rating later from this browser.</p>
+        <label class="rating-honeypot" aria-hidden="true" tabindex="-1">Leave this field empty
+          <input name="website" type="text" tabindex="-1" autocomplete="off" />
+        </label>
+        <div class="rating-status" id="rating-status" role="status" aria-live="polite"></div>
+        <button class="rating-submit" id="rating-submit" type="submit">Send my love</button>
+      </form>
+    </dialog>
+
     <script>
       const overviewShops = {{ overview_shops | tojson }};
       const overviewCountries = {{ overview_countries | tojson }};
       const overviewFilters = {{ overview_filters | tojson }};
       const googleMapsKey = {{ google_maps_js_api_key | tojson }};
+      const likesApiBase = {{ likes_api_url | tojson }};
+      const likesEndpoint = `${(likesApiBase || window.location.origin).replace(/\/$/, "")}/api/likes`;
       const SHOP_ZOOM_THRESHOLD = 4;
       const GLOBAL_COUNTRY_MIN_SHOPS = 2;
 
@@ -1791,7 +2074,15 @@
             "South America 100": "South America 100",
             "North, Central America and the Caribbean": "North, Central America & Caribbean",
           };
-          button.textContent = compactLabels[category.label] || category.label;
+          const marker = document.createElement("span");
+          marker.className = "collection-check";
+          marker.setAttribute("aria-hidden", "true");
+          const bean = document.createElement("iconify-icon");
+          bean.setAttribute("icon", "ph:coffee-bean-fill");
+          marker.appendChild(bean);
+          const label = document.createElement("span");
+          label.textContent = compactLabels[category.label] || category.label;
+          button.append(marker, label);
           button.setAttribute("aria-label", `${category.label}, ${category.count} shops`);
           button.dataset.category = category.key;
           button.classList.toggle("active", state.activeCategories.has(category.key));
@@ -2047,17 +2338,6 @@
         return shops[0];
       }
 
-      // A resolved address already ends with its city and country. Appending
-      // them again produced lines like "…Rogers, AR 72756, USA, Rogers,
-      // Arkansas, USA"; the City row below the card carries that detail.
-      function composeAddressLine(shop) {
-        const resolved = String(shop.formatted_address || shop.address || "").trim();
-        if (resolved) {
-          return resolved;
-        }
-        return [shop.city, shop.country_normalized].filter(Boolean).join(", ") || shop.country_normalized;
-      }
-
       async function updateShopPhoto(shop) {
         const hero = document.getElementById("detail-hero");
         const image = document.getElementById("detail-image");
@@ -2193,30 +2473,33 @@
         updateSaveButton(shop);
         if (!shop) {
           document.getElementById("detail-name").textContent = "No matching shop";
-          document.getElementById("detail-address").textContent = "Adjust filters to view coffee shop details.";
-          document.getElementById("detail-rank").textContent = "No Selection";
+          document.getElementById("detail-address").textContent = "Adjust the filters to find a shop.";
+        document.getElementById("detail-rank").textContent = "No selection";
           document.getElementById("detail-country").textContent = "Country";
           document.getElementById("detail-category").textContent = "-";
-          document.getElementById("detail-rank-value").textContent = "-";
-          document.getElementById("detail-country-value").textContent = "-";
-          document.getElementById("detail-city").textContent = "Not provided";
+          document.getElementById("detail-edition").textContent = "-";
+          document.getElementById("detail-street-address").hidden = true;
           document.getElementById("detail-directions").href = "#";
           document.getElementById("detail-directions").dataset.mobileHref = "#";
           document.getElementById("detail-directions").dataset.mobileActive = "0";
           document.getElementById("detail-website").href = "#";
+          document.getElementById("detail-website").textContent = "Official listing";
           return;
         }
 
         state.selectedShopId = shop.id;
         state.selectedCountry = shop.country_normalized;
         document.getElementById("detail-name").textContent = safeShopName(shop);
-        document.getElementById("detail-address").textContent = composeAddressLine(shop);
-        document.getElementById("detail-rank").textContent = `#${shop.rank} ${shop.category}`;
+        document.getElementById("detail-address").textContent = shop.city || "City not listed";
+        document.getElementById("detail-rank").textContent = `#${shop.rank}`;
+        document.getElementById("detail-rank").title = `Rank #${shop.rank} in ${shop.category}`;
         document.getElementById("detail-country").textContent = shop.country_normalized;
-        document.getElementById("detail-category").textContent = `${shop.category} · ${shop.edition_year}`;
-        document.getElementById("detail-rank-value").textContent = `#${shop.rank}`;
-        document.getElementById("detail-country-value").textContent = shop.country_normalized;
-        document.getElementById("detail-city").textContent = shop.city || "Not provided";
+        document.getElementById("detail-country").title = shop.country_normalized;
+        document.getElementById("detail-category").textContent = shop.category;
+        document.getElementById("detail-edition").textContent = String(shop.edition_year || "Not provided");
+        const streetAddress = String(shop.formatted_address || shop.address || "").trim();
+        document.getElementById("detail-street-address").hidden = !streetAddress;
+        document.getElementById("detail-address-value").textContent = streetAddress;
 
         const directions = document.getElementById("detail-directions");
         const mobileHref = String(shop.mobile_google_maps_url || "").trim();
@@ -2228,6 +2511,10 @@
 
         const website = document.getElementById("detail-website");
         website.href = shop.source_url || shop.google_maps_url;
+        website.textContent = shop.source_url ? "Official listing" : "Google Maps listing";
+        website.setAttribute("aria-label", shop.source_url
+          ? `View the official listing for ${safeShopName(shop)}`
+          : `Open ${safeShopName(shop)} in Google Maps`);
       }
 
       function applyDirectionsClickBehavior() {
@@ -2735,6 +3022,140 @@
           .replaceAll('"', "&quot;")
           .replaceAll("'", "&#039;");
       }
+
+      const ratingDialog = document.getElementById("map-rating-dialog");
+      const ratingForm = document.getElementById("map-rating-form");
+      const ratingStatus = document.getElementById("rating-status");
+      const ratingLabel = document.getElementById("rating-label");
+      const ratingChoices = [...document.querySelectorAll(".rating-choice")];
+      let selectedLoveRating = null;
+      let likesServiceReady = false;
+
+      function updateRatingChoice(rating) {
+        selectedLoveRating = rating;
+        ratingChoices.forEach((choice, index) => {
+          const selected = rating !== null && Number(choice.dataset.rating) === rating;
+          choice.setAttribute("aria-checked", String(selected));
+          choice.tabIndex = selected || (rating === null && index === 0) ? 0 : -1;
+        });
+        ratingLabel.textContent = rating === null
+          ? "Choose ❤️ or 💔"
+          : rating === 1 ? "Thanks for loving the map!" : "Thanks for the honest feedback.";
+      }
+
+      async function refreshMapLoveCount() {
+        try {
+          const response = await fetch(likesEndpoint, { headers: { Accept: "application/json" } });
+          if (!response.ok) throw new Error("Likes service unavailable");
+          const data = await response.json();
+          likesServiceReady = true;
+          document.getElementById("map-love-count").textContent = `${Number(data.love_count || 0).toLocaleString()} loves`;
+          return true;
+        } catch (_error) {
+          likesServiceReady = false;
+          document.getElementById("map-love-count").textContent = "See map love";
+          return false;
+        }
+      }
+
+      function openRatingDialog() {
+        ratingStatus.textContent = likesServiceReady ? "" : "The shared rating service is not connected yet.";
+        document.getElementById("rating-submit").disabled = !likesServiceReady;
+        if (!ratingDialog.open) ratingDialog.showModal();
+        try { sessionStorage.setItem("roast-rating-prompt-seen-v2", "1"); } catch (_error) {}
+      }
+
+      document.getElementById("open-map-rating").addEventListener("click", openRatingDialog);
+      document.getElementById("close-map-rating").addEventListener("click", () => ratingDialog.close());
+      ratingDialog.addEventListener("click", (event) => {
+        if (event.target === ratingDialog) ratingDialog.close();
+      });
+
+      ratingChoices.forEach((choice) => choice.addEventListener("click", () => {
+        updateRatingChoice(Number(choice.dataset.rating));
+      }));
+      updateRatingChoice(null);
+      document.querySelector(".rating-options").addEventListener("keydown", (event) => {
+        if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(event.key)) return;
+        event.preventDefault();
+        const direction = ["ArrowRight", "ArrowDown"].includes(event.key) ? 1 : -1;
+        const current = ratingChoices.findIndex((choice) => Number(choice.dataset.rating) === selectedLoveRating);
+        const base = current < 0 ? (direction > 0 ? -1 : 0) : current;
+        const next = (base + direction + ratingChoices.length) % ratingChoices.length;
+        updateRatingChoice(Number(ratingChoices[next].dataset.rating));
+        ratingChoices[next].focus();
+      });
+
+      let volatileVoterId = "";
+      function getVoterId() {
+        const storageKey = "roast-map-rating-voter-id";
+        const createId = () => typeof crypto.randomUUID === "function"
+          ? crypto.randomUUID()
+          : "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (character) => {
+              const random = Math.floor(Math.random() * 16);
+              return (character === "x" ? random : (random & 0x3) | 0x8).toString(16);
+            });
+        try {
+          let voterId = localStorage.getItem(storageKey);
+          if (!voterId) {
+            voterId = createId();
+            localStorage.setItem(storageKey, voterId);
+          }
+          return voterId;
+        } catch (_error) {
+          volatileVoterId ||= createId();
+          return volatileVoterId;
+        }
+      }
+
+      ratingForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        if (selectedLoveRating === null) {
+          ratingStatus.textContent = "Choose ❤️ or 💔 first.";
+          ratingChoices[0].focus();
+          return;
+        }
+        const submitButton = document.getElementById("rating-submit");
+        submitButton.disabled = true;
+        ratingStatus.textContent = "Sending your rating…";
+        try {
+          const response = await fetch(likesEndpoint, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", Accept: "application/json" },
+            body: JSON.stringify({
+              nickname: document.getElementById("rating-nickname").value,
+              rating: selectedLoveRating,
+              voter_id: getVoterId(),
+              website: ratingForm.elements.website.value,
+            }),
+          });
+          const data = await response.json().catch(() => ({}));
+          if (!response.ok) throw new Error(data.detail || "Could not send your rating. Please try again.");
+          likesServiceReady = true;
+          document.getElementById("map-love-count").textContent = `${Number(data.love_count || 0).toLocaleString()} loves`;
+          ratingStatus.textContent = "Thanks for sharing the love! Your rating is now on the likes page.";
+          submitButton.textContent = "Done";
+          submitButton.type = "button";
+          submitButton.addEventListener("click", () => ratingDialog.close(), { once: true });
+          document.getElementById("rating-nickname").disabled = true;
+          ratingChoices.forEach((choice) => { choice.disabled = true; });
+          submitButton.disabled = false;
+        } catch (error) {
+          ratingStatus.textContent = error instanceof TypeError
+            ? "Could not reach the shared rating service. Please try again later."
+            : error.message;
+          submitButton.disabled = false;
+        }
+      });
+
+      refreshMapLoveCount();
+      let alreadyPrompted = false;
+      try { alreadyPrompted = sessionStorage.getItem("roast-rating-prompt-seen-v2") === "1"; } catch (_error) {}
+      if (!alreadyPrompted) setTimeout(() => {
+        let seenSinceLoad = false;
+        try { seenSinceLoad = sessionStorage.getItem("roast-rating-prompt-seen-v2") === "1"; } catch (_error) {}
+        if (!seenSinceLoad) openRatingDialog();
+      }, 3000);
 
       document.getElementById("reset-filters").addEventListener("click", resetFilters);
       document.querySelector(".hero-save").addEventListener("click", toggleSavedShop);
