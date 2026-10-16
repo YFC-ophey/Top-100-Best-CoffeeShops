@@ -9,9 +9,10 @@ if __package__ in (None, ""):
     sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 from src.category_utils import normalize_edition_year
+from src.data_corrections import apply_verified_shop_corrections
 from src.generator import generate_csv, generate_kml
 from src.env_utils import load_env_file
-from src.geocoder import GooglePlacesGeocoder
+from src.geocoder import GeocodeResult, GooglePlacesGeocoder
 from src.models import CoffeeShop
 from src.scraper import SOURCE_URLS, enrich_shops_with_details, fetch_html, parse_coffee_shops
 from src.site_builder import build_static_site
@@ -90,6 +91,7 @@ def scrape_only(sleep_seconds: float = 1.0) -> tuple[list[CoffeeShop], bool]:
 
     _guard_against_scrape_collapse(previous, all_shops)
     all_shops = enrich_shops_with_details(all_shops, sleep_seconds=sleep_seconds)
+    apply_verified_shop_corrections(all_shops)
     all_shops = _carry_forward_geocode(previous, all_shops)
     all_shops = _merge_with_archived_editions(previous, all_shops)
     changed = has_shop_changes(previous, all_shops)
@@ -101,6 +103,7 @@ def scrape_only(sleep_seconds: float = 1.0) -> tuple[list[CoffeeShop], bool]:
 
 def owner_geocode(api_key: str) -> None:
     shops = load_previous_state(DATA_FILE)
+    apply_verified_shop_corrections(shops)
     geocoder = GooglePlacesGeocoder(api_key)
     for shop in shops:
         result = geocoder.geocode_shop(shop)
@@ -167,14 +170,29 @@ def _carry_forward_geocode(previous: list[CoffeeShop], current: list[CoffeeShop]
         if match is None:
             continue
 
-        if shop.place_id is None and match.place_id:
-            shop.place_id = match.place_id
-        if shop.lat is None and match.lat is not None:
-            shop.lat = match.lat
-        if shop.lng is None and match.lng is not None:
-            shop.lng = match.lng
-        if shop.formatted_address is None and match.formatted_address:
-            shop.formatted_address = match.formatted_address
+        # Coordinates and their Google identity are inseparable. Carry them
+        # forward only when the current published street address still agrees;
+        # this prevents a moved shop or a stale wrong branch from regaining a
+        # pin after a clean scrape.
+        previous_pin_matches = False
+        if shop.address and match.lat is not None and match.lng is not None and match.formatted_address:
+            previous_result = GeocodeResult(
+                lat=float(match.lat),
+                lng=float(match.lng),
+                place_id=match.place_id or "",
+                formatted_address=match.formatted_address,
+            )
+            previous_pin_matches = GooglePlacesGeocoder("")._result_matches_shop(shop, previous_result)
+
+        if previous_pin_matches:
+            if shop.place_id is None and match.place_id:
+                shop.place_id = match.place_id
+            if shop.lat is None:
+                shop.lat = match.lat
+            if shop.lng is None:
+                shop.lng = match.lng
+            if shop.formatted_address is None and match.formatted_address:
+                shop.formatted_address = match.formatted_address
         if not shop.image_url and match.image_url:
             shop.image_url = match.image_url
         # A detail-page fetch that times out returns a shop with no city or

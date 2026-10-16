@@ -220,13 +220,33 @@ class GooglePlacesGeocoder:
             return False
 
         overlap = source_tokens & resolved_tokens
+        # A matching city, department, or generic road word is not enough to
+        # identify a shop branch. When the source and result both include a
+        # street/building number, require that specific number to agree.
+        source_numbers = self._address_numbers(source_address)
+        resolved_numbers = self._address_numbers(resolved_address)
+        if source_numbers and resolved_numbers and not (source_numbers & resolved_numbers):
+            return False
         if len(overlap) >= 2:
+            return True
+
+        matching_short_number = any(
+            number.isdigit() and len(number) <= 3
+            for number in source_numbers & resolved_numbers
+        )
+        if matching_short_number and len(overlap) == 1 and overlap <= (source_numbers & resolved_numbers):
+            return True
+
+        # A single distinctive street token is acceptable for short published
+        # addresses such as "Bayfield Rd, Portree"; multi-token address labels
+        # need at least two shared distinctive tokens.
+        if len(overlap) == 1 and overlap == source_tokens:
             return True
 
         union = source_tokens | resolved_tokens
         if not union:
             return False
-        return (len(overlap) / len(union)) >= 0.18
+        return (len(overlap) / len(union)) >= 0.35
 
     def _country_matches_formatted(self, expected_country: str, formatted_address: str) -> bool:
         normalized_formatted = self._normalized_phrase(formatted_address)
@@ -248,9 +268,14 @@ class GooglePlacesGeocoder:
         return {
             token
             for token in normalized.split()
-            if (len(token) >= 3 or (len(token) >= 2 and token.isdigit()))
+            if (len(token) >= 3 or token.isdigit())
             and token not in _GENERIC_ADDRESS_TOKENS
+            and not re.fullmatch(r"(?:[a-z]{1,2}\d{1,2}|\d[a-z]{2})", token)
         }
+
+    def _address_numbers(self, value: str | None) -> set[str]:
+        normalized = self._normalized_phrase(value)
+        return set(re.findall(r"(?<![a-z])\d+[a-z]?(?![a-z])", normalized))
 
     @staticmethod
     def _colombian_road_anchor(value: str | None) -> tuple[str, str] | None:
@@ -289,6 +314,27 @@ _GENERIC_ADDRESS_TOKENS = {
     "ave",
     "boulevard",
     "blvd",
+    "av",
+    "avenida",
+    "calle",
+    "cl",
+    "carrera",
+    "cra",
+    "circular",
+    "cq",
+    "transversal",
+    "tv",
+    "rua",
+    "jiron",
+    "jr",
+    "road",
+    "r",
+    "oriente",
+    "poniente",
+    "norte",
+    "sur",
+    "francisco",
+    "morazan",
     "city",
     "region",
     "state",

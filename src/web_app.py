@@ -28,6 +28,7 @@ from src.country_centroids import (
     country_centroid,
     normalize_country,
 )
+from src.data_corrections import apply_verified_shop_corrections
 from src.models import CoffeeShop
 from src.state import load_previous_state
 
@@ -191,6 +192,7 @@ def _load_shops(data_file: Path) -> list[CoffeeShop]:
         return []
 
     shops = load_previous_state(data_file)
+    apply_verified_shop_corrections(shops)
     for shop in shops:
         shop.category = normalize_category(shop.category)
         shop.edition_year = normalize_edition_year(shop.edition_year)

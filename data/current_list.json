@@ -1224,10 +1224,10 @@
     "source_url": "https://theworlds100bestcoffeeshops.com/locales/coffea-guatemala/",
     "image_url": "https://theworlds100bestcoffeeshops.com/wp-content/uploads/2026/02/82.-COFFEA.jpg",
     "address": "6a Calle Oriente 18a, Antigua Guatemala",
-    "lat": 14.554013,
-    "lng": -90.7348663,
-    "place_id": "ChIJaYF_SA0OiYUR7_L_wAjopQA",
-    "formatted_address": "7a Calle Poniente 15, Antigua Guatemala, Guatemala"
+    "lat": null,
+    "lng": null,
+    "place_id": null,
+    "formatted_address": null
   },
   {
     "name": "D·Origen Coffee Roasters Barcelona",
@@ -1359,10 +1359,10 @@
     "source_url": "https://theworlds100bestcoffeeshops.com/locales/cafetano-coffee-roasters/",
     "image_url": "https://theworlds100bestcoffeeshops.com/wp-content/uploads/2026/02/91.-CAFETANO.jpg",
     "address": "Ave Juan Lindo, Redondel Las Minitas, 11101 Tegucigalpa, Francisco Morazán, Honduras",
-    "lat": 14.0891693,
-    "lng": -87.18622409999999,
-    "place_id": "ChIJhaSZedSib48RdofAX4Tytn0",
-    "formatted_address": "Av. República de Costa Rica, Tegucigalpa, Francisco Morazán, Honduras"
+    "lat": 14.0963263,
+    "lng": -87.1911952,
+    "place_id": null,
+    "formatted_address": "Sede Redondel Las Minitas, Ave Juan Lindo, Tegucigalpa, Honduras"
   },
   {
     "name": "Coffee Five",
@@ -1861,18 +1861,18 @@
   },
   {
     "name": "Typica Café",
-    "city": "La Paz",
+    "city": "Cochabamba",
     "country": "Bolivia",
     "rank": 25,
     "category": "South America",
     "edition_year": 2026,
     "source_url": "https://theworlds100bestcoffeeshops.com/locales-south/typica-cafe/",
     "image_url": "https://theworlds100bestcoffeeshops.com/wp-content/uploads/2025/10/IMG_11_Typica-Cafe.jpg",
-    "address": "La Paz 661, Cochabamba, Bolivia",
-    "lat": -17.4031996,
-    "lng": -66.1545245,
-    "place_id": "ChIJq6BPke9z45MRCx_ad5rdpb8",
-    "formatted_address": "HRWW+P5H, Cochabamba, Bolivia"
+    "address": "El Prado, Calle España, entre calles La Paz y Reza #661, Cochabamba, Bolivia",
+    "lat": -17.3859687,
+    "lng": -66.1580268,
+    "place_id": null,
+    "formatted_address": "El Prado, Calle España, entre calles La Paz y Reza #661, Cochabamba, Bolivia"
   },
   {
     "name": "Islander Coffee Roasters",

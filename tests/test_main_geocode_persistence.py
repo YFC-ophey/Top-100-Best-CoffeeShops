@@ -25,6 +25,7 @@ def test_carry_forward_geocode_reuses_previous_fields() -> None:
             rank=1,
             category="Top 100",
             source_url="https://theworlds100bestcoffeeshops.com/locales/onyx-coffee-lab/",
+            address="101 E Walnut Ave, Rogers, AR 72756, USA",
             lat=None,
             lng=None,
             place_id=None,
