@@ -1299,10 +1299,10 @@
     "source_url": "https://theworlds100bestcoffeeshops.com/locales/exploradores/",
     "image_url": "https://theworlds100bestcoffeeshops.com/wp-content/uploads/2026/02/IMG-400x400-87.jpg",
     "address": "Santa Fé 596, Cuajimalpa, CDMX, MEX",
-    "lat": 19.3554536,
-    "lng": -99.275689,
-    "place_id": "ChIJ635zgLUA0oURwUDZfOwFplg",
-    "formatted_address": "Av. Santa Fe 601, Lomas de Santa Fe, Contadero, Cuajimalpa de Morelos, 05310 Cuajimalps, CDMX, Mexico"
+    "lat": null,
+    "lng": null,
+    "place_id": null,
+    "formatted_address": null
   },
   {
     "name": "The Folks",
@@ -1868,7 +1868,7 @@
     "edition_year": 2026,
     "source_url": "https://theworlds100bestcoffeeshops.com/locales-south/typica-cafe/",
     "image_url": "https://theworlds100bestcoffeeshops.com/wp-content/uploads/2025/10/IMG_11_Typica-Cafe.jpg",
-    "address": "El Prado, Calle España, entre calles La Paz y Reza #661, Cochabamba, Bolivia",
+    "address": "El Prado, calle España, entre calles La Paz y Reza #661, Cochabamba, Bolivia",
     "lat": -17.3859687,
     "lng": -66.1580268,
     "place_id": null,
@@ -2064,10 +2064,10 @@
     "source_url": "https://theworlds100bestcoffeeshops.com/locales-south/pergamino-cafe-laureles/",
     "image_url": "https://theworlds100bestcoffeeshops.com/wp-content/uploads/2025/10/IMG_12_Pergamino-Cafe-Laureles.jpg",
     "address": "Cq 73 #34 - 65, Laureles - Estadio, Medellín, Laureles, Medellín, Antioquia, Colombia",
-    "lat": 6.2413788,
-    "lng": -75.59618689999999,
-    "place_id": "ChIJzcFcU8spRI4RKdDH5QXv8LU",
-    "formatted_address": "Tv 34 #34 - 65, Laureles - Estadio, Medellín, Laureles, Medellín, Antioquia, Colombia"
+    "lat": null,
+    "lng": null,
+    "place_id": null,
+    "formatted_address": null
   },
   {
     "name": "Savignano Café",
@@ -2453,7 +2453,7 @@
     "edition_year": 2026,
     "source_url": "https://theworlds100bestcoffeeshops.com/locales-south/rituales-compania-de-cafe/",
     "image_url": "https://theworlds100bestcoffeeshops.com/wp-content/uploads/2026/09/IMG_WEB-RITUALES_1.jpg",
-    "address": "Circular 74a #39B-22, Medellín, Antioquia, Colombia",
+    "address": "Cq. 6 #39b-22, Laureles - Estadio, Medellín, Laureles, Medellín, Antioquia, Colombia",
     "lat": null,
     "lng": null,
     "place_id": null,
