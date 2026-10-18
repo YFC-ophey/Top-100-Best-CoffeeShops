@@ -89,7 +89,10 @@ def test_home_page_renders_roast_overview_with_south_america_label(tmp_path: Pat
     assert 'const GLOBAL_COUNTRY_MIN_SHOPS = 2;' in response.text
     assert "path: google.maps.SymbolPath.CIRCLE" in response.text
     assert 'labelOrigin: new google.maps.Point(0, 0)' in response.text
-    assert 'const SHOP_PIN_PATH = "M 0,-19 C -5.8,-19 -10.8,-14.5 -10.8,-8.8 C -10.8,-1.9 0,5.8 0,5.8 C 0,5.8 10.8,-1.9 10.8,-8.8 C 10.8,-14.5 5.8,-19 0,-19 Z M 0,-12.5 C -2.3,-12.5 -4.2,-10.6 -4.2,-8.3 C -4.2,-6 -2.3,-4.1 0,-4.1 C 2.3,-4.1 4.2,-6 4.2,-8.3 C 4.2,-10.6 2.3,-12.5 0,-12.5 Z";' in response.text
+    assert "const SHOP_BEAN_PATH =" in response.text
+    assert "const SHOP_BEAN_SEAM =" in response.text
+    assert "${rankText}</text>" in response.text
+    assert "icon: shopMarkerIcon(shop, active)" in response.text
     assert 'gestureHandling: "greedy"' in response.text
     assert "zoomControl: true" in response.text
     assert "#a5755b" in response.text
