@@ -7885,7 +7885,7 @@
             </button>
             <div class="hero-caption">
               <h3 class="shop-title" id="detail-name">Select a shop</h3>
-              <p class="shop-sub" id="detail-address">Choose a pin or shop to see its details.</p>
+              <p class="shop-sub" id="detail-address">Choose a coffee bean or shop to see its details.</p>
             </div>
           </div>
           <span class="hero-photo-note" id="detail-photo-note"></span>
@@ -8657,7 +8657,9 @@
         Venezuela: "#FFCC00",
       };
 
-      const SHOP_PIN_PATH = "M 0,-19 C -5.8,-19 -10.8,-14.5 -10.8,-8.8 C -10.8,-1.9 0,5.8 0,5.8 C 0,5.8 10.8,-1.9 10.8,-8.8 C 10.8,-14.5 5.8,-19 0,-19 Z M 0,-12.5 C -2.3,-12.5 -4.2,-10.6 -4.2,-8.3 C -4.2,-6 -2.3,-4.1 0,-4.1 C 2.3,-4.1 4.2,-6 4.2,-8.3 C 4.2,-10.6 2.3,-12.5 0,-12.5 Z";
+      const SHOP_BEAN_PATH = "M 11 39 C 5 31 6 19 13 11 C 19 4 28 3 36 7 C 45 11 49 22 45 32 C 42 41 32 48 23 48 C 18 48 14 45 11 39 Z";
+      const SHOP_BEAN_SEAM = "M 19 9 C 15 16 15 22 18 27 C 21 32 19 39 16 45";
+      const shopBeanIconCache = new Map();
 
       function flagColorFor(country, fallbackColor = "#888899") {
         return FLAG_COLORS[country] || fallbackColor;
@@ -8713,17 +8715,32 @@
         };
       }
 
-      function shopMarkerIcon(shop, active, faded) {
-        const baseColor = flagColorFor(shop.country_normalized, "#888899");
+      function shopMarkerIcon(shop, active) {
+        const rank = Number(shop.rank);
+        const rankText = Number.isInteger(rank) && rank > 0 ? String(rank) : "?";
+        const cacheKey = `${rankText}:${active}`;
+        let url = shopBeanIconCache.get(cacheKey);
+        if (!url) {
+          const beanFill = active ? "#ffd29e" : "#68402e";
+          const seamColor = active ? "#8b472b" : "#f0c5a0";
+          const numberColor = active ? "#24130e" : "#fff8ef";
+          const numberOutline = active ? "#ffe2bb" : "#422517";
+          const numberSize = rankText.length > 2 ? 13 : 16;
+          const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="52" height="52" viewBox="0 0 52 52">` +
+            `<path d="${SHOP_BEAN_PATH}" fill="${beanFill}" stroke="#190f0b" stroke-width="6"/>` +
+            `<path d="${SHOP_BEAN_PATH}" fill="${beanFill}" stroke="#ffe9d3" stroke-width="2.8"/>` +
+            `<path d="${SHOP_BEAN_SEAM}" fill="none" stroke="${seamColor}" stroke-width="2.8" stroke-linecap="round"/>` +
+            `<text x="32" y="27" text-anchor="middle" dominant-baseline="central" font-family="Arial,sans-serif" font-size="${numberSize}" font-weight="900" fill="${numberColor}" stroke="${numberOutline}" stroke-width="1.5" paint-order="stroke fill">${rankText}</text>` +
+            `</svg>`;
+          url = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+          shopBeanIconCache.set(cacheKey, url);
+        }
+        const size = active ? 50 : 46;
         return {
-          path: SHOP_PIN_PATH,
-          fillColor: active ? "#fff4eb" : colorWithIntensity(baseColor, 0.75),
-          fillOpacity: faded ? 0.36 : active ? 0.98 : 0.9,
-          strokeColor: active ? "#ffd8b7" : "#ffeada",
-          strokeWeight: active ? 1.95 : 1.45,
-          scale: active ? 1.03 : 0.88,
-          anchor: new google.maps.Point(0, 0),
-          labelOrigin: new google.maps.Point(0, -10),
+          url,
+          size: new google.maps.Size(52, 52),
+          scaledSize: new google.maps.Size(size, size),
+          anchor: new google.maps.Point(size / 2, size / 2),
         };
       }
 
@@ -8744,11 +8761,17 @@
         state.pulseTimer = window.setInterval(() => {
           grow = !grow;
           const icon = iconFactory();
-          const baseScale = Number(icon.scale) || 1;
-          icon.scale = grow ? baseScale * 1.04 : baseScale;
-          icon.fillOpacity = grow
-            ? Math.min(1, Number(icon.fillOpacity || 0.9) + 0.02)
-            : Number(icon.fillOpacity || 0.9);
+          if (icon.scaledSize) {
+            const size = icon.scaledSize.width * (grow ? 1.04 : 1);
+            icon.scaledSize = new google.maps.Size(size, size);
+            icon.anchor = new google.maps.Point(size / 2, size / 2);
+          } else {
+            const baseScale = Number(icon.scale) || 1;
+            icon.scale = grow ? baseScale * 1.04 : baseScale;
+            icon.fillOpacity = grow
+              ? Math.min(1, Number(icon.fillOpacity || 0.9) + 0.02)
+              : Number(icon.fillOpacity || 0.9);
+          }
           marker.setIcon(icon);
         }, 900);
       }
@@ -8825,7 +8848,7 @@
         });
       }
 
-      function renderShopMarkers(shops, countriesByName, countries, maxCount) {
+      function renderShopMarkers(shops, countries, maxCount) {
         const positionedShops = shops
           .map((shop) => ({
             shop,
@@ -8834,7 +8857,7 @@
           .filter((entry) => Boolean(entry.position));
         const hiddenCount = shops.length - positionedShops.length;
         setMapHint(
-          `Zoomed in: individual coffee shop pins.${unresolvedHint(hiddenCount)}`
+          `Zoomed in: numbered coffee bean markers.${unresolvedHint(hiddenCount)}`
         );
 
         if (!positionedShops.length) {
@@ -8857,20 +8880,12 @@
 
         positionedShops.forEach(({ shop, position }) => {
           const active = Boolean(selectedShop && selectedShop.id === shop.id);
-          const faded = Boolean(selectedShop && selectedShop.id !== shop.id);
-          const baseColor = flagColorFor(shop.country_normalized, countriesByName.get(shop.country_normalized)?.marker_color || "#888899");
           const tooltipText = shopTooltipText(shop);
           const marker = new google.maps.Marker({
             map: state.map,
             position,
             title: tooltipText,
-            icon: shopMarkerIcon(shop, active, faded),
-            label: {
-              text: String(shop.rank),
-              color: labelColor(active ? "#ffe8b8" : baseColor),
-              fontWeight: "700",
-              fontSize: "9px",
-            },
+            icon: shopMarkerIcon(shop, active),
             zIndex: active ? 90 : 30,
           });
 
@@ -8882,7 +8897,7 @@
             renderMapMarkers();
           });
 
-          if (active) startPulse(marker, () => shopMarkerIcon(shop, true, false));
+          if (active) startPulse(marker, () => shopMarkerIcon(shop, true));
           state.shopMarkers.push(marker);
         });
       }
@@ -8909,7 +8924,6 @@
 
         hideMapMessage();
         const maxCount = Math.max(...countries.map((row) => row.shop_count), 1);
-        const countriesByName = new Map(countries.map((row) => [row.country, row]));
         const zoom = state.map.getZoom() || 2;
         if (zoom < SHOP_ZOOM_THRESHOLD) {
           if (state.country === "All" && !state.focusCountry) {
@@ -8919,7 +8933,7 @@
           }
           return;
         }
-        renderShopMarkers(mapShops, countriesByName, countries, maxCount);
+        renderShopMarkers(mapShops, countries, maxCount);
       }
 
       const MAP_STYLE_BASE = [
