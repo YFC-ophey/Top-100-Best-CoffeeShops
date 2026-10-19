@@ -825,11 +825,11 @@
     "snapshot_label": "2026 · Current",
     "source_url": "https://theworlds100bestcoffeeshops.com/locales/atte-for-coffee/",
     "image_url": "https://theworlds100bestcoffeeshops.com/wp-content/uploads/2026/02/Atte-Coffee-4.jpeg",
-    "address": "7a Calle Oriente 20B, Antigua Guatemala 03001, Guatemala",
-    "lat": 14.554560799999999,
-    "lng": -90.7294612,
+    "address": "7a Calle Oriente, 20”B” Antigua Guatemala, Sacatepéquez",
+    "lat": null,
+    "lng": null,
     "place_id": null,
-    "formatted_address": "Atte For Coffee, 7a Calle Oriente 20B, Antigua Guatemala 03001, Guatemala"
+    "formatted_address": null
   },
   {
     "name": "Single O",
@@ -1385,11 +1385,11 @@
     "snapshot_label": "2026 · Current",
     "source_url": "https://theworlds100bestcoffeeshops.com/locales/exploradores/",
     "image_url": "https://theworlds100bestcoffeeshops.com/wp-content/uploads/2026/02/IMG-400x400-87.jpg",
-    "address": "Av. Santa Fe 601, Lomas de Santa Fe, Contadero, Cuajimalpa de Morelos, 05310 CDMX, Mexico",
-    "lat": 19.355410199999998,
-    "lng": -99.2757134,
+    "address": "Santa Fé 596, Cuajimalpa, CDMX, MEX",
+    "lat": null,
+    "lng": null,
     "place_id": null,
-    "formatted_address": "Exploradores Club de Cafe, Av. Santa Fe 601, Lomas de Santa Fe, Contadero, Cuajimalpa de Morelos, 05310 CDMX, Mexico"
+    "formatted_address": null
   },
   {
     "name": "The Folks",
@@ -1865,7 +1865,7 @@
     "snapshot_label": "2026 · Current",
     "source_url": "https://theworlds100bestcoffeeshops.com/locales-south/elisa-cafe-e-torrefacao/",
     "image_url": "https://theworlds100bestcoffeeshops.com/wp-content/uploads/2026/09/IMG_WEB-Elisa-Cafe-e-Torrefacao.jpg",
-    "address": "Elisa Café e Torrefação - Statement, Av. do Contorno 5800, Belo Horizonte, MG, Brazil",
+    "address": "Av. do Contorno, 5800 - Savassi, Belo Horizonte - MG, 30110-042, Brazil",
     "lat": -19.9397403,
     "lng": -43.9335624,
     "place_id": null,
@@ -1913,7 +1913,7 @@
     "snapshot_label": "2026 · Current",
     "source_url": "https://theworlds100bestcoffeeshops.com/locales-south/casa-canela/",
     "image_url": "https://theworlds100bestcoffeeshops.com/wp-content/uploads/2025/10/IMG_18_Casa-Canela.jpg",
-    "address": "Casa Canela, C. Bolivar las Marias, Caracas 1083, Miranda, Venezuela",
+    "address": "C5GF+8RC, C. Bolivar las Marias, Caracas 1083, Miranda, Venezuela",
     "lat": 10.4258045,
     "lng": -66.8254691,
     "place_id": null,
@@ -2185,11 +2185,11 @@
     "snapshot_label": "2026 · Current",
     "source_url": "https://theworlds100bestcoffeeshops.com/locales-south/cafe-micelio-puerto-varas/",
     "image_url": "https://theworlds100bestcoffeeshops.com/wp-content/uploads/2025/10/IMG_33_Cafe-Micelio-Puerto-Varas.jpg",
-    "address": "Café Micelio Puerto Varas, Los Tilos 669, Puerto Varas, Los Lagos, Chile",
-    "lat": -41.3154518,
-    "lng": -72.9874238,
+    "address": "Calle Estación 262, Región de Los Lagos, Puerto Varas, Chile",
+    "lat": null,
+    "lng": null,
     "place_id": null,
-    "formatted_address": "Café Micelio Puerto Varas, Los Tilos 669, Puerto Varas, Los Lagos, Chile"
+    "formatted_address": null
   },
   {
     "name": "Pergamino Café Laureles",
@@ -2201,11 +2201,11 @@
     "snapshot_label": "2026 · Current",
     "source_url": "https://theworlds100bestcoffeeshops.com/locales-south/pergamino-cafe-laureles/",
     "image_url": "https://theworlds100bestcoffeeshops.com/wp-content/uploads/2025/10/IMG_12_Pergamino-Cafe-Laureles.jpg",
-    "address": "Pergamino | Cafe - Laureles, Tv 34 #34-65, Medellín, Colombia",
-    "lat": 6.2413788,
-    "lng": -75.5961869,
+    "address": "Cq 73 #34 - 65, Laureles - Estadio, Medellín, Laureles, Medellín, Antioquia, Colombia",
+    "lat": null,
+    "lng": null,
     "place_id": null,
-    "formatted_address": "Pergamino | Cafe - Laureles, Tv 34 #34-65, Medellín, Colombia"
+    "formatted_address": null
   },
   {
     "name": "Savignano Café",
@@ -2217,7 +2217,7 @@
     "snapshot_label": "2026 · Current",
     "source_url": "https://theworlds100bestcoffeeshops.com/locales-south/savignano-cafe/",
     "image_url": "https://theworlds100bestcoffeeshops.com/wp-content/uploads/2026/09/IMG_WEB-Savignano-Cafe.jpg",
-    "address": "Savignano Café, Caracas 1083, Miranda, Venezuela",
+    "address": "Caracas 1083, Miranda, Venezuela",
     "lat": 10.4124987,
     "lng": -66.8254594,
     "place_id": null,
@@ -2265,7 +2265,7 @@
     "snapshot_label": "2026 · Current",
     "source_url": "https://theworlds100bestcoffeeshops.com/locales-south/montse/",
     "image_url": "https://theworlds100bestcoffeeshops.com/wp-content/uploads/2026/09/IMG_WEB-MONTSE_1.jpg",
-    "address": "Montse Coffee and Bake Shop, C. Victor Vivar, Loja, Ecuador",
+    "address": "C. Victor Vivar &, Loja, Ecuador",
     "lat": -3.9945054,
     "lng": -79.1976395,
     "place_id": null,
@@ -2329,7 +2329,7 @@
     "snapshot_label": "2026 · Current",
     "source_url": "https://theworlds100bestcoffeeshops.com/locales-south/boca-cafe/",
     "image_url": "https://theworlds100bestcoffeeshops.com/wp-content/uploads/2026/09/IMG_WEB-BOCA-CAFE_1.jpg",
-    "address": "Boca Café, Centro de Arte Los Galpones, Caracas, Venezuela",
+    "address": "Centro de Arte Los Galpones, Av. Ávila con 8va Transversal, Los Palos Grandes, Caracas, Venezuela",
     "lat": 10.5034361,
     "lng": -66.8315437,
     "place_id": null,
@@ -2345,11 +2345,11 @@
     "snapshot_label": "2026 · Current",
     "source_url": "https://theworlds100bestcoffeeshops.com/locales-south/tinticoos-cafeteria/",
     "image_url": "https://theworlds100bestcoffeeshops.com/wp-content/uploads/2026/09/IMG_WEB-TINTICOOS-CAFETERIA_1.jpg",
-    "address": "Vicente Rocafuerte 576, Ibarra, Ecuador",
-    "lat": 0.350736,
-    "lng": -78.11622299999999,
+    "address": "Ibarra | Vicente Rocafuerte 5-76 y Juan José Flores",
+    "lat": null,
+    "lng": null,
     "place_id": null,
-    "formatted_address": "Vicente Rocafuerte 576, Ibarra, Ecuador"
+    "formatted_address": null
   },
   {
     "name": "Tasta Café",
@@ -2569,7 +2569,7 @@
     "snapshot_label": "2026 · Current",
     "source_url": "https://theworlds100bestcoffeeshops.com/locales-south/mijito-cafe/",
     "image_url": "https://theworlds100bestcoffeeshops.com/wp-content/uploads/2026/09/IMG_WEB-MIJITO-CAFE_1.jpg",
-    "address": "Mijito Cafe, Panamericana S/N, Parador Vitta, Godoy Cruz, Mendoza, Argentina",
+    "address": "Panamericana S/N - Frente a Palmares, M5101 Godoy Cruz, Mendoza, Argentina",
     "lat": -32.9550962,
     "lng": -68.856731,
     "place_id": null,
@@ -3177,7 +3177,7 @@
     "snapshot_label": "2026 · Current",
     "source_url": "https://theworlds100bestcoffeeshops.com/locales-south/raymi-coffee-shops-el-bosque/",
     "image_url": "https://theworlds100bestcoffeeshops.com/wp-content/uploads/2026/09/IMG_WEB-RAYMI-COFFEE_1.jpg",
-    "address": "Raymi Coffeeshop CC El Bosque, Centro Comercial, C. J y Paseo la Ronda, Quito, Ecuador",
+    "address": "Centro Comercial, C. J y Paseo la Ronda, 170132 Quito, Ecuador",
     "lat": -0.1629894,
     "lng": -78.4975366,
     "place_id": null,
@@ -4282,10 +4282,10 @@
     "source_url": "https://theworlds100bestcoffeeshops.com/locales-europe/dabov-specialty-coffee/",
     "image_url": "https://theworlds100bestcoffeeshops.com/wp-content/uploads/2026/06/68-DABOV-Specialty-Coffee_1.jpg",
     "address": "DABOV Specialty Coffee Spain, C. de Sta. Isabel 42, Madrid, Spain",
-    "lat": 40.4101176,
-    "lng": -3.6974377,
+    "lat": null,
+    "lng": null,
     "place_id": null,
-    "formatted_address": "DABOV Specialty Coffee Spain, C. de Sta. Isabel 42, Madrid, Spain"
+    "formatted_address": null
   },
   {
     "name": "Conway & Co.",
@@ -4921,7 +4921,7 @@
     "snapshot_label": "2026 · Current",
     "source_url": "https://theworlds100bestcoffeeshops.com/locales-north/cafe-nativo-roastery/",
     "image_url": "https://theworlds100bestcoffeeshops.com/wp-content/uploads/2026/03/IMG_WEB-1-20-NATIVO.jpg",
-    "address": "4R25+3GG, Tegucigalpa, Francisco Morazán, Honduras",
+    "address": "4R25+3GG, Tegucigalpa, Francisco Morazán, Tegucigalpa, Honduras",
     "lat": 14.1002633,
     "lng": -87.1910757,
     "place_id": null,
@@ -4953,11 +4953,11 @@
     "snapshot_label": "2026 · Current",
     "source_url": "https://theworlds100bestcoffeeshops.com/locales-north/atte-coffee/",
     "image_url": "https://theworlds100bestcoffeeshops.com/wp-content/uploads/2026/02/Atte-Coffee-4.jpeg",
-    "address": "7a Calle Oriente 20B, Antigua Guatemala 03001, Guatemala",
-    "lat": 14.554560799999999,
-    "lng": -90.7294612,
+    "address": "7a Calle Oriente, 20”B” Antigua Guatemala, Sacatepéquez",
+    "lat": null,
+    "lng": null,
     "place_id": null,
-    "formatted_address": "Atte For Coffee, 7a Calle Oriente 20B, Antigua Guatemala 03001, Guatemala"
+    "formatted_address": null
   },
   {
     "name": "Histórico",
@@ -5161,11 +5161,11 @@
     "snapshot_label": "2026 · Current",
     "source_url": "https://theworlds100bestcoffeeshops.com/locales-north/exploradores/",
     "image_url": "https://theworlds100bestcoffeeshops.com/wp-content/uploads/2026/03/IMG_WEB-21-40-EXPLORADORES.jpg",
-    "address": "Av. Santa Fe 601, Lomas de Santa Fe, Contadero, Cuajimalpa de Morelos, 05310 CDMX, Mexico",
-    "lat": 19.355410199999998,
-    "lng": -99.2757134,
+    "address": "Santa Fé 596, Cuajimalpa, CDMX, MEX",
+    "lat": null,
+    "lng": null,
     "place_id": null,
-    "formatted_address": "Exploradores Club de Cafe, Av. Santa Fe 601, Lomas de Santa Fe, Contadero, Cuajimalpa de Morelos, 05310 CDMX, Mexico"
+    "formatted_address": null
   },
   {
     "name": "Savaya Coffee Market",
@@ -5321,11 +5321,11 @@
     "snapshot_label": "2026 · Current",
     "source_url": "https://theworlds100bestcoffeeshops.com/locales-north/truly-coffee/",
     "image_url": "https://theworlds100bestcoffeeshops.com/wp-content/uploads/2026/03/IMG_WEB-21-40-TRULY4.jpg",
-    "address": "Truly Coffee | Café de Especialidad, San Marcos, Guatemala",
-    "lat": 14.9690582,
-    "lng": -91.7848204,
+    "address": "San Marcos, Guatemala",
+    "lat": null,
+    "lng": null,
     "place_id": null,
-    "formatted_address": "Truly Coffee | Café de Especialidad, San Marcos, Guatemala"
+    "formatted_address": null
   },
   {
     "name": "Café Pista",
@@ -5418,10 +5418,10 @@
     "source_url": "https://theworlds100bestcoffeeshops.com/locales-north/mexican-harvest/",
     "image_url": "https://theworlds100bestcoffeeshops.com/wp-content/uploads/2026/03/IMG_WEB-21-40-MEXICAN-HARVEST.jpg",
     "address": "C. 2 Sur 907, Centro Histórico, Puebla, Mexico",
-    "lat": 19.0400971,
-    "lng": -98.1992654,
-    "place_id": "ChIJoyXWNwDBz4URqQV6cj0zoro",
-    "formatted_address": "C. 2 Sur 907, Centro histórico de Puebla, 72000 Heroica Puebla de Zaragoza, Pue., Mexico"
+    "lat": null,
+    "lng": null,
+    "place_id": null,
+    "formatted_address": null
   },
   {
     "name": "Be Bright Coffee",
@@ -5482,10 +5482,10 @@
     "source_url": "https://theworlds100bestcoffeeshops.com/locales-north/sweet-bloom-coffee/",
     "image_url": "https://theworlds100bestcoffeeshops.com/wp-content/uploads/2026/03/IMG_WEB-41-60-SWEET-BLOOM.jpg",
     "address": "Sweet Bloom Coffee, 1619 Reed St, Lakewood, Colorado, USA",
-    "lat": 39.7424056,
-    "lng": -105.0746576,
+    "lat": null,
+    "lng": null,
     "place_id": null,
-    "formatted_address": "Sweet Bloom Coffee, 1619 Reed St, Lakewood, Colorado, USA"
+    "formatted_address": null
   },
   {
     "name": "Café Comunión",
@@ -5641,11 +5641,11 @@
     "snapshot_label": "2026 · Current",
     "source_url": "https://theworlds100bestcoffeeshops.com/locales-north/cafe-de-hacienda-yalipur/",
     "image_url": "https://theworlds100bestcoffeeshops.com/wp-content/uploads/2026/04/IMG_WEB-41-60-HACIENDA-YALIPUR.jpg",
-    "address": "Café de Hacienda Yalipur, 2a Calle, Cobán, Guatemala",
-    "lat": 15.4711938,
-    "lng": -90.3749644,
+    "address": "2a Calle, Cobán, Guatemala",
+    "lat": null,
+    "lng": null,
     "place_id": null,
-    "formatted_address": "Café de Hacienda Yalipur, 2a Calle, Cobán, Guatemala"
+    "formatted_address": null
   },
   {
     "name": "Library Coffee",
