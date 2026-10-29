@@ -3,7 +3,7 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688.svg)](https://fastapi.tiangolo.com/)
 [![Uvicorn](https://img.shields.io/badge/Uvicorn-0.30+-4B8BBE.svg)](https://www.uvicorn.org/)
 [![Pytest](https://img.shields.io/badge/tests-pytest-0A9EDC.svg)](https://docs.pytest.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ### World's 100 Best Coffee Shops ☕️ Interactive Map Explorer 🗺️
 
@@ -196,6 +196,17 @@ verification gates: **[docs/case-study-agentic-engineering.md](docs/case-study-a
 ## Data Source
 
 All coffee shop data sourced from **[theworlds100bestcoffeeshops.com](https://theworlds100bestcoffeeshops.com/)** — an independent annual ranking published each February.
+
+---
+
+## License
+
+Original source code and documentation created for this project are available
+under the [MIT License](LICENSE). The license does not grant rights to the
+third-party coffee shop rankings or data, shop photographs, Google Maps or
+Places content, map imagery, trademarks, or other third-party material shown
+or linked by the project. Those materials remain subject to their owners'
+rights and the applicable service terms.
 
 ---
 
