@@ -19,6 +19,8 @@ COUNTRY_ALIASES: Final[dict[str, str]] = {
     "scotland": "United Kingdom",
     "texas usa": "USA",
     "illinois usa": "USA",
+    "south korea": "Republic of Korea",
+    "japam": "Japan",  # Typo on the publisher's Asia-Pacific Ignis card.
 }
 
 COUNTRY_CENTROIDS: Final[dict[str, tuple[float, float]]] = {
@@ -32,6 +34,11 @@ COUNTRY_CENTROIDS: Final[dict[str, tuple[float, float]]] = {
     "Canada": (56.1304, -106.3468),
     "Chile": (-35.6751, -71.5430),
     "China": (35.8617, 104.1954),
+    "Hong Kong": (22.3193, 114.1694),
+    "India": (20.5937, 78.9629),
+    "Indonesia": (-0.7893, 113.9213),
+    "New Zealand": (-40.9006, 174.8860),
+    "Vietnam": (14.0583, 108.2772),
     "Colombia": (4.5709, -74.2973),
     "Costa Rica": (9.7489, -83.7534),
     "Czech Republic": (49.8175, 15.4730),

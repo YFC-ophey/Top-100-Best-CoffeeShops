@@ -17,6 +17,7 @@ SOURCE_URLS: dict[str, str] = {
     "Top 100": "https://theworlds100bestcoffeeshops.com/top-100-coffee-shops/",
     "South America": "https://theworlds100bestcoffeeshops.com/top-100-coffee-shops-south/",
     "Europe": "https://theworlds100bestcoffeeshops.com/top-100-coffee-shops-europe/",
+    "Asia-Pacific": "https://theworlds100bestcoffeeshops.com/top-100-coffee-shops-asia/",
     "North, Central America and the Caribbean": "https://theworlds100bestcoffeeshops.com/top-100-coffee-shops-north/",
 }
 
