@@ -54,7 +54,7 @@ workflow that pushes to main.
 ## Playbooks
 
 **Run failed on "Scrape collapse"** — the source layout probably changed.
-Check the four list URLs in a browser. If the site is fine and the list really
+Check the five list URLs in a browser. If the site is fine and the list really
 shrank, re-run with `SCRAPE_ALLOW_SHRINK=1` locally, inspect the diff, push.
 If the layout changed, fix the parsers in `src/scraper.py` (legacy `<li>`
 parser first, Elementor loop-card parser second) against saved HTML.
@@ -79,7 +79,7 @@ The daily Feb 10-20 cron catches the new list automatically. After it lands:
    window, so the incoming scrape is tagged with the new year. If it is missed,
    the new list overwrites the previous one under the old year and the previous
    edition is lost — recover with `git revert` of the bot commit, bump, re-run.
-2. Check the run log: all four categories near 100 shops.
+2. Check the run log: all five categories near 100 shops.
 3. Confirm `data/metadata.json` lists both editions under `counts_by_edition`,
    and that the site's Edition filter shows two chips.
 4. Expect the geocode reminder issue (new shops lack place_ids) — run
@@ -101,7 +101,7 @@ branches; never commit directly to main — CI owns main's data commits.
 
 ## Regional list updates
 
-`src/scraper.py:SOURCE_URLS` contains all four official sources, including Europe
+`src/scraper.py:SOURCE_URLS` contains all five official sources, including Asia-Pacific, Europe
 and North, Central America and the Caribbean. Collection controls are populated
 from the dataset, so regional rows appear in the map and list by default.
 Before shipping an added region, verify ranks 1–100, check new country labels
@@ -112,3 +112,25 @@ Shop images come from each official ranking card, with detail-page Open Graph
 images as a fallback. Preserve prior image URLs when transient detail fetches fail.
 Google Place photo URLs are requested only in the browser with the optional key
 and are never cached. Missing coordinates do not produce individual map pins.
+
+
+## Asia-Pacific location verification (12 November 2026)
+
+The 100 new 2026 Asia-Pacific entries have individual evidence in
+`docs/location-audits/asia-pacific-2026.json`. The publisher has two #11 shops
+and no #12: retain both source URLs rather than deduplicating by rank.
+98 pins resolve to the matching Google Maps business. Coffee Enough and
+Blacksheep Espresso in Shanghai use exact local storefront positions, checked
+against Amap/360 Maps and their published street numbers; they have no invented
+Google cafe place IDs. Their GCJ-02 positions align with the Google China road
+map. Source WGS84 positions must not be substituted into that road map without
+conversion. These two records are accepted without a Google place ID.
+
+`src/data_corrections.py` preserves verified address expansions for Categorique
+and Le J cafe, the Ignis country typo, and the two local Shanghai pins.
+Tests verify all 100 evidence records, country bounds, distinct IDs for the tie,
+and pin carry-forward after source refresh. The previous 600 records are retained;
+only two Espresso Alchemy country labels are aligned to Hong Kong.
+
+Deploy this reviewed dataset with `deploy_verified_data_only=true` to avoid
+replacing it with a fresh, unreviewed scrape during release.

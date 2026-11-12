@@ -5,7 +5,9 @@ Two shops have never resolved across repeated owner-geocode runs, so that
 reminder reopened on every schedule and stopped carrying information. They are
 accepted as-is: both still render in the list with the address the source
 publishes and a working Google Maps link, and Little Victories keeps its pin
-from the coordinates it already has.
+from the coordinates it already has. The two Shanghai Asia-Pacific shops also
+use independently verified local map coordinates without Google cafe place IDs;
+see docs/location-audits/asia-pacific-2026.json.
 """
 
 from __future__ import annotations
@@ -18,6 +20,9 @@ ACCEPTED_WITHOUT_PLACE_ID: frozenset[tuple[str, int]] = frozenset(
     {
         ("Top 100", 71),  # Little Victories Coffee, Ottawa — has coordinates, no place_id
         ("Top 100", 100),  # Vacation Coffee, Melbourne — no coordinates either
+        # Verified local map pins; Google search has no matching cafe listing.
+        ("Asia-Pacific", 18),  # Coffee Enough, Shanghai — Amap B0FFLK0NLX
+        ("Asia-Pacific", 48),  # Blacksheep Espresso, Shanghai — Maoming South Rd
     }
 )
 

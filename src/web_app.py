@@ -459,6 +459,15 @@ def _format_coordinate(value: float) -> str:
 
 
 def _mobile_destination_text(shop: CoffeeShop) -> str:
+    # These verified Shanghai storefronts have no Google cafe listing. A name
+    # search can route to Taiwan/Tokyo; navigate to the checked pin instead.
+    if (
+        shop.category == "Asia-Pacific"
+        and shop.name in {"Coffee Enough", "Blacksheep Espresso"}
+        and not shop.place_id
+        and shop.lat is not None and shop.lng is not None
+    ):
+        return f"{_format_coordinate(shop.lat)},{_format_coordinate(shop.lng)}"
     name = _normalize_shop_text(shop.name)
     formatted_address = _sanitize_map_query((shop.formatted_address or "").strip(), shop.country)
     address = _sanitize_map_query((shop.address or "").strip(), shop.country)

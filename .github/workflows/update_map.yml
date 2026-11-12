@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       deploy_verified_data_only:
-        description: Build and deploy the current verified 600-shop dataset without refreshing source pages
+        description: Build and deploy the current verified dataset without refreshing source pages
         type: boolean
         default: false
 
