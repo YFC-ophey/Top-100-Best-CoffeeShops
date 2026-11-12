@@ -442,9 +442,10 @@
 
       .collection-chips {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-auto-rows: 1fr;
       }
 
-      .collection-chips button:last-child:nth-child(odd) {
+      .collection-chips button[data-category="Top 100"] {
         grid-column: 1 / -1;
       }
 
